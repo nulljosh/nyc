@@ -22,6 +22,8 @@ targets:
       ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
       INFOPLIST_KEY_CFBundleDisplayName: "Times Square Survival"
       INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.games
+      CODE_SIGN_ENTITLEMENTS: Resources/TimesSquareSim.entitlements
+      ENABLE_HARDENED_RUNTIME: YES
   SimTests:
     type: bundle.unit-test
     platform: macOS

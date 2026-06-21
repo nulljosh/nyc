@@ -35,3 +35,10 @@ Thumbs.db
 .idea/
 *.swp
 *.swo
+
+# fastlane / Xcode build artifacts
+fastlane/report.xml
+*.dSYM.zip
+*.pkg
+*.ipa
+/*.app/
