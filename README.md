@@ -66,6 +66,8 @@ Requires Xcode 16+, macOS 15.0+, iOS 17.0+, xcodegen.
 - [ ] Performance profiling (iOS battery, frame rate)
 - [ ] Mobile UI refinements (button sizing, adaptive menus)
 - [ ] Sound design & music
+- [ ] App Store ship pass: tutorial/onboarding polish, accessibility audit (VoiceOver labels, Dynamic Type, contrast), final mobile-friendly pass
+- [ ] No "autoplay" feature exists in this codebase (checked `Sources-Shared/`, `Sources-iOS/`, `Sources-macOS/`) — a 2026-06 task note asked to disable an autoplay feature, but the repo has since pivoted from a Times Square survival sim to this Factorio-style factory game and that feature doesn't exist here. If autoplay still needs disabling, it's likely in a different/older build — flag before assuming this repo.
 
 ## Architecture
 
