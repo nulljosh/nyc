@@ -31,3 +31,7 @@ cd ../nyc-ios && xcodegen generate && open TimesSquareSimIOS.xcodeproj
 - Sources-Shared/Game/Systems/BuildSystem.swift: Building placement and demolition
 - Sources-Shared/Models/GameState.swift: Central state
 - Sources-Shared/Models/SaveManager.swift: JSON save/load (3-slot)
+
+## Imported from Nyc.pdf (2026-06-21)
+- [ ] Ship iOS app — BLOCKED: project only has a macOS target (TimesSquareSim.xcodeproj, SDKROOT=macosx). Needs a new iOS target (UI adaptation, signing) — scoping decision: portrait iOS port of the sim engine with touch controls, no watch in v1.
+- [ ] Watch app — net-new watchOS target, not started.
