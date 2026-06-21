@@ -116,4 +116,5 @@ enum TutorialEvent {
     case cameraPanned
     case buildMenuOpened
     case shelterPlaced
+    case wasdPressed
 }
