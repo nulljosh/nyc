@@ -4,7 +4,7 @@
 
 ### Build the City That Never Sleeps
 
-![version](https://img.shields.io/badge/version-v1.1.0-blue)
+![version](https://img.shields.io/badge/version-v1.1.0-blue) ![license](https://img.shields.io/badge/license-MIT-green)
 [![GitHub](https://img.shields.io/badge/GitHub-nulljosh%2Fnyc-black?logo=github)](https://github.com/nulljosh/nyc)
 
 NYC Survive: Factorio-style production game. SpriteKit, Swift 6, iOS + macOS (portrait/landscape).
