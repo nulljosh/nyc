@@ -24,3 +24,6 @@
 - [ ] Performance profiling (iOS battery, frame rate)
 - [ ] Mobile UI polish (touch targets ≥44pt)
 - [ ] Save/load with new mechanics
+
+## Stashed 2026-06-21
+- [ ] App Store Connect shows an "NYC macOS 1.0 Prepare for Submission" entry with a placeholder icon. Project's only existing target is macOS (TimesSquareSim.xcodeproj) — check its `AppIcon.appiconset` for a missing/invalid 1024x1024 icon (export from repo-root `icon.svg` if missing), since iOS doesn't even exist yet per the "Ship iOS app" item above.

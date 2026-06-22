@@ -1,4 +1,4 @@
-name: TimesSquareSim
+name: NYCSurvive
 options:
   bundleIdPrefix: com.heyitsmejosh
   deploymentTarget:
@@ -9,7 +9,7 @@ settings:
   MARKETING_VERSION: "0.2.0"
   CURRENT_PROJECT_VERSION: "1"
 targets:
-  TimesSquareSim:
+  NYCSurvive:
     type: application
     platform: macOS
     sources:
@@ -22,7 +22,7 @@ targets:
       ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
       INFOPLIST_KEY_CFBundleDisplayName: "NYC"
       INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.games
-      CODE_SIGN_ENTITLEMENTS: Resources/TimesSquareSim.entitlements
+      CODE_SIGN_ENTITLEMENTS: Resources/NYCSurvive.entitlements
       ENABLE_HARDENED_RUNTIME: YES
   SimTests:
     type: bundle.unit-test
@@ -30,7 +30,7 @@ targets:
     sources:
       - Tests
     dependencies:
-      - target: TimesSquareSim
+      - target: NYCSurvive
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: com.heyitsmejosh.nyc.tests
       GENERATE_INFOPLIST_FILE: YES
