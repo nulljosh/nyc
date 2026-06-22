@@ -26,6 +26,7 @@ dist/
 .mypy_cache/
 
 # macOS
+.DS_Store
 .AppleDouble
 .LSOverride
 Thumbs.db
