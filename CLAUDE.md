@@ -35,3 +35,6 @@ cd ../nyc-ios && xcodegen generate && open NYCSurviveIOS.xcodeproj
 ## Imported from Nyc.pdf (2026-06-21)
 - [ ] Ship iOS app — BLOCKED: project only has a macOS target (NYCSurvive.xcodeproj, SDKROOT=macosx). Needs a new iOS target (UI adaptation, signing) — scoping decision: portrait iOS port of the sim engine with touch controls, no watch in v1.
 - [ ] Watch app — net-new watchOS target, not started.
+- [ ] Define concrete next steps to ship the game
+- [ ] Improve the tutorial; disable autoplay
+- [ ] Vibe-clone the portfolio UI into the project
