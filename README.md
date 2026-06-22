@@ -1,10 +1,13 @@
 <img src="icon.svg" width="80">
 
-# nyc
+# NYC Survive
+
+### Build the City That Never Sleeps
 
 ![version](https://img.shields.io/badge/version-v1.1.0-blue)
+[![GitHub](https://img.shields.io/badge/GitHub-nulljosh%2Fnyc-black?logo=github)](https://github.com/nulljosh/nyc)
 
-Times Square Factory Sim: Factorio-style production game. SpriteKit, Swift 6, iOS + macOS (portrait/landscape).
+NYC Survive: Factorio-style production game. SpriteKit, Swift 6, iOS + macOS (portrait/landscape).
 
 ## Features
 
@@ -20,10 +23,10 @@ Times Square Factory Sim: Factorio-style production game. SpriteKit, Swift 6, iO
 
 ```bash
 # macOS
-xcodegen generate && open TimesSquareSim.xcodeproj
+xcodegen generate && open NYCSurvive.xcodeproj
 
 # iOS
-cd ../nyc-ios && xcodegen generate && open TimesSquareSimIOS.xcodeproj
+cd ../nyc-ios && xcodegen generate && open NYCSurviveIOS.xcodeproj
 ```
 
 Requires Xcode 16+, macOS 15.0+, iOS 17.0+, xcodegen.
@@ -67,7 +70,12 @@ Requires Xcode 16+, macOS 15.0+, iOS 17.0+, xcodegen.
 - [ ] Mobile UI refinements (button sizing, adaptive menus)
 - [ ] Sound design & music
 - [ ] App Store ship pass: tutorial/onboarding polish, accessibility audit (VoiceOver labels, Dynamic Type, contrast), final mobile-friendly pass
-- [ ] No "autoplay" feature exists in this codebase (checked `Sources-Shared/`, `Sources-iOS/`, `Sources-macOS/`) — a 2026-06 task note asked to disable an autoplay feature, but the repo has since pivoted from a Times Square survival sim to this Factorio-style factory game and that feature doesn't exist here. If autoplay still needs disabling, it's likely in a different/older build — flag before assuming this repo.
+- [ ] No "autoplay" feature exists in this codebase (checked `Sources-Shared/`, `Sources-iOS/`, `Sources-macOS/`) — a 2026-06 task note asked to disable an autoplay feature, but the repo has since pivoted from a NYC Survive survival sim to this Factorio-style factory game and that feature doesn't exist here. If autoplay still needs disabling, it's likely in a different/older build — flag before assuming this repo.
+
+## Remaining Tasks
+
+- [ ] Landing page (GitHub Pages, `docs/` folder): hero, subtitle, gameplay summary, screenshots, how-to-play tutorial
+- [ ] README screenshots (gameplay capture via simulator)
 
 ## Architecture
 

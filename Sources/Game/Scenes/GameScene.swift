@@ -158,7 +158,7 @@ final class GameScene: SKScene {
         if savedData != nil {
             gameState.log("Game loaded")
         } else {
-            gameState.log("Welcome to Times Square")
+            gameState.log("Welcome to NYC Survive")
         }
     }
 

@@ -7,7 +7,7 @@ struct TutorialView: View {
 
     private var stepData: (title: String, body: String, hint: String) {
         switch step {
-        case 0: ("WELCOME",    "Welcome to Times Square. You control a group of survivors.",                           "Tap to continue")
+        case 0: ("WELCOME",    "Welcome to NYC Survive. You control a group of survivors.",                           "Tap to continue")
         case 1: ("NEEDS",      "Colonists have NEEDS — hunger, oxygen, stress, sleep, health. Keep them alive.",      "Tap to continue")
         case 2: ("STATS",      "Each colonist has RPG STATS — STR, INT, AGI, END, CHA. Tap a figure.",               "Tap a colonist")
         case 3: ("CAMERA",     "Drag to pan the camera. Pinch to zoom.",                                               "Tap to continue")

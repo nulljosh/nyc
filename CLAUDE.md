@@ -18,10 +18,10 @@ v1.1.0 — Unified iOS + macOS Factorio-style factory sim
 
 ```bash
 # macOS
-xcodegen generate && open TimesSquareSim.xcodeproj
+xcodegen generate && open NYCSurvive.xcodeproj
 
 # iOS
-cd ../nyc-ios && xcodegen generate && open TimesSquareSimIOS.xcodeproj
+cd ../nyc-ios && xcodegen generate && open NYCSurviveIOS.xcodeproj
 ```
 
 ## Key Files (Shared)
@@ -33,5 +33,5 @@ cd ../nyc-ios && xcodegen generate && open TimesSquareSimIOS.xcodeproj
 - Sources-Shared/Models/SaveManager.swift: JSON save/load (3-slot)
 
 ## Imported from Nyc.pdf (2026-06-21)
-- [ ] Ship iOS app — BLOCKED: project only has a macOS target (TimesSquareSim.xcodeproj, SDKROOT=macosx). Needs a new iOS target (UI adaptation, signing) — scoping decision: portrait iOS port of the sim engine with touch controls, no watch in v1.
+- [ ] Ship iOS app — BLOCKED: project only has a macOS target (NYCSurvive.xcodeproj, SDKROOT=macosx). Needs a new iOS target (UI adaptation, signing) — scoping decision: portrait iOS port of the sim engine with touch controls, no watch in v1.
 - [ ] Watch app — net-new watchOS target, not started.

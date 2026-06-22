@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate Fez-style pixel art sprites for Times Square Sim."""
+"""Generate Fez-style pixel art sprites for NYC Survive."""
 
 from PIL import Image, ImageDraw
 import os

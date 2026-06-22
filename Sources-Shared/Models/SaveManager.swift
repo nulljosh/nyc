@@ -22,7 +22,7 @@ final class SaveManager {
 
     private let saveDir: URL = {
         let dir = FileManager.default.homeDirectoryForCurrentUser
-            .appendingPathComponent("Documents/TimesSquareSim")
+            .appendingPathComponent("Documents/NYCSurvive")
         try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
         return dir
     }()

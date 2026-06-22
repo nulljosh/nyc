@@ -20,7 +20,7 @@ targets:
       PRODUCT_BUNDLE_IDENTIFIER: com.heyitsmejosh.nyc
       GENERATE_INFOPLIST_FILE: YES
       ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
-      INFOPLIST_KEY_CFBundleDisplayName: "NYC"
+      INFOPLIST_KEY_CFBundleDisplayName: "NYC Survive"
       INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.games
       CODE_SIGN_ENTITLEMENTS: Resources/NYCSurvive.entitlements
       ENABLE_HARDENED_RUNTIME: YES

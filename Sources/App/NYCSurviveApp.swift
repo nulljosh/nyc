@@ -2,7 +2,7 @@ import SwiftUI
 import SpriteKit
 
 @main
-struct TimesSquareSimApp: App {
+struct NYCSurviveApp: App {
     @State private var gameState = GameState()
     @State private var showMenu = true
     @State private var loadSlot: Int? = nil
