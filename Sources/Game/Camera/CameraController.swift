@@ -20,6 +20,11 @@ final class CameraController {
         cameraNode.position.y += panDirection.y * panSpeed * dt * currentZoom
     }
 
+    func panBy(delta: CGPoint) {
+        cameraNode.position.x -= delta.x * currentZoom
+        cameraNode.position.y -= delta.y * currentZoom
+    }
+
     func zoom(by amount: CGFloat) {
         currentZoom = max(minZoom, min(maxZoom, currentZoom - amount))
         cameraNode.setScale(currentZoom)

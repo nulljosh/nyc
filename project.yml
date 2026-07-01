@@ -3,6 +3,7 @@ options:
   bundleIdPrefix: com.heyitsmejosh
   deploymentTarget:
     macOS: "15.0"
+    iOS: "17.0"
 settings:
   DEVELOPMENT_TEAM: QMM486NPYC
   SWIFT_VERSION: "6.0"
@@ -13,7 +14,9 @@ targets:
     type: application
     platform: macOS
     sources:
-      - Sources
+      - path: Sources
+        excludes:
+          - "AppiOS/**"
       - path: Resources
         buildPhase: resources
     settings:
@@ -24,6 +27,22 @@ targets:
       INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.games
       CODE_SIGN_ENTITLEMENTS: Resources/NYCSurvive.entitlements
       ENABLE_HARDENED_RUNTIME: YES
+  NYCSurvive-iOS:
+    type: application
+    platform: iOS
+    sources:
+      - path: Sources
+        excludes:
+          - "App/**"
+          - "AppiOS/**"
+      - path: Sources/AppiOS
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.heyitsmejosh.nyc.ios
+      GENERATE_INFOPLIST_FILE: YES
+      INFOPLIST_KEY_CFBundleDisplayName: "NYC Survive"
+      INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.games
+      INFOPLIST_KEY_UILaunchScreen: {}
+      TARGETED_DEVICE_FAMILY: "1,2"
   SimTests:
     type: bundle.unit-test
     platform: macOS

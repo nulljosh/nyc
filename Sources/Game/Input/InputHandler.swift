@@ -10,6 +10,7 @@ final class InputHandler {
     var onSelectEntity: ((CGPoint) -> Void)?
     var onSave: (() -> Void)?
 
+    #if os(macOS)
     func handleKeyDown(event: NSEvent) {
         guard let gameState else { return }
         let chars = event.charactersIgnoringModifiers ?? ""
@@ -91,6 +92,7 @@ final class InputHandler {
             }
         }
     }
+    #endif
 
     func handleMouseDown(location: CGPoint, tileMap: TileMap) {
         guard let gameState else { return }
@@ -108,6 +110,18 @@ final class InputHandler {
 
     func handleScrollWheel(deltaY: CGFloat) {
         cameraController?.zoom(by: deltaY * 0.01)
+    }
+
+    func handleTap(location: CGPoint, tileMap: TileMap) {
+        handleMouseDown(location: location, tileMap: tileMap)
+    }
+
+    func handlePan(delta: CGPoint) {
+        cameraController?.panBy(delta: delta)
+    }
+
+    func handlePinch(scale: CGFloat) {
+        cameraController?.zoom(by: (1 - scale) * 2)
     }
 
     private func selectBuilding(_ type: BuildingType, gameState: GameState) {

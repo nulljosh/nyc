@@ -14,19 +14,19 @@ final class ColonistNode: SKSpriteNode {
 
         // Green circle indicator underneath so colonists are visible
         indicator = SKShapeNode(circleOfRadius: 10)
-        indicator.fillColor = NSColor(red: 0.19, green: 0.82, blue: 0.35, alpha: 0.4)
-        indicator.strokeColor = NSColor(red: 0.19, green: 0.82, blue: 0.35, alpha: 0.8)
+        indicator.fillColor = SKColor(red: 0.19, green: 0.82, blue: 0.35, alpha: 0.4)
+        indicator.strokeColor = SKColor(red: 0.19, green: 0.82, blue: 0.35, alpha: 0.8)
         indicator.lineWidth = 1
         indicator.zPosition = -1
 
         healthBarBg = SKShapeNode(rect: CGRect(x: -12, y: 0, width: 24, height: 3), cornerRadius: 1)
-        healthBarBg.fillColor = NSColor(white: 0.2, alpha: 0.8)
+        healthBarBg.fillColor = SKColor(white: 0.2, alpha: 0.8)
         healthBarBg.strokeColor = .clear
         healthBarBg.position = CGPoint(x: 0, y: 20)
         healthBarBg.zPosition = 20
 
         healthBarFill = SKShapeNode(rect: CGRect(x: -12, y: 0, width: 24, height: 3), cornerRadius: 1)
-        healthBarFill.fillColor = NSColor(red: 0.19, green: 0.82, blue: 0.35, alpha: 1)
+        healthBarFill.fillColor = SKColor(red: 0.19, green: 0.82, blue: 0.35, alpha: 1)
         healthBarFill.strokeColor = .clear
         healthBarFill.position = CGPoint(x: 0, y: 20)
         healthBarFill.zPosition = 21
@@ -59,26 +59,26 @@ final class ColonistNode: SKSpriteNode {
         self.texture = tex
 
         // Update indicator color to match state
-        let indicatorColor: NSColor
+        let indicatorColor: SKColor
         switch model.state {
-        case .healthy: indicatorColor = NSColor(red: 0.19, green: 0.82, blue: 0.35, alpha: 1)
-        case .hungry: indicatorColor = NSColor(red: 1.0, green: 0.84, blue: 0.04, alpha: 1)
-        case .suffocating: indicatorColor = NSColor(red: 0.39, green: 0.82, blue: 1.0, alpha: 1)
-        case .exhausted: indicatorColor = NSColor(red: 1.0, green: 0.62, blue: 0.04, alpha: 1)
-        case .dead: indicatorColor = NSColor(red: 0.4, green: 0.4, blue: 0.4, alpha: 1)
+        case .healthy: indicatorColor = SKColor(red: 0.19, green: 0.82, blue: 0.35, alpha: 1)
+        case .hungry: indicatorColor = SKColor(red: 1.0, green: 0.84, blue: 0.04, alpha: 1)
+        case .suffocating: indicatorColor = SKColor(red: 0.39, green: 0.82, blue: 1.0, alpha: 1)
+        case .exhausted: indicatorColor = SKColor(red: 1.0, green: 0.62, blue: 0.04, alpha: 1)
+        case .dead: indicatorColor = SKColor(red: 0.4, green: 0.4, blue: 0.4, alpha: 1)
         }
         indicator.fillColor = indicatorColor.withAlphaComponent(0.35)
         indicator.strokeColor = indicatorColor.withAlphaComponent(0.8)
 
         let hpFrac = max(0, min(1, model.health / 100.0))
         healthBarFill.xScale = CGFloat(hpFrac)
-        let hpColor: NSColor
+        let hpColor: SKColor
         if model.health > 60 {
-            hpColor = NSColor(red: 0.19, green: 0.82, blue: 0.35, alpha: 1)
+            hpColor = SKColor(red: 0.19, green: 0.82, blue: 0.35, alpha: 1)
         } else if model.health > 30 {
-            hpColor = NSColor(red: 1.0, green: 0.84, blue: 0.04, alpha: 1)
+            hpColor = SKColor(red: 1.0, green: 0.84, blue: 0.04, alpha: 1)
         } else {
-            hpColor = NSColor(red: 1.0, green: 0.27, blue: 0.23, alpha: 1)
+            hpColor = SKColor(red: 1.0, green: 0.27, blue: 0.23, alpha: 1)
         }
         healthBarFill.fillColor = hpColor
     }

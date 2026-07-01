@@ -40,7 +40,7 @@ final class GameScene: SKScene {
     required init?(coder: NSCoder) { fatalError() }
 
     override func didMove(to view: SKView) {
-        backgroundColor = NSColor(red: 0.04, green: 0.04, blue: 0.05, alpha: 1)
+        backgroundColor = SKColor(red: 0.04, green: 0.04, blue: 0.05, alpha: 1)
         view.showsFPS = true
         view.showsNodeCount = true
 
@@ -198,6 +198,7 @@ final class GameScene: SKScene {
         // Tutorial highlights
         updateTutorialHighlights()
 
+        #if os(macOS)
         if gameState.inputMode == .build, let type = gameState.selectedBuildingType {
             let mouseLocation = NSEvent.mouseLocation
             if let view = self.view {
@@ -209,8 +210,14 @@ final class GameScene: SKScene {
         } else {
             buildSystem.removeGhost()
         }
+        #else
+        if gameState.inputMode != .build {
+            buildSystem.removeGhost()
+        }
+        #endif
     }
 
+    #if os(macOS)
     override func keyDown(with event: NSEvent) {
         inputHandler.handleKeyDown(event: event)
     }
@@ -248,6 +255,42 @@ final class GameScene: SKScene {
     override func scrollWheel(with event: NSEvent) {
         inputHandler.handleScrollWheel(deltaY: event.deltaY)
     }
+    #else
+    private var touchStartLocation: CGPoint?
+    private var touchMoved = false
+
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let touch = touches.first else { return }
+        touchStartLocation = touch.location(in: self)
+        touchMoved = false
+    }
+
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let touch = touches.first, let start = touchStartLocation else { return }
+        let current = touch.location(in: self)
+        let previous = touch.previousLocation(in: self)
+        if hypot(current.x - start.x, current.y - start.y) > 8 {
+            touchMoved = true
+        }
+        if touchMoved {
+            inputHandler.handlePan(delta: CGPoint(x: current.x - previous.x, y: current.y - previous.y))
+        }
+    }
+
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let touch = touches.first, let start = touchStartLocation else { return }
+        if !touchMoved {
+            inputHandler.handleTap(location: start, tileMap: tileMap)
+        }
+        touchStartLocation = nil
+        touchMoved = false
+        _ = touch
+    }
+
+    func applyPinch(scale: CGFloat) {
+        inputHandler.handlePinch(scale: scale)
+    }
+    #endif
 
     private func updateSelectionRect(from start: CGPoint, to end: CGPoint) {
         selectionRect?.removeFromParent()
@@ -258,8 +301,8 @@ final class GameScene: SKScene {
             height: abs(end.y - start.y)
         )
         let node = SKShapeNode(rect: rect)
-        node.strokeColor = NSColor(red: 0.39, green: 0.82, blue: 1.0, alpha: 0.8)
-        node.fillColor = NSColor(red: 0.39, green: 0.82, blue: 1.0, alpha: 0.15)
+        node.strokeColor = SKColor(red: 0.39, green: 0.82, blue: 1.0, alpha: 0.8)
+        node.fillColor = SKColor(red: 0.39, green: 0.82, blue: 1.0, alpha: 0.15)
         node.lineWidth = 2
         node.zPosition = 100
         addChild(node)
@@ -355,7 +398,7 @@ final class GameScene: SKScene {
             // Pulse circles around colonists
             for (_, node) in colonistNodes {
                 let pulse = SKShapeNode(circleOfRadius: 20)
-                pulse.strokeColor = NSColor(red: 1.0, green: 0.84, blue: 0.04, alpha: 0.9)
+                pulse.strokeColor = SKColor(red: 1.0, green: 0.84, blue: 0.04, alpha: 0.9)
                 pulse.fillColor = .clear
                 pulse.lineWidth = 2
                 pulse.position = node.position

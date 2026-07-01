@@ -56,7 +56,7 @@ final class BuildSystem {
         ghostNode?.removeFromParent()
         let ts = type.tileSize
         let size = CGSize(width: CGFloat(ts.w) * TileMap.tileSize, height: CGFloat(ts.h) * TileMap.tileSize)
-        let ghost = SKSpriteNode(color: NSColor.white.withAlphaComponent(0.3), size: size)
+        let ghost = SKSpriteNode(color: SKColor.white.withAlphaComponent(0.3), size: size)
         ghost.anchorPoint = CGPoint(x: 0, y: 0)
         ghost.position = CGPoint(x: CGFloat(col) * TileMap.tileSize, y: CGFloat(row) * TileMap.tileSize)
         ghost.zPosition = 15
