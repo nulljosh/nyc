@@ -42,17 +42,8 @@ Requires Xcode 16+, macOS 15.0+, iOS 17.0+, xcodegen.
 ## Roadmap
 
 ### Phase 1: ✅ Mobile Architecture
-- [x] Unified iOS + macOS codebase
-- [x] Portrait + landscape support
-- [x] Adaptive HUD layout
 
 ### Phase 2: ✅ Factorio Mechanics
-- [x] Production building system
-- [x] Auto-pull logistics
-- [x] Item inventory (ore, plates, gears)
-- [x] 4 building types + recipes
-- [x] Progress bars + production tracking
-- [x] Save/load integration
 
 ### Phase 3: Planned (Optional)
 - [ ] Enemy waves (biters) spawning periodically
