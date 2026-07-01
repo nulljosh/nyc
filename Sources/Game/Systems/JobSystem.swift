@@ -18,6 +18,26 @@ final class JobSystem {
         gameState.colonists[colonistIndex].pathIndex = 0
     }
 
+    /// Player-issued move order. Sets jobOverride so autoAssignIdle leaves this colonist alone
+    /// until the order completes (see tick()'s jobOverride-clear branch).
+    func commandMove(colonistId: UUID, destCol: Int, destRow: Int, gameState: GameState, pathfinder: Pathfinder) {
+        guard let i = gameState.colonists.firstIndex(where: { $0.id == colonistId }),
+              !gameState.colonists[i].isDead else { return }
+        let path = pathfinder.findPath(
+            fromCol: gameState.colonists[i].col,
+            fromRow: gameState.colonists[i].row,
+            toCol: destCol,
+            toRow: destRow
+        )
+        guard !path.isEmpty else { return }
+        gameState.colonists[i].job = .idle
+        gameState.colonists[i].jobOverride = true
+        gameState.colonists[i].pathCols = path.map(\.col)
+        gameState.colonists[i].pathRows = path.map(\.row)
+        gameState.colonists[i].pathIndex = 0
+        gameState.log("\(gameState.colonists[i].name) moving to (\(destCol), \(destRow))")
+    }
+
     func clearJob(colonistIndex: Int, gameState: GameState) {
         guard colonistIndex < gameState.colonists.count else { return }
         gameState.colonists[colonistIndex].job = .idle
@@ -44,6 +64,9 @@ final class JobSystem {
                     assignRandomGatherTarget(colonistIndex: i, gameState: gameState)
                 } else if gameState.colonists[i].job == .patrol {
                     assignRandomPatrolTarget(colonistIndex: i, gameState: gameState)
+                } else if gameState.colonists[i].jobOverride {
+                    // Manual move order finished -- hand control back to the directive.
+                    gameState.colonists[i].jobOverride = false
                 }
                 continue
             }

@@ -289,7 +289,6 @@ final class GameScene: SKScene {
     }
 
     private func selectEntity(at location: CGPoint) {
-        gameState.selectedColonistId = nil
         for (id, node) in colonistNodes {
             let expandedFrame = node.frame.insetBy(dx: -10, dy: -10)
             if expandedFrame.contains(location) {
@@ -299,6 +298,12 @@ final class GameScene: SKScene {
                 return
             }
         }
+        // No colonist hit -- if one was already selected, this is a manual move order.
+        if let selectedId = gameState.selectedColonistId {
+            let tilePos = tileMap.tilePosition(worldX: location.x, worldY: location.y)
+            jobSystem.commandMove(colonistId: selectedId, destCol: tilePos.col, destRow: tilePos.row, gameState: gameState, pathfinder: pathfinder)
+        }
+        gameState.selectedColonistId = nil
     }
 
     private func placeBuilding(col: Int, row: Int) {
