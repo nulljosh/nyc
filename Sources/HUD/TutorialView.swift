@@ -13,7 +13,7 @@ struct TutorialView: View {
         case 3: ("CAMERA",     "Drag to pan the camera. Pinch to zoom.",                                               "Tap to continue")
         case 4: ("BUILD",      "Tap BUILD to open the build menu. Buildings keep your colony running.",               "Tap BUILD")
         case 5: ("SHELTER",    "Place a SHELTER to reduce stress and let colonists sleep.",                            "Place a shelter")
-        case 6: ("DIRECTIVES", "Set a DIRECTIVE to auto-assign colonists. Try GATHER to collect resources.",          "Tap to continue")
+        case 6: ("COMMAND",    "You are in control. Select a colonist, then tap a tile to move them. Assign jobs from the colonist panel.", "Tap a colonist")
         case 7: ("COMBAT",     "Colonists carry weapons. Assign ATTACK jobs to fight enemies. STR boosts damage.",    "Tap to continue")
         case 8: ("GOOD LUCK",  "Tap PAUSE to pause. Tap SAVE to save. Good luck.",                                   "Tap to dismiss")
         default: ("", "", "")

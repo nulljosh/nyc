@@ -121,16 +121,6 @@ struct HUDView: View {
             VStack {
                 Spacer()
 
-                // Directive row
-                HStack(spacing: 4) {
-                    ForEach(ColonyDirective.allCases, id: \.self) { directive in
-                        directivePill(directive: directive)
-                    }
-                }
-                .padding(.horizontal, 16)
-                .padding(.vertical, 4)
-                .allowsHitTesting(true)
-
                 // Main toolbar
                 HStack(spacing: 8) {
                     toolbarPill(label: gameState.isPaused ? "PLAY" : "PAUSE") {
@@ -198,26 +188,6 @@ struct HUDView: View {
                 .padding(.horizontal, 12)
                 .padding(.vertical, 8)
                 .frame(minHeight: 36)
-                .background(
-                    Capsule()
-                        .fill(isActive ? Theme.accent.opacity(0.35) : Theme.glass)
-                        .overlay(Capsule().stroke(isActive ? Theme.accent : Theme.border, lineWidth: 1))
-                )
-        }
-        .buttonStyle(.plain)
-    }
-
-    private func directivePill(directive: ColonyDirective) -> some View {
-        let isActive = gameState.currentDirective == directive
-        return Button(action: {
-            gameState.currentDirective = directive
-            gameState.log("Directive: \(directive.displayName)")
-        }) {
-            Text(directive.displayName)
-                .font(.system(size: 10, weight: .bold, design: .monospaced))
-                .foregroundStyle(isActive ? .white : Theme.text2)
-                .padding(.horizontal, 12)
-                .padding(.vertical, 5)
                 .background(
                     Capsule()
                         .fill(isActive ? Theme.accent.opacity(0.35) : Theme.glass)

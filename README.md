@@ -4,14 +4,14 @@
 
 ### Build the City That Never Sleeps
 
-![version](https://img.shields.io/badge/version-v1.1.0-blue) ![license](https://img.shields.io/badge/license-MIT-green)
+![version](https://img.shields.io/badge/version-v1.2.0-blue) ![license](https://img.shields.io/badge/license-MIT-green)
 [![GitHub](https://img.shields.io/badge/GitHub-nulljosh%2Fnyc-black?logo=github)](https://github.com/nulljosh/nyc)
 
 NYC Survive: Factorio-style production game. SpriteKit, Swift 6, iOS + macOS (portrait/landscape).
 
 ## Features
 
-- **Unified iOS + macOS codebase** (95% code deduplication via Sources-Shared)
+- **Unified iOS + macOS codebase** (shared `Sources/`, per-platform app entry points)
 - **Responsive layouts** (portrait + landscape on iOS, fixed 1280×800 on macOS)
 - **Factory production chains** (4 building types: miner, smelter, assembler, storage)
 - **Auto-pull logistics** (adjacent buildings automatically pull required inputs)
@@ -61,7 +61,7 @@ Requires Xcode 16+, macOS 15.0+, iOS 17.0+, xcodegen.
 - [ ] Mobile UI refinements (button sizing, adaptive menus)
 - [ ] Sound design & music
 - [ ] App Store ship pass: tutorial/onboarding polish, accessibility audit (VoiceOver labels, Dynamic Type, contrast), final mobile-friendly pass
-- [ ] No "autoplay" feature exists in this codebase (checked `Sources-Shared/`, `Sources-iOS/`, `Sources-macOS/`) — a 2026-06 task note asked to disable an autoplay feature, but the repo has since pivoted from a NYC Survive survival sim to this Factorio-style factory game and that feature doesn't exist here. If autoplay still needs disabling, it's likely in a different/older build — flag before assuming this repo.
+- [x] Autoplay removed 2026-07-02 — the directive engine (`JobSystem.autoAssignIdle` + `ColonyDirective`) was the autoplay; deleted entirely. Colonists act only on player commands.
 
 ## Remaining Tasks
 
@@ -79,7 +79,14 @@ Requires Xcode 16+, macOS 15.0+, iOS 17.0+, xcodegen.
 
 ## Changelog
 
-### v1.1.0 (Current)
+### v1.2.0 (Current)
+
+- Removed autoplay completely: deleted colony directive engine (`autoAssignIdle`, `ColonyDirective`, directive HUD pills, `jobOverride`)
+- Game is fully player-controlled: select colonist + tap to move, assign jobs via colonist panel
+- Tutorial step 6 now teaches manual command instead of directives
+- Applies to both macOS and iOS targets (shared `Sources/`)
+
+### v1.1.0
 
 - Transformed from colony sim → Factorio-style factory game
 - Unified iOS + macOS codebase (single Sources-Shared/)

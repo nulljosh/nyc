@@ -28,9 +28,6 @@ final class GameState {
     var showBuildMenu: Bool = false
     var showSettings: Bool = false
 
-    // Colony directive (ONI-style auto-work)
-    var currentDirective: ColonyDirective = .idle
-
     // Multi-select
     var selectedColonistIds: Set<UUID> = []
 

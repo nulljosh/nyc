@@ -4,21 +4,6 @@ enum ColonistJob: String, Codable, Sendable, CaseIterable {
     case idle, gather, build, patrol, attack
 }
 
-enum ColonyDirective: String, Codable, Sendable, CaseIterable {
-    case idle, gather, build, patrol
-
-    var displayName: String { rawValue.uppercased() }
-
-    var correspondingJob: ColonistJob {
-        switch self {
-        case .idle: .idle
-        case .gather: .gather
-        case .build: .build
-        case .patrol: .patrol
-        }
-    }
-}
-
 enum WeaponType: String, Codable, Sendable, CaseIterable {
     case fists
     case pipe
@@ -118,7 +103,6 @@ struct ColonistModel: Identifiable, Codable, Sendable {
     var sleep: Double = 100
     var health: Double = 100
     var job: ColonistJob = .idle
-    var jobOverride: Bool = false
     var state: ColonistState = .healthy
     var weapon: WeaponType = .fists
     var attackTargetId: UUID? = nil

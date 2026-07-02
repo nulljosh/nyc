@@ -18,8 +18,7 @@ final class JobSystem {
         gameState.colonists[colonistIndex].pathIndex = 0
     }
 
-    /// Player-issued move order. Sets jobOverride so autoAssignIdle leaves this colonist alone
-    /// until the order completes (see tick()'s jobOverride-clear branch).
+    /// Player-issued move order.
     func commandMove(colonistId: UUID, destCol: Int, destRow: Int, gameState: GameState, pathfinder: Pathfinder) {
         guard let i = gameState.colonists.firstIndex(where: { $0.id == colonistId }),
               !gameState.colonists[i].isDead else { return }
@@ -31,7 +30,6 @@ final class JobSystem {
         )
         guard !path.isEmpty else { return }
         gameState.colonists[i].job = .idle
-        gameState.colonists[i].jobOverride = true
         gameState.colonists[i].pathCols = path.map(\.col)
         gameState.colonists[i].pathRows = path.map(\.row)
         gameState.colonists[i].pathIndex = 0
@@ -47,9 +45,6 @@ final class JobSystem {
     }
 
     func tick(gameState: GameState) {
-        // Auto-assign idle colonists based on directive
-        autoAssignIdle(gameState: gameState)
-
         for i in gameState.colonists.indices {
             guard !gameState.colonists[i].isDead else { continue }
 
@@ -64,9 +59,6 @@ final class JobSystem {
                     assignRandomGatherTarget(colonistIndex: i, gameState: gameState)
                 } else if gameState.colonists[i].job == .patrol {
                     assignRandomPatrolTarget(colonistIndex: i, gameState: gameState)
-                } else if gameState.colonists[i].jobOverride {
-                    // Manual move order finished -- hand control back to the directive.
-                    gameState.colonists[i].jobOverride = false
                 }
                 continue
             }
@@ -97,63 +89,6 @@ final class JobSystem {
         if xp > 0 {
             gameState.colonists[colonistIndex].grantXP(xp)
         }
-    }
-
-    // MARK: - Auto-assign
-
-    private func autoAssignIdle(gameState: GameState) {
-        let directive = gameState.currentDirective
-        guard directive != .idle else { return }
-        guard let pathfinder else { return }
-
-        for i in gameState.colonists.indices {
-            let c = gameState.colonists[i]
-            guard !c.isDead && c.job == .idle && !c.jobOverride else { continue }
-
-            switch directive {
-            case .idle:
-                break
-            case .gather:
-                assignNearestGatherTarget(colonistIndex: i, gameState: gameState, pathfinder: pathfinder)
-            case .build:
-                assignNearestBuildTarget(colonistIndex: i, gameState: gameState, pathfinder: pathfinder)
-            case .patrol:
-                assignRandomPatrolTarget(colonistIndex: i, gameState: gameState)
-            }
-        }
-    }
-
-    private func assignNearestGatherTarget(colonistIndex: Int, gameState: GameState, pathfinder: Pathfinder) {
-        let c = gameState.colonists[colonistIndex]
-        let available = gameState.resourceNodes.filter { !$0.isDepleted }
-        guard let nearest = available.min(by: {
-            abs($0.col - c.col) + abs($0.row - c.row) < abs($1.col - c.col) + abs($1.row - c.row)
-        }) else { return }
-
-        let path = pathfinder.findPath(fromCol: c.col, fromRow: c.row, toCol: nearest.col, toRow: nearest.row)
-        guard !path.isEmpty else { return }
-        gameState.colonists[colonistIndex].job = .gather
-        gameState.colonists[colonistIndex].pathCols = path.map(\.col)
-        gameState.colonists[colonistIndex].pathRows = path.map(\.row)
-        gameState.colonists[colonistIndex].pathIndex = 0
-    }
-
-    private func assignNearestBuildTarget(colonistIndex: Int, gameState: GameState, pathfinder: Pathfinder) {
-        let c = gameState.colonists[colonistIndex]
-        let buildings = gameState.buildings.filter { !$0.isActive }
-        guard let nearest = buildings.min(by: {
-            abs($0.col - c.col) + abs($0.row - c.row) < abs($1.col - c.col) + abs($1.row - c.row)
-        }) else {
-            // No unfinished buildings -- patrol instead
-            assignRandomPatrolTarget(colonistIndex: colonistIndex, gameState: gameState)
-            return
-        }
-        let path = pathfinder.findPath(fromCol: c.col, fromRow: c.row, toCol: nearest.col, toRow: nearest.row)
-        guard !path.isEmpty else { return }
-        gameState.colonists[colonistIndex].job = .build
-        gameState.colonists[colonistIndex].pathCols = path.map(\.col)
-        gameState.colonists[colonistIndex].pathRows = path.map(\.row)
-        gameState.colonists[colonistIndex].pathIndex = 0
     }
 
     private func assignRandomPatrolTarget(colonistIndex: Int, gameState: GameState) {

@@ -1,6 +1,6 @@
 # nyc
 
-v1.1.0 — macOS Factorio-style factory sim (iOS not yet built, see below)
+v1.2.0 — macOS + iOS colony sim, fully player-controlled (no autoplay)
 
 ## Rules
 
@@ -31,6 +31,7 @@ xcodegen generate && open NYCSurvive.xcodeproj
 - [ ] Ship iOS app — BLOCKED: project only has a macOS target (NYCSurvive.xcodeproj, SDKROOT=macosx). Needs a new iOS target (UI adaptation, signing) — scoping decision: portrait iOS port of the sim engine with touch controls, no watch in v1.
 - [ ] Watch app — net-new watchOS target, not started.
 - [ ] Define concrete next steps to ship the game
-- [x] Manual colonist control fixed 2026-07-01 — `assignJob()` was dead code, colonists were 100% directive-driven. Added `JobSystem.commandMove()` wired to select-then-tap-destination in GameScene; `jobOverride` protects the manual order from directive override until it completes.
+- [x] Manual colonist control fixed 2026-07-01 — `assignJob()` was dead code, colonists were 100% directive-driven. Added `JobSystem.commandMove()` wired to select-then-tap-destination in GameScene.
+- [x] Autoplay REMOVED 2026-07-02 — deleted the directive engine entirely (`autoAssignIdle`, `ColonyDirective`, directive HUD pills, `jobOverride`). Colonists act only on player commands (select + tap to move, job pills in ColonistPanel). Do NOT reintroduce auto-assignment.
 - [ ] Improve the tutorial/onboarding polish
 - [ ] Vibe-clone the portfolio UI into the project
