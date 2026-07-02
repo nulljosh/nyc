@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Times Square Survival</title>
+    <link rel="icon" href="icon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <canvas id="game"></canvas>
+
+    <div id="menu">
+        <div id="skyline-bg" aria-hidden="true">
+            <svg viewBox="0 0 1200 220" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
+                <path fill="rgba(255,255,255,0.05)" d="M0,220 L0,185 L40,185 L40,175 L70,175 L70,160 L95,160 L95,148 L110,148 L110,132 L130,132 L130,145 L158,145 L158,118 L175,118 L175,105 L188,105 L188,92 L196,92 L196,82 L202,82 L202,72 L206,72 L206,58 L209,58 L209,44 L212,44 L212,28 L215,28 L215,15 L218,15 L218,28 L221,28 L221,44 L224,44 L224,58 L227,58 L227,72 L231,72 L231,82 L237,82 L237,92 L248,92 L248,105 L262,105 L262,115 L278,115 L278,105 L295,105 L295,118 L315,118 L315,108 L330,108 L330,95 L338,95 L338,78 L342,78 L342,60 L346,60 L346,42 L349,42 L349,20 L351,20 L351,8 L353,8 L353,20 L355,20 L355,42 L358,42 L358,60 L362,60 L362,78 L366,78 L366,95 L374,95 L374,108 L390,108 L390,118 L410,118 L410,105 L428,105 L428,118 L445,118 L445,108 L462,108 L462,125 L480,125 L480,115 L498,115 L498,128 L520,128 L520,140 L545,140 L545,128 L568,128 L568,142 L592,142 L592,155 L615,155 L615,142 L638,142 L638,128 L662,128 L662,140 L688,140 L688,152 L710,152 L710,162 L735,162 L735,170 L758,170 L758,158 L782,158 L782,165 L810,165 L810,172 L838,172 L838,162 L862,162 L862,172 L890,172 L890,178 L920,178 L920,168 L948,168 L948,175 L975,175 L975,182 L1005,182 L1005,172 L1035,172 L1035,180 L1068,180 L1068,188 L1100,188 L1100,178 L1135,178 L1135,185 L1165,185 L1165,192 L1200,192 L1200,220 Z"/>
+            </svg>
+        </div>
+        <div class="menu-title">TIMES SQUARE</div>
+        <div class="menu-subtitle">SURVIVAL SIMULATOR</div>
+        <div class="difficulty-picker" id="difficulty-picker" style="margin-bottom:12px;display:flex;gap:8px;justify-content:center;">
+            <button class="diff-btn" data-diff="easy">EASY</button>
+            <button class="diff-btn" data-diff="medium">MEDIUM</button>
+            <button class="diff-btn" data-diff="hard">HARD</button>
+        </div>
+        <style>
+        .diff-btn{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.18);color:#aaa;padding:4px 14px;font:600 11px/1 monospace;letter-spacing:.08em;cursor:pointer;border-radius:3px;transition:all .15s}
+        .diff-btn.selected{background:rgba(255,255,255,0.18);color:#fff;border-color:rgba(255,255,255,0.5)}
+        </style>
+        <button class="menu-btn" id="menu-new">> NEW GAME</button>
+        <div class="menu-load-title">LOAD GAME</div>
+        <div id="menu-slots"></div>
+    </div>
+
+    <div id="hud">
+        <div id="resource-bar"></div>
+        <div id="build-menu"></div>
+        <div id="colonist-panel"></div>
+        <div id="game-log"></div>
+        <div id="directive-bar"></div>
+        <div id="time-display"></div>
+        <div id="minimap-container">
+            <canvas id="minimap" width="150" height="150"></canvas>
+        </div>
+    </div>
+
+    <div id="pause-overlay"></div>
+    <div id="save-indicator">SAVED</div>
+    <div id="settings-overlay"></div>
+    <div id="tutorial-overlay"></div>
+
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
