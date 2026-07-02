@@ -177,12 +177,17 @@ def make_shelter():
     # Outline first
     draw.polygon([(0, 8), (8, 0), (15, 8)], fill=outline)
     draw.rectangle([2, 7, 13, 15], fill=outline)
-    # Roof (cyan)
+    # Roof (cyan) with highlight edge and shaded underside
     roof = (0, 200, 180, 255)
     draw.polygon([(1, 7), (8, 1), (14, 7)], fill=roof)
-    # Walls
+    draw.line([(2, 6), (8, 1)], fill=(120, 240, 225, 255))
+    draw.line([(2, 7), (13, 7)], fill=(0, 150, 135, 255))
+    # Walls with subtle brick courses
     wall = (60, 70, 90, 255)
     draw.rectangle([3, 7, 12, 14], fill=wall)
+    brick = (52, 61, 79, 255)
+    draw.line([(3, 10), (12, 10)], fill=brick)
+    draw.line([(3, 13), (12, 13)], fill=brick)
     # Door
     door = (40, 45, 60, 255)
     draw.rectangle([6, 10, 9, 14], fill=door)
@@ -230,6 +235,11 @@ def make_generator():
     draw.rectangle([2, 14, 13, 14], fill=border)
     draw.rectangle([2, 4, 2, 14], fill=border)
     draw.rectangle([13, 4, 13, 14], fill=border)
+    # Vent slats + top highlight
+    vent = (60, 44, 38, 255)
+    draw.line([(3, 12), (5, 12)], fill=vent)
+    draw.line([(10, 12), (12, 12)], fill=vent)
+    draw.line([(3, 5), (12, 5)], fill=(100, 78, 66, 255))
     # Lightning bolt (orange, thicker)
     bolt = (255, 140, 50, 255)
     for px, py in [(8, 5), (9, 5), (7, 6), (8, 6), (6, 7), (7, 7),
