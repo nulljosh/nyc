@@ -64,7 +64,6 @@ struct GameView: View {
         ZStack {
             GameSceneView(gameState: gameState, loadSlot: loadSlot)
             HUDView(gameState: gameState)
-                .allowsHitTesting(false)
         }
     }
 }

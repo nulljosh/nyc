@@ -4,7 +4,7 @@
 
 ### Build the City That Never Sleeps
 
-![version](https://img.shields.io/badge/version-v1.3.0-blue) ![license](https://img.shields.io/badge/license-MIT-green)
+![version](https://img.shields.io/badge/version-v1.3.1-blue) ![license](https://img.shields.io/badge/license-MIT-green)
 [![GitHub](https://img.shields.io/badge/GitHub-nulljosh%2Fnyc-black?logo=github)](https://github.com/nulljosh/nyc)
 
 NYC Survive: Factorio-style production game. SpriteKit, Swift 6, iOS + macOS (portrait/landscape).
@@ -79,7 +79,13 @@ Requires Xcode 16+, macOS 15.0+, iOS 17.0+, xcodegen.
 
 ## Changelog
 
-### v1.3.0 (Current)
+### v1.3.1 (Current)
+
+- Fix tutorial/HUD unclickable on macOS and iOS (HUD subtree had hit-testing disabled; taps fell through to the game scene)
+- Harden SaveManager: corrupt saves log instead of failing silently, guard against invalid grid size
+- Test suite expanded to 19 tests: no-autoplay regression, move orders, save round-trip, legacy save decode, tutorial flow
+
+### v1.3.0
 
 - Sprite refresh: colonists get hair, skin-tone faces, two-tone outfits; textured road/sidewalk/empty tiles; all sprites now export @1x/@2x/@3x (crisp on Retina)
 - Controls reference in Settings now covers select-then-tap move orders and macOS keyboard shortcuts (WASD, B, 1-6, Space, Cmd+S, Esc)

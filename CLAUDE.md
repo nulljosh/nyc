@@ -1,6 +1,6 @@
 # nyc
 
-v1.3.0 — macOS + iOS colony sim, fully player-controlled (no autoplay)
+v1.3.1 — macOS + iOS colony sim, fully player-controlled (no autoplay)
 
 ## Rules
 

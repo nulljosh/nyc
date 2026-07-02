@@ -55,6 +55,7 @@ final class SimTests: XCTestCase {
     func testNeedsSystemDecay() {
         let gs = GameState()
         gs.colonists = [ColonistModel(id: UUID(), name: "Test", col: 0, row: 0)]
+        gs.currentTick = 200  // past the 120-tick grace period
         let needs = NeedsSystem()
 
         let initialHunger = gs.colonists[0].hunger
@@ -73,8 +74,9 @@ final class SimTests: XCTestCase {
         let gs = GameState()
         gs.colonists = [ColonistModel(id: UUID(), name: "Doomed", col: 0, row: 0)]
         gs.colonists[0].hunger = 1
+        gs.currentTick = 200  // past the 120-tick grace period
         let needs = NeedsSystem()
-        for _ in 0..<10 {
+        for _ in 0..<500 where !gs.colonists[0].isDead {
             needs.tick(gameState: gs)
         }
         XCTAssertEqual(gs.colonists[0].state, .dead)
@@ -129,5 +131,151 @@ final class SimTests: XCTestCase {
         js.clearJob(colonistIndex: 0, gameState: gs)
         XCTAssertEqual(gs.colonists[0].job, .idle)
         XCTAssertTrue(gs.colonists[0].pathCols.isEmpty)
+    }
+
+    // MARK: - No autoplay (regression: colonists must never self-assign)
+
+    func testIdleColonistsStayIdle() {
+        let gs = GameState()
+        gs.colonists = [ColonistModel(id: UUID(), name: "Idler", col: 5, row: 5)]
+        gs.resourceNodes = [ResourceModel(id: UUID(), type: .food, col: 6, row: 6, remaining: 100, maxAmount: 100, respawnTicks: 10)]
+        let result = WorldGenerator.generate()
+        let pf = Pathfinder(columns: 128, rows: 128)
+        pf.buildGraph(grid: result.grid)
+        let js = JobSystem()
+        js.pathfinder = pf
+
+        for _ in 0..<50 {
+            js.tick(gameState: gs)
+        }
+        XCTAssertEqual(gs.colonists[0].job, .idle)
+        XCTAssertFalse(gs.colonists[0].hasPath)
+        XCTAssertEqual(gs.colonists[0].col, 5)
+        XCTAssertEqual(gs.colonists[0].row, 5)
+    }
+
+    func testCommandMoveSetsPath() {
+        let result = WorldGenerator.generate()
+        let pf = Pathfinder(columns: 128, rows: 128)
+        pf.buildGraph(grid: result.grid)
+
+        var startCol = 0, startRow = 0, endCol = 0, endRow = 0
+        var foundStart = false, foundEnd = false
+        for row in 0..<128 {
+            for col in 0..<128 where result.grid[row][col].isWalkable {
+                if !foundStart {
+                    startCol = col; startRow = row; foundStart = true
+                } else if abs(col - startCol) + abs(row - startRow) > 5 {
+                    endCol = col; endRow = row; foundEnd = true; break
+                }
+            }
+            if foundEnd { break }
+        }
+
+        let gs = GameState()
+        let id = UUID()
+        gs.colonists = [ColonistModel(id: id, name: "Mover", col: startCol, row: startRow)]
+        let js = JobSystem()
+        js.commandMove(colonistId: id, destCol: endCol, destRow: endRow, gameState: gs, pathfinder: pf)
+
+        XCTAssertTrue(gs.colonists[0].hasPath)
+        XCTAssertEqual(gs.colonists[0].job, .idle)
+
+        js.pathfinder = pf
+        for _ in 0..<500 where gs.colonists[0].hasPath {
+            js.tick(gameState: gs)
+        }
+        XCTAssertEqual(gs.colonists[0].col, endCol)
+        XCTAssertEqual(gs.colonists[0].row, endRow)
+    }
+
+    func testCommandMoveIgnoresDeadColonist() {
+        let gs = GameState()
+        let id = UUID()
+        var c = ColonistModel(id: id, name: "Ghost", col: 0, row: 0)
+        c.state = .dead
+        gs.colonists = [c]
+        let pf = Pathfinder(columns: 10, rows: 10)
+        pf.buildGraph(grid: Array(repeating: Array(repeating: TileType.sidewalk, count: 10), count: 10))
+        let js = JobSystem()
+        js.commandMove(colonistId: id, destCol: 5, destRow: 5, gameState: gs, pathfinder: pf)
+        XCTAssertFalse(gs.colonists[0].hasPath)
+    }
+
+    // MARK: - Save/load
+
+    func testSaveLoadRoundTrip() throws {
+        let gs = GameState()
+        gs.colonists = [ColonistModel(id: UUID(), name: "Saved", col: 3, row: 4)]
+        gs.resources = [.food: 42]
+        gs.currentTick = 99
+        let grid = Array(repeating: Array(repeating: TileType.sidewalk, count: 8), count: 8)
+
+        try SaveManager.shared.save(slot: 3, gameState: gs, grid: grid)
+        defer { SaveManager.shared.delete(slot: 3) }
+
+        let loaded = SaveManager.shared.load(slot: 3)
+        XCTAssertNotNil(loaded)
+        XCTAssertEqual(loaded?.colonists.first?.name, "Saved")
+        XCTAssertEqual(loaded?.resources[.food], 42)
+        XCTAssertEqual(loaded?.currentTick, 99)
+        let rebuilt = SaveManager.shared.rebuildGrid(from: loaded!)
+        XCTAssertEqual(rebuilt.count, 8)
+        XCTAssertEqual(rebuilt[0][0], .sidewalk)
+    }
+
+    func testLoadMissingSlotReturnsNil() {
+        SaveManager.shared.delete(slot: 3)
+        XCTAssertNil(SaveManager.shared.load(slot: 3))
+    }
+
+    func testLegacySaveWithRemovedFieldsDecodes() throws {
+        // Saves written before v1.2.0 contain jobOverride/currentDirective keys.
+        let json = """
+        {"id":"\(UUID().uuidString)","name":"Legacy","col":1,"row":2,"jobOverride":true}
+        """
+        var dict = try JSONSerialization.jsonObject(with: JSONEncoder().encode(
+            ColonistModel(id: UUID(), name: "T", col: 0, row: 0))) as! [String: Any]
+        dict["jobOverride"] = true
+        let data = try JSONSerialization.data(withJSONObject: dict)
+        let decoded = try JSONDecoder().decode(ColonistModel.self, from: data)
+        XCTAssertEqual(decoded.name, "T")
+        _ = json
+    }
+
+    func testRebuildGridHandlesCorruptSize() {
+        let sd = SaveData(colonists: [], buildings: [], resourceNodes: [], resources: [:],
+                          currentTick: 0, flatGrid: [], gridSize: 0,
+                          slot: SaveSlot(slot: 1, saveName: "x", timestamp: Date(), dayCount: 0, colonistCount: 0))
+        XCTAssertTrue(SaveManager.shared.rebuildGrid(from: sd).isEmpty)
+    }
+
+    // MARK: - Tutorial
+
+    func testTutorialAdvancesOnEvents() {
+        let gs = GameState()
+        gs.tutorialStep = 2
+        TutorialView.checkAdvance(gameState: gs, event: .colonistSelected)
+        XCTAssertEqual(gs.tutorialStep, 3)
+        TutorialView.checkAdvance(gameState: gs, event: .cameraPanned)
+        XCTAssertEqual(gs.tutorialStep, 4)
+        TutorialView.checkAdvance(gameState: gs, event: .buildMenuOpened)
+        XCTAssertEqual(gs.tutorialStep, 5)
+        TutorialView.checkAdvance(gameState: gs, event: .shelterPlaced)
+        XCTAssertEqual(gs.tutorialStep, 6)
+    }
+
+    func testTutorialIgnoresWrongEvent() {
+        let gs = GameState()
+        gs.tutorialStep = 2
+        TutorialView.checkAdvance(gameState: gs, event: .shelterPlaced)
+        XCTAssertEqual(gs.tutorialStep, 2)
+    }
+
+    func testTutorialInactiveWhenDismissed() {
+        let gs = GameState()
+        gs.tutorialStep = nil
+        TutorialView.checkAdvance(gameState: gs, event: .colonistSelected)
+        XCTAssertNil(gs.tutorialStep)
     }
 }

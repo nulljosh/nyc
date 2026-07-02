@@ -63,8 +63,14 @@ final class SaveManager {
 
     func load(slot: Int) -> SaveData? {
         let url = fileURL(for: slot)
-        guard let data = try? Data(contentsOf: url) else { return nil }
-        return try? JSONDecoder().decode(SaveData.self, from: data)
+        guard FileManager.default.fileExists(atPath: url.path) else { return nil }
+        do {
+            let data = try Data(contentsOf: url)
+            return try JSONDecoder().decode(SaveData.self, from: data)
+        } catch {
+            print("SaveManager: failed to load slot \(slot): \(error)")
+            return nil
+        }
     }
 
     func listSlots() -> [SaveSlot?] {
@@ -81,6 +87,7 @@ final class SaveManager {
     func rebuildGrid(from saveData: SaveData) -> [[TileType]] {
         var grid: [[TileType]] = []
         let size = saveData.gridSize
+        guard size > 0 else { return grid }
         for row in 0..<size {
             var rowData: [TileType] = []
             for col in 0..<size {
