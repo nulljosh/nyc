@@ -24,7 +24,16 @@ struct SettingsView: View {
                     controlRow(key: "Drag",       action: "Pan camera")
                     controlRow(key: "Pinch",      action: "Zoom in/out")
                     controlRow(key: "Tap",        action: "Select / place")
+                    controlRow(key: "Tap, then tile", action: "Move selected colonist")
                     controlRow(key: "Long press", action: "Inspect tile")
+                    #if os(macOS)
+                    controlRow(key: "WASD",       action: "Pan camera")
+                    controlRow(key: "B",          action: "Build menu")
+                    controlRow(key: "1-6",        action: "Select building")
+                    controlRow(key: "Space",      action: "Pause")
+                    controlRow(key: "Cmd+S",      action: "Save")
+                    controlRow(key: "Esc",        action: "Cancel / deselect")
+                    #endif
                 }
 
                 Divider().background(Theme.border)

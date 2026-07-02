@@ -4,6 +4,16 @@
       "filename": "tile_building.png",
       "idiom": "universal",
       "scale": "1x"
+    },
+    {
+      "filename": "tile_building@2x.png",
+      "idiom": "universal",
+      "scale": "2x"
+    },
+    {
+      "filename": "tile_building@3x.png",
+      "idiom": "universal",
+      "scale": "3x"
     }
   ],
   "info": {

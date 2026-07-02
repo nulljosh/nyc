@@ -4,6 +4,16 @@
       "filename": "tile_sidewalk.png",
       "idiom": "universal",
       "scale": "1x"
+    },
+    {
+      "filename": "tile_sidewalk@2x.png",
+      "idiom": "universal",
+      "scale": "2x"
+    },
+    {
+      "filename": "tile_sidewalk@3x.png",
+      "idiom": "universal",
+      "scale": "3x"
     }
   ],
   "info": {

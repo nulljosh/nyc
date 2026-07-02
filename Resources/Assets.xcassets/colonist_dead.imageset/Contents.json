@@ -4,6 +4,16 @@
       "filename": "colonist_dead.png",
       "idiom": "universal",
       "scale": "1x"
+    },
+    {
+      "filename": "colonist_dead@2x.png",
+      "idiom": "universal",
+      "scale": "2x"
+    },
+    {
+      "filename": "colonist_dead@3x.png",
+      "idiom": "universal",
+      "scale": "3x"
     }
   ],
   "info": {

@@ -4,6 +4,16 @@
       "filename": "res_materials.png",
       "idiom": "universal",
       "scale": "1x"
+    },
+    {
+      "filename": "res_materials@2x.png",
+      "idiom": "universal",
+      "scale": "2x"
+    },
+    {
+      "filename": "res_materials@3x.png",
+      "idiom": "universal",
+      "scale": "3x"
     }
   ],
   "info": {

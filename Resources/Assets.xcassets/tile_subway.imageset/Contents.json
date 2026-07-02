@@ -4,6 +4,16 @@
       "filename": "tile_subway.png",
       "idiom": "universal",
       "scale": "1x"
+    },
+    {
+      "filename": "tile_subway@2x.png",
+      "idiom": "universal",
+      "scale": "2x"
+    },
+    {
+      "filename": "tile_subway@3x.png",
+      "idiom": "universal",
+      "scale": "3x"
     }
   ],
   "info": {

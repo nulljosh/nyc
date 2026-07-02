@@ -10,14 +10,18 @@ SPRITES_DIR = os.path.join(BASE, "Resources", "Assets.xcassets")
 
 
 def save_imageset(name, img, subdir=""):
-    """Save image as an Xcode imageset."""
+    """Save image as an Xcode imageset with 1x/2x/3x scales (nearest upscale, crisp on Retina)."""
     path = os.path.join(SPRITES_DIR, subdir, f"{name}.imageset")
     os.makedirs(path, exist_ok=True)
-    img.save(os.path.join(path, f"{name}.png"))
+    images = []
+    for scale in (1, 2, 3):
+        suffix = "" if scale == 1 else f"@{scale}x"
+        fname = f"{name}{suffix}.png"
+        scaled = img if scale == 1 else img.resize((img.width * scale, img.height * scale), Image.NEAREST)
+        scaled.save(os.path.join(path, fname))
+        images.append({"filename": fname, "idiom": "universal", "scale": f"{scale}x"})
     contents = {
-        "images": [
-            {"filename": f"{name}.png", "idiom": "universal", "scale": "1x"}
-        ],
+        "images": images,
         "info": {"author": "xcode", "version": 1},
     }
     with open(os.path.join(path, "Contents.json"), "w") as f:
@@ -46,27 +50,41 @@ def pixel_scale_rect(pixels, src_w, src_h, dst_w, dst_h):
 
 # -- Colonist sprites (12x12 pixel grid -> 32x32, Fez-style with outlines) --
 
-def make_colonist(body_color, eye_color=(255, 255, 255, 255)):
-    """12x12 humanoid with 1px dark outline. Chunky Fez style."""
+SKIN = (232, 190, 152, 255)
+SKIN_SHADE = (198, 156, 118, 255)
+HAIR = (56, 40, 34, 255)
+PANTS = (52, 58, 78, 255)
+PANTS_D = (36, 40, 56, 255)
+EYE = (30, 30, 40, 255)
+
+
+def make_colonist(body_color, eye_color=EYE):
+    """12x12 humanoid with 1px dark outline. Chunky Fez style.
+    Skin-tone face with hair; body_color is the shirt (state tint), dark pants."""
     N = None
     B = body_color
     E = eye_color
-    D = tuple(max(0, c - 60) if i < 3 else c for i, c in enumerate(body_color))  # darker shade
+    D = tuple(max(0, c - 60) if i < 3 else c for i, c in enumerate(body_color))  # shirt shade
+    L = tuple(min(255, c + 40) if i < 3 else c for i, c in enumerate(body_color))  # shirt highlight
     O = (20, 20, 30, 255)  # dark outline
-    S = tuple(max(0, c - 30) if i < 3 else c for i, c in enumerate(body_color))  # skin/face
+    H = HAIR
+    S = SKIN
+    F = SKIN_SHADE
+    P = PANTS
+    Q = PANTS_D
     pixels = [
         [N, N, N, N, O, O, O, O, N, N, N, N],  # head outline top
-        [N, N, N, O, B, B, B, B, O, N, N, N],  # head top
-        [N, N, N, O, E, B, B, E, O, N, N, N],  # eyes
-        [N, N, N, O, S, S, S, S, O, N, N, N],  # face
-        [N, N, O, B, B, B, B, B, B, O, N, N],  # shoulders
+        [N, N, N, O, H, H, H, H, O, N, N, N],  # hair
+        [N, N, N, O, E, S, S, E, O, N, N, N],  # eyes on skin
+        [N, N, N, O, S, S, F, F, O, N, N, N],  # face with shading
+        [N, N, O, B, L, B, B, B, B, O, N, N],  # shoulders + highlight
         [N, N, O, B, D, D, D, D, B, O, N, N],  # torso
         [N, N, O, B, D, D, D, D, B, O, N, N],  # torso 2
         [N, N, O, B, B, B, B, B, B, O, N, N],  # belt
-        [N, N, N, O, B, B, B, B, O, N, N, N],  # hips
-        [N, N, N, O, B, N, N, B, O, N, N, N],  # legs
-        [N, N, O, B, B, N, N, B, B, O, N, N],  # calves
-        [N, N, O, D, D, N, N, D, D, O, N, N],  # feet
+        [N, N, N, O, P, P, P, P, O, N, N, N],  # hips (pants)
+        [N, N, N, O, P, N, N, P, O, N, N, N],  # legs
+        [N, N, O, P, P, N, N, P, P, O, N, N],  # calves
+        [N, N, O, Q, Q, N, N, Q, Q, O, N, N],  # feet
     ]
     return pixel_scale(pixels, 12, 32)
 
@@ -74,39 +92,44 @@ def make_colonist(body_color, eye_color=(255, 255, 255, 255)):
 def make_colonist_walk(body_color, frame=1):
     N = None
     B = body_color
-    E = (255, 255, 255, 255)
+    E = EYE
     D = tuple(max(0, c - 60) if i < 3 else c for i, c in enumerate(body_color))
+    L = tuple(min(255, c + 40) if i < 3 else c for i, c in enumerate(body_color))
     O = (20, 20, 30, 255)
-    S = tuple(max(0, c - 30) if i < 3 else c for i, c in enumerate(body_color))
+    H = HAIR
+    S = SKIN
+    F = SKIN_SHADE
+    P = PANTS
+    Q = PANTS_D
     if frame == 1:
         pixels = [
             [N, N, N, N, O, O, O, O, N, N, N, N],
-            [N, N, N, O, B, B, B, B, O, N, N, N],
-            [N, N, N, O, E, B, B, E, O, N, N, N],
-            [N, N, N, O, S, S, S, S, O, N, N, N],
-            [N, N, O, B, B, B, B, B, B, O, N, N],
+            [N, N, N, O, H, H, H, H, O, N, N, N],
+            [N, N, N, O, E, S, S, E, O, N, N, N],
+            [N, N, N, O, S, S, F, F, O, N, N, N],
+            [N, N, O, B, L, B, B, B, B, O, N, N],
             [N, N, O, B, D, D, D, D, B, O, N, N],
             [N, N, O, B, D, D, D, D, B, O, N, N],
             [N, N, O, B, B, B, B, B, B, O, N, N],
-            [N, N, N, O, B, B, B, B, O, N, N, N],
-            [N, O, B, N, N, N, N, N, B, O, N, N],  # legs apart
-            [O, B, B, N, N, N, N, N, N, B, B, O],
-            [O, D, D, N, N, N, N, N, N, D, D, O],
+            [N, N, N, O, P, P, P, P, O, N, N, N],
+            [N, O, P, N, N, N, N, N, P, O, N, N],  # legs apart
+            [O, P, P, N, N, N, N, N, N, P, P, O],
+            [O, Q, Q, N, N, N, N, N, N, Q, Q, O],
         ]
     else:
         pixels = [
             [N, N, N, N, O, O, O, O, N, N, N, N],
-            [N, N, N, O, B, B, B, B, O, N, N, N],
-            [N, N, N, O, E, B, B, E, O, N, N, N],
-            [N, N, N, O, S, S, S, S, O, N, N, N],
-            [N, N, O, B, B, B, B, B, B, O, N, N],
+            [N, N, N, O, H, H, H, H, O, N, N, N],
+            [N, N, N, O, E, S, S, E, O, N, N, N],
+            [N, N, N, O, S, S, F, F, O, N, N, N],
+            [N, N, O, B, L, B, B, B, B, O, N, N],
             [N, N, O, B, D, D, D, D, B, O, N, N],
             [N, N, O, B, D, D, D, D, B, O, N, N],
             [N, N, O, B, B, B, B, B, B, O, N, N],
-            [N, N, N, O, B, B, B, B, O, N, N, N],
-            [N, N, N, O, B, B, B, B, O, N, N, N],  # legs together
-            [N, N, N, O, B, N, N, B, O, N, N, N],
-            [N, N, N, O, D, N, N, D, O, N, N, N],
+            [N, N, N, O, P, P, P, P, O, N, N, N],
+            [N, N, N, O, P, P, P, P, O, N, N, N],  # legs together
+            [N, N, N, O, P, N, N, P, O, N, N, N],
+            [N, N, N, O, Q, N, N, Q, O, N, N, N],
         ]
     return pixel_scale(pixels, 12, 32)
 
@@ -379,8 +402,17 @@ def make_res_cash():
 
 # -- Tile sprites (16x16 -> 32x32) --
 
+def speckle(img, colors, count, seed):
+    """Deterministic noise speckle for tile texture."""
+    import random
+    rng = random.Random(seed)
+    for _ in range(count):
+        img.putpixel((rng.randrange(16), rng.randrange(16)), rng.choice(colors))
+
+
 def make_tile_road():
     img = Image.new("RGBA", (16, 16), (38, 38, 51, 255))
+    speckle(img, [(45, 45, 58, 255), (32, 32, 44, 255)], 30, seed=1)
     draw = ImageDraw.Draw(img)
     # Lane markings
     lane = (80, 80, 90, 200)
@@ -392,6 +424,7 @@ def make_tile_road():
 
 def make_tile_sidewalk():
     img = Image.new("RGBA", (16, 16), (89, 89, 102, 255))
+    speckle(img, [(96, 96, 110, 255), (82, 82, 95, 255)], 35, seed=2)
     draw = ImageDraw.Draw(img)
     # Concrete texture (subtle grid lines)
     line = (80, 80, 92, 255)
@@ -447,6 +480,7 @@ def make_tile_sewer():
 
 def make_tile_empty():
     img = Image.new("RGBA", (16, 16), (13, 13, 26, 255))
+    speckle(img, [(18, 18, 33, 255), (10, 10, 21, 255)], 20, seed=3)
     return img.resize((32, 32), Image.NEAREST)
 
 

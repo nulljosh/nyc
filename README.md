@@ -4,7 +4,7 @@
 
 ### Build the City That Never Sleeps
 
-![version](https://img.shields.io/badge/version-v1.2.0-blue) ![license](https://img.shields.io/badge/license-MIT-green)
+![version](https://img.shields.io/badge/version-v1.3.0-blue) ![license](https://img.shields.io/badge/license-MIT-green)
 [![GitHub](https://img.shields.io/badge/GitHub-nulljosh%2Fnyc-black?logo=github)](https://github.com/nulljosh/nyc)
 
 NYC Survive: Factorio-style production game. SpriteKit, Swift 6, iOS + macOS (portrait/landscape).
@@ -79,7 +79,12 @@ Requires Xcode 16+, macOS 15.0+, iOS 17.0+, xcodegen.
 
 ## Changelog
 
-### v1.2.0 (Current)
+### v1.3.0 (Current)
+
+- Sprite refresh: colonists get hair, skin-tone faces, two-tone outfits; textured road/sidewalk/empty tiles; all sprites now export @1x/@2x/@3x (crisp on Retina)
+- Controls reference in Settings now covers select-then-tap move orders and macOS keyboard shortcuts (WASD, B, 1-6, Space, Cmd+S, Esc)
+
+### v1.2.0
 
 - Removed autoplay completely: deleted colony directive engine (`autoAssignIdle`, `ColonyDirective`, directive HUD pills, `jobOverride`)
 - Game is fully player-controlled: select colonist + tap to move, assign jobs via colonist panel
