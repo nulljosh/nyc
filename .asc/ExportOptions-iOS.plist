@@ -11,7 +11,7 @@
 	<key>provisioningProfiles</key>
 	<dict>
 		<key>com.heyitsmejosh.nyc.ios</key>
-		<string>NYC Survive iOS App Store</string>
+		<string>NYC Survive iOS App Store 2</string>
 	</dict>
 	<key>signingCertificate</key>
 	<string>Apple Distribution</string>

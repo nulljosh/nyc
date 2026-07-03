@@ -3,8 +3,10 @@
 ## App Store Connect (2026-07-03)
 - [x] Support URL set to `https://nyc.heyitsmejosh.com`.
 - [x] iOS target exists (`NYCSurvive-iOS`), bundle ID + App Store provisioning profile registered.
-- [ ] iOS submission BLOCKED: no iOS distribution signing cert with a local private key — generate one (CSR started in scratchpad, not finished) or import an existing cert+key, then `asc xcode export` → upload → submit.
-- [ ] Description + keywords still missing for en-US listing (flagged by `asc apps info edit`).
+- [x] Generated new IOS_DISTRIBUTION cert (`38S6CX4DJ5`) with local private key, re-issued provisioning profile against it, exported and uploaded build 2 (`54a757cf-d560-4d07-a85e-ec9f49ca5f6a`) to ASC.
+- [ ] Description + keywords still missing for en-US listing (flagged by `asc apps info edit`) — blocks submit.
+- [ ] iOS screenshots not yet generated/uploaded.
+- [ ] Once metadata + screenshots done: submit for review.
 
 ## Phase 1: Unified Mobile Architecture (DONE)
 
