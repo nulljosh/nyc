@@ -43,3 +43,6 @@ fastlane/report.xml
 *.pkg
 *.ipa
 /*.app/
+
+# ASC build artifacts
+.asc/artifacts/

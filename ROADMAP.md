@@ -1,8 +1,10 @@
 # NYC Roadmap
 
-## App Store Connect (2026-06-22)
-- [ ] Support URL still missing — required before submission, needs a real URL decision.
-- [ ] iOS target still doesn't exist (see CLAUDE.md) — macOS only for now.
+## App Store Connect (2026-07-03)
+- [x] Support URL set to `https://nyc.heyitsmejosh.com`.
+- [x] iOS target exists (`NYCSurvive-iOS`), bundle ID + App Store provisioning profile registered.
+- [ ] iOS submission BLOCKED: no iOS distribution signing cert with a local private key — generate one (CSR started in scratchpad, not finished) or import an existing cert+key, then `asc xcode export` → upload → submit.
+- [ ] Description + keywords still missing for en-US listing (flagged by `asc apps info edit`).
 
 ## Phase 1: Unified Mobile Architecture (DONE)
 

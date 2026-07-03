@@ -28,7 +28,8 @@ xcodegen generate && open NYCSurvive.xcodeproj
 - Sources/Models/SaveManager.swift: JSON save/load (3-slot)
 
 ## Imported from Nyc.pdf (2026-06-21)
-- [ ] Ship iOS app — BLOCKED: project only has a macOS target (NYCSurvive.xcodeproj, SDKROOT=macosx). Needs a new iOS target (UI adaptation, signing) — scoping decision: portrait iOS port of the sim engine with touch controls, no watch in v1.
+- [x] iOS target added 2026-06-30 (`NYCSurvive-iOS` scheme, touch controls) — builds clean for simulator.
+- [ ] Ship iOS app — BLOCKED 2026-07-03: bundle ID `com.heyitsmejosh.nyc.ios` registered, App Store provisioning profile created (ASC id `Y3T59BYVQ5`), but no local private key for an iOS distribution cert exists on this Mac (only Apple Development + Mac 3rd Party Application identities in keychain) — `xcodebuild -exportArchive` can't sign an App Store IPA until a new IOS_DISTRIBUTION cert is generated with its key kept locally (CSR started, not finished) or an existing cert+key pair is imported. Support URL set to `https://nyc.heyitsmejosh.com`.
 - [ ] Watch app — net-new watchOS target, not started.
 - [ ] Define concrete next steps to ship the game
 - [x] Manual colonist control fixed 2026-07-01 — `assignJob()` was dead code, colonists were 100% directive-driven. Added `JobSystem.commandMove()` wired to select-then-tap-destination in GameScene.
