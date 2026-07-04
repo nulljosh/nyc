@@ -33,6 +33,7 @@
 		5C005AAD2340C58ED42FFC30 /* BuildSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0852054F2EBE0F76F774C060 /* BuildSystem.swift */; };
 		5CDF9391D482743E373781EB /* TileType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D6AA4E11E5678AB148203FC /* TileType.swift */; };
 		61E1F8CE1340FF26D472D25F /* ColonistPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8901915C46094E3EDCDC97 /* ColonistPanel.swift */; };
+		6622D5920C7BADC24CD17360 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00038E1B47DA09A0EEF5B3C4 /* Assets.xcassets */; };
 		66482FEC69E9275292997B8A /* JobSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDEEE672F22D8FEEA9446954 /* JobSystem.swift */; };
 		6EC0624E3D9689B1973CA7D9 /* TutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5691499E000399842B3CB30D /* TutorialView.swift */; };
 		74D09F31FE4A8199A28ADAEE /* ColonistModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE4C6EF54870683E05DBBAD /* ColonistModel.swift */; };
@@ -66,6 +67,7 @@
 		DC93431BF3A4429D8C228719 /* Pathfinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E4A32F1DC7BC7E89470C44 /* Pathfinder.swift */; };
 		E2C1C255FE41FF9142D2801B /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 502457C288C5D0DB8F2216AF /* Theme.swift */; };
 		E325EA73F25635D7DAF20A02 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726C54789E79556FA1775A89 /* AudioManager.swift */; };
+		E4F3967534862056D528945D /* NYCSurvive.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 6917EAE44C0DC835136B5B42 /* NYCSurvive.entitlements */; };
 		F13FF7708B9A5BAD5BDCCA7B /* Pathfinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E4A32F1DC7BC7E89470C44 /* Pathfinder.swift */; };
 		F7DE54BD562CAE78DDC8B997 /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A62DD5F691C3480F2FA3607 /* GameState.swift */; };
 		F7E112B33420143AC3A24BF3 /* ColonistModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE4C6EF54870683E05DBBAD /* ColonistModel.swift */; };
@@ -325,6 +327,7 @@
 			buildConfigurationList = D9EA7720F892C1C597DF3885 /* Build configuration list for PBXNativeTarget "NYCSurvive-iOS" */;
 			buildPhases = (
 				32C5899A572CB1C869BC4488 /* Sources */,
+				B6EC325CC1487C382F65C9DA /* Resources */,
 			);
 			buildRules = (
 			);
@@ -397,6 +400,15 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		B6EC325CC1487C382F65C9DA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6622D5920C7BADC24CD17360 /* Assets.xcassets in Resources */,
+				E4F3967534862056D528945D /* NYCSurvive.entitlements in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E0A9B4E0ECDE5B0657250EA8 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -512,7 +524,9 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "NYC Survive";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.games";
-				INFOPLIST_KEY_UILaunchScreen = "[:]";
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				"INFOPLIST_KEY_UISupportedInterfaceOrientations~ipad" = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -728,7 +742,9 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "NYC Survive";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.games";
-				INFOPLIST_KEY_UILaunchScreen = "[:]";
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				"INFOPLIST_KEY_UISupportedInterfaceOrientations~ipad" = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
