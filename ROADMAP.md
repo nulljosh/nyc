@@ -13,6 +13,13 @@
 - [ ] iOS build uploaded (`asc builds upload`, uploadId `54a757cf-d560-4d07-a85e-ec9f49ca5f6a`) but not yet showing in `asc builds list` — Apple is still processing it (normal, can take 15-30+ min). Once it appears: `asc versions attach-build --version-id f595fe11-22d1-4169-85c4-b82dc7788a36 --build <new-build-id>`.
 - [ ] Then: add iOS screenshots (iPhone 6.5"/6.7", see `feedback_appstore_screenshot_resolutions` memory), fill iOS-specific description/keywords/subtitle (currently only set on the macOS localization), then `asc review submit` for macOS and iOS separately when ready — deliberately not automated, submitting is a real decision.
 
+### Build 2 rejection fix attempt (2026-07-03, build 3)
+- [x] Root cause found: `Resources/` (the asset catalog) was never in the `NYCSurvive-iOS` target's `project.yml` sources — no app icon has ever shipped in any iOS build regardless of `Contents.json`. Added the target's resources build phase, `ASSETCATALOG_COMPILER_APPICON_NAME`, generated 120/152/167/76pt icon renders, fixed `INFOPLIST_KEY_UILaunchScreen_Generation`, added `INFOPLIST_KEY_UISupportedInterfaceOrientations~ipad`. Confirmed locally in a clean simulator build: `CFBundleIconName`/icon files/orientations all present in the compiled `Info.plist`. Committed `38f768d`.
+- [x] Bumped `CURRENT_PROJECT_VERSION` to 3, archived, exported (manual signing — automatic signing couldn't find a profile via `xcodebuild -exportArchive`; used the local `nyc-ios-appstore.mobileprovision` + `iPhone Distribution: Joshua Trommel` cert directly), uploaded via `asc builds upload --wait`.
+- [ ] **Build 3 upload FAILED** — ASC errors `90474` and `90055`. Inspecting the actual archived IPA's `Info.plist`, only the plain `UISupportedInterfaceOrientations` key survived the `GENERATE_INFOPLIST_FILE` merge — the `~ipad`-suffixed conditional build setting did NOT get merged in as a second plist key (both keys are present in `project.pbxproj`, but only one lands in the built Info.plist). This suggests `INFOPLIST_KEY_*~ipad` conditional settings aren't honored by the plist generator the way plain per-platform xcconfig conditionals are.
+  - Next step: drop `GENERATE_INFOPLIST_FILE` for the iOS target in favor of a real checked-in `Info.plist` (via `INFOPLIST_FILE`) with both orientation keys hardcoded, and re-test. `90055` not yet decoded — check on next pass.
+  - Exported IPA is at `/tmp/NYCSurvive-iOS-export/NYCSurvive-iOS.ipa` (ephemeral, gone after reboot) — re-archive from `project.yml` if it's no longer there.
+
 ## Phase 1: Unified Mobile Architecture (DONE)
 
 ## Phase 2: Factorio Game Mechanics (TODO)
