@@ -41,8 +41,6 @@ final class GameScene: SKScene {
 
     override func didMove(to view: SKView) {
         backgroundColor = SKColor(red: 0.04, green: 0.04, blue: 0.05, alpha: 1)
-        view.showsFPS = true
-        view.showsNodeCount = true
 
         let grid: [[TileType]]
         if let save = savedData {

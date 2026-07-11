@@ -126,21 +126,13 @@ struct HUDView: View {
                     toolbarPill(label: gameState.isPaused ? "PLAY" : "PAUSE") {
                         gameState.isPaused.toggle()
                     }
-                    toolbarPill(label: "SAVE") {
-                        NotificationCenter.default.post(name: .performSave, object: nil)
-                    }
                     toolbarPill(label: "BUILD", isActive: gameState.showBuildMenu) {
                         gameState.showBuildMenu.toggle()
-                        if !gameState.showBuildMenu { gameState.inputMode = .normal }
+                        if !gameState.showBuildMenu {
+                            gameState.inputMode = .normal
+                            gameState.selectedBuildingType = nil
+                        }
                         TutorialView.checkAdvance(gameState: gameState, event: .buildMenuOpened)
-                    }
-                    toolbarPill(label: "DEMOLISH", isActive: gameState.inputMode == .demolish) {
-                        gameState.inputMode = gameState.inputMode == .demolish ? .normal : .demolish
-                    }
-                    toolbarPill(label: "CANCEL") {
-                        gameState.inputMode = .normal
-                        gameState.selectedBuildingType = nil
-                        gameState.showBuildMenu = false
                     }
                     toolbarPill(label: "SETTINGS", isActive: gameState.showSettings) {
                         gameState.showSettings.toggle()
@@ -196,9 +188,5 @@ struct HUDView: View {
         }
         .buttonStyle(.plain)
     }
-}
-
-extension Notification.Name {
-    static let performSave = Notification.Name("performSave")
 }
 
