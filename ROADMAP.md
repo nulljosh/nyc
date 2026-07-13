@@ -41,3 +41,6 @@
 - [ ] Save/load with new mechanics
 
 ## Stashed 2026-06-21
+
+## From Icons.pdf / Asc.pdf (imported 2026-07-12)
+- [ ] NYC Survive submission blocked on iOS distribution signing cert with local private key
