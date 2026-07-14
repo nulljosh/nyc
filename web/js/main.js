@@ -37,14 +37,7 @@ function init() {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // Auto-start: try to load last save, otherwise new game
-    const slots = listSlots();
-    const lastSlot = slots.findIndex(s => s !== null);
-    if (lastSlot >= 0) {
-        startGame(lastSlot + 1);
-    } else {
-        startGame(null);
-    }
+    showMenu();
 }
 
 function resizeCanvas() {
