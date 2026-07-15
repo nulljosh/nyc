@@ -44,3 +44,8 @@
 
 ## From Icons.pdf / Asc.pdf (imported 2026-07-12)
 - [ ] NYC Survive submission blocked on iOS distribution signing cert with local private key
+
+## 2026-07-14 dump
+- [ ] Splash screen redesign — sans-serif font, new app name applied throughout launch
+- [ ] Investigate slow startup/loading
+- [ ] Landing page (value prop, features, screenshots, download links, responsive)
