@@ -194,8 +194,6 @@ export function demolishBuilding(id, grid, state, pathfinder) {
 
 // JobSystem
 export function jobTick(state, pathfinder) {
-    autoAssignIdle(state, pathfinder);
-
     for (let i = 0; i < state.colonists.length; i++) {
         const c = state.colonists[i];
         if (c.state === 'dead') continue;
@@ -221,21 +219,6 @@ export function jobTick(state, pathfinder) {
             c.col = c.pathCols[c.pathIndex];
             c.row = c.pathRows[c.pathIndex];
             c.pathIndex++;
-        }
-    }
-}
-
-function autoAssignIdle(state, pathfinder) {
-    if (state.currentDirective === 'idle') return;
-
-    for (let i = 0; i < state.colonists.length; i++) {
-        const c = state.colonists[i];
-        if (c.state === 'dead' || c.job !== 'idle' || c.jobOverride) continue;
-
-        switch (state.currentDirective) {
-            case 'gather': assignNearestGatherTarget(i, state, pathfinder); break;
-            case 'build':  assignNearestBuildTarget(i, state, pathfinder); break;
-            case 'patrol': assignRandomPatrolTarget(i, state, pathfinder); break;
         }
     }
 }

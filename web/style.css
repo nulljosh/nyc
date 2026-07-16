@@ -353,53 +353,6 @@ canvas#game {
 .job-btn:hover { transform:scale(1.05); background:var(--glass); }
 .job-btn.active { background:var(--accent); color:#fff; }
 
-/* Directive Bar */
-
-#directive-bar {
-    position:absolute;
-    bottom:24px; left:50%;
-    transform:translateX(-50%);
-    display:flex;
-    align-items:center;
-    gap:4px;
-    padding:6px 10px;
-    background:var(--glass);
-    backdrop-filter:var(--blur);
-    -webkit-backdrop-filter:var(--blur);
-    border:1px solid var(--border);
-    border-radius:var(--radius-pill);
-    white-space:nowrap;
-}
-
-.directive-seg {
-    padding:5px 14px;
-    border-radius:var(--radius-pill);
-    border:1px solid transparent;
-    background:transparent;
-    color:var(--text-2);
-    font:600 10px/1 var(--font-mono);
-    letter-spacing:0.08em;
-    cursor:pointer;
-    transition:all 0.15s var(--spring);
-}
-.directive-seg:hover { background:var(--glass-hover); color:var(--text-1); }
-.directive-seg.active {
-    background:rgba(0,113,227,0.35);
-    border-color:var(--accent);
-    color:#fff;
-}
-.directive-seg.active-auto {
-    background:rgba(48,209,88,0.2);
-    border-color:var(--green);
-    color:var(--green);
-}
-
-.dir-sep {
-    width:1px; height:14px;
-    background:var(--border-light);
-    margin:0 2px;
-}
-
 /* Game Log */
 
 #game-log {
@@ -712,12 +665,6 @@ hr { border:none; border-top:1px solid var(--border-light); margin:8px 0; }
     #build-menu { top:50px; left:8px; width:170px; padding:10px; }
     #colonist-panel { top:50px; right:8px; width:200px; padding:10px; }
     #game-log { bottom:56px; left:8px; width:220px; font-size:9px; }
-    #directive-bar {
-        bottom:16px; padding:4px 8px;
-        backdrop-filter:none; -webkit-backdrop-filter:none;
-        background:rgba(10,10,12,0.92);
-    }
-    .directive-seg { font-size:9px; padding:4px 8px; }
     canvas#minimap { width:100px; height:100px; }
     .settings-panel { width:100%; }
 }

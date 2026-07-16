@@ -1,6 +1,6 @@
 // HUD -- HTML overlay updates
 
-import { ResourceTypes, BuildingType, BuildingTypes, ColonistJobs, ColonyDirectives,
+import { ResourceTypes, BuildingType, BuildingTypes, ColonistJobs,
     Traits, WeaponTypes, selectedColonist, colonistXpForNext, colonistXpProgress,
     questLevel, questTitle, questXPProgress, activeQuests, completedQuests,
     DifficultyXP, CategoryInfo, colonistClass, DifficultyRanks, QuestCategories,
@@ -34,7 +34,6 @@ export function updateHUD(state, callbacks) {
     updatePlayerProfile(state);
     updateBuildMenu(state, callbacks);
     updateColonistPanel(state, callbacks);
-    updateDirectiveBar(state, callbacks);
     updateGameLog(state);
     updateTimeDisplay(state);
     updatePauseOverlay(state, callbacks);
@@ -502,20 +501,6 @@ function createXPBar(c) {
     row.appendChild(bg);
     row.appendChild(val);
     return row;
-}
-
-function updateDirectiveBar(state, callbacks) {
-    const dirBar = document.getElementById('directive-bar');
-    dirBar.textContent = '';
-
-    ColonyDirectives.forEach(d => {
-        const btn = document.createElement('button');
-        btn.className = 'directive-seg' + (state.currentDirective === d && !state.autoplay ? ' active' : '');
-        btn.textContent = d.toUpperCase();
-        btn.onclick = () => { state.currentDirective = d; state.autoplay = false; callbacks.onHudUpdate(); };
-        dirBar.appendChild(btn);
-    });
-
 }
 
 function updateGameLog(state) {
