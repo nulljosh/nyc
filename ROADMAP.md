@@ -16,9 +16,7 @@
 ### Build 2 rejection fix attempt (2026-07-03, build 3)
 - [x] Root cause found: `Resources/` (the asset catalog) was never in the `NYCSurvive-iOS` target's `project.yml` sources — no app icon has ever shipped in any iOS build regardless of `Contents.json`. Added the target's resources build phase, `ASSETCATALOG_COMPILER_APPICON_NAME`, generated 120/152/167/76pt icon renders, fixed `INFOPLIST_KEY_UILaunchScreen_Generation`, added `INFOPLIST_KEY_UISupportedInterfaceOrientations~ipad`. Confirmed locally in a clean simulator build: `CFBundleIconName`/icon files/orientations all present in the compiled `Info.plist`. Committed `38f768d`.
 - [x] Bumped `CURRENT_PROJECT_VERSION` to 3, archived, exported (manual signing — automatic signing couldn't find a profile via `xcodebuild -exportArchive`; used the local `nyc-ios-appstore.mobileprovision` + `iPhone Distribution: Joshua Trommel` cert directly), uploaded via `asc builds upload --wait`.
-- [ ] **Build 3 upload FAILED** — ASC errors `90474` and `90055`. Inspecting the actual archived IPA's `Info.plist`, only the plain `UISupportedInterfaceOrientations` key survived the `GENERATE_INFOPLIST_FILE` merge — the `~ipad`-suffixed conditional build setting did NOT get merged in as a second plist key (both keys are present in `project.pbxproj`, but only one lands in the built Info.plist). This suggests `INFOPLIST_KEY_*~ipad` conditional settings aren't honored by the plist generator the way plain per-platform xcconfig conditionals are.
-  - Next step: drop `GENERATE_INFOPLIST_FILE` for the iOS target in favor of a real checked-in `Info.plist` (via `INFOPLIST_FILE`) with both orientation keys hardcoded, and re-test. `90055` not yet decoded — check on next pass.
-  - Exported IPA is at `/tmp/NYCSurvive-iOS-export/NYCSurvive-iOS.ipa` (ephemeral, gone after reboot) — re-archive from `project.yml` if it's no longer there.
+- [x] **Build 3 upload FAILED** (90474/90055) — superseded: root cause fixed via a real checked-in `Resources/Info-iOS.plist` with both orientation keys + bundle ID correction (see nyc/CLAUDE.md 2026-07-04 entry). Build 5 (0afcefa0) uploaded 2026-07-19 and processed VALID per top-of-file entry above.
 
 ## Phase 1: Unified Mobile Architecture (DONE)
 
@@ -43,7 +41,7 @@
 ## Stashed 2026-06-21
 
 ## From Icons.pdf / Asc.pdf (imported 2026-07-12)
-- [ ] NYC Survive submission blocked on iOS distribution signing cert with local private key
+- [x] NYC Survive submission blocked on iOS distribution signing cert with local private key — resolved: cert `38S6CX4DJ5` generated 2026-06-30/07-03, iOS builds 2-5 uploaded successfully since (build 5 VALID 2026-07-19).
 
 ## 2026-07-14 dump
 - [ ] Splash screen redesign — sans-serif font, new app name applied throughout launch
