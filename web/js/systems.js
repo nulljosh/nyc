@@ -205,7 +205,7 @@ export function jobTick(state, pathfinder) {
         if (c.pathIndex >= c.pathCols.length) {
             if (c.job === 'gather') {
                 awardXP(c, 10, 2, state);
-                assignRandomGatherTarget(i, state);
+                c.job = 'idle'; // ponytail: no auto-reassign, player must re-select
             } else if (c.job === 'patrol') {
                 awardXP(c, 5, 1, state);
                 c.job = 'idle';
@@ -266,19 +266,6 @@ function assignRandomPatrolTarget(i, state, pathfinder) {
         c.job = 'patrol';
         c.pathCols = path.map(p => p.col);
         c.pathRows = path.map(p => p.row);
-        c.pathIndex = 0;
-    }
-}
-
-function assignRandomGatherTarget(i, state) {
-    const available = state.resourceNodes.filter(r => r.remaining > 0);
-    if (!available.length) return;
-    const target = available[Math.floor(Math.random() * available.length)];
-    const c = state.colonists[i];
-    const dist = Math.abs(target.col - c.col) + Math.abs(target.row - c.row);
-    if (dist > 2) {
-        c.pathCols = [target.col];
-        c.pathRows = [target.row];
         c.pathIndex = 0;
     }
 }
