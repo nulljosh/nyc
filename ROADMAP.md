@@ -25,3 +25,6 @@
 - [ ] Splash screen redesign — sans-serif font, new app name applied throughout launch
 - [ ] Investigate slow startup/loading
 - [ ] Landing page (value prop, features, screenshots, download links, responsive)
+
+## From App Store.pdf (imported 2026-07-28)
+- [ ] Redesign the NYC Survive app icon (ASC 6782618198) so it actually matches what the game is (Times Square city sim), not a generic mark.
