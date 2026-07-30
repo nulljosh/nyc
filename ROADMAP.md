@@ -28,3 +28,6 @@
 
 ## From App Store.pdf (imported 2026-07-28)
 - [ ] Redesign the NYC Survive app icon (ASC 6782618198) so it actually matches what the game is (Times Square city sim), not a generic mark.
+
+## From App Store.pdf (imported 2026-07-29)
+- [ ] NYC Survive icon needs to be more accurate/themed — user now wants this improved (previously marked "fine, no action", that's stale).
