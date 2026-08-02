@@ -7,7 +7,7 @@ import { initClaudeBridge } from './claude.js';
 import { generateWorld, GRID_SIZE, TILE_SIZE, tileAt, worldToTile } from './world.js';
 import { Pathfinder } from './pathfinder.js';
 import { timeTick, needsTick, resourceTick, jobTick, placeBuilding, demolishBuilding,
-    autoplayTick, questTick, wallpaperCameraTick, setDifficulty } from './systems.js';
+    questTick, wallpaperCameraTick, setDifficulty } from './systems.js';
 import { Camera } from './camera.js';
 import { renderWorld, renderMinimap } from './renderer.js';
 import { setupInput } from './input.js';
@@ -159,7 +159,6 @@ function freshWorld() {
     grid = result.grid;
     state.resourceNodes = result.resources;
     state.tutorialStep = null; // skip tutorial in auto-start
-    state.autoplay = false;
 
     const center = GRID_SIZE / 2;
     for (let i = 0; i < 8; i++) {
@@ -202,10 +201,6 @@ function gameLoop(timestamp) {
             needsTick(state);
             jobTick(state, pathfinder);
             resourceTick(state);
-            autoplayTick(state, grid, pathfinder, (type, col, row) => {
-                const b = placeBuilding(type, col, row, grid, state, pathfinder);
-                if (b) { const bt = BuildingType[type]; spawnBuildDust(col, row, bt.size[0], bt.size[1]); }
-            });
             questTick(state, grid, pathfinder);
             tickParticles();
 

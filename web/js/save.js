@@ -53,7 +53,7 @@ export function loadGame(slot) {
             if (!c.pathCols) c.pathCols = [];
             if (!c.pathRows) c.pathRows = [];
         }
-        data.autoplay = false; // ponytail: autoplay removed, old saves may have it on
+        delete data.autoplay; // old saves may have it, engine deleted
         return data;
     } catch { return null; }
 }

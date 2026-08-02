@@ -56,9 +56,9 @@ final class JobSystem {
             guard gameState.colonists[i].hasPath else {
                 if gameState.colonists[i].job == .gather {
                     gameState.colonists[i].grantXP(5)
-                    assignRandomGatherTarget(colonistIndex: i, gameState: gameState)
+                    gameState.colonists[i].job = .idle
                 } else if gameState.colonists[i].job == .patrol {
-                    assignRandomPatrolTarget(colonistIndex: i, gameState: gameState)
+                    gameState.colonists[i].job = .idle
                 }
                 continue
             }
@@ -88,37 +88,6 @@ final class JobSystem {
         }
         if xp > 0 {
             gameState.colonists[colonistIndex].grantXP(xp)
-        }
-    }
-
-    private func assignRandomPatrolTarget(colonistIndex: Int, gameState: GameState) {
-        let c = gameState.colonists[colonistIndex]
-        let offsetCol = Int.random(in: -15...15)
-        let offsetRow = Int.random(in: -15...15)
-        let destCol = max(0, c.col + offsetCol)
-        let destRow = max(0, c.row + offsetRow)
-
-        if let pathfinder {
-            let path = pathfinder.findPath(fromCol: c.col, fromRow: c.row, toCol: destCol, toRow: destRow)
-            if !path.isEmpty {
-                gameState.colonists[colonistIndex].job = .patrol
-                gameState.colonists[colonistIndex].pathCols = path.map(\.col)
-                gameState.colonists[colonistIndex].pathRows = path.map(\.row)
-                gameState.colonists[colonistIndex].pathIndex = 0
-            }
-        }
-    }
-
-    private func assignRandomGatherTarget(colonistIndex: Int, gameState: GameState) {
-        let available = gameState.resourceNodes.filter { !$0.isDepleted }
-        guard let target = available.randomElement() else { return }
-        let cc = gameState.colonists[colonistIndex].col
-        let cr = gameState.colonists[colonistIndex].row
-        let dist = abs(target.col - cc) + abs(target.row - cr)
-        if dist > 2 {
-            gameState.colonists[colonistIndex].pathCols = [target.col]
-            gameState.colonists[colonistIndex].pathRows = [target.row]
-            gameState.colonists[colonistIndex].pathIndex = 0
         }
     }
 

@@ -114,10 +114,6 @@ final class GameScene: SKScene {
                 colonistNodes[model.id] = node
             }
 
-            if gameState.colonists.count >= 2 {
-                gameState.colonists[0].job = .gather
-                gameState.colonists[1].job = .gather
-            }
         }
 
         let center = WorldGenerator.gridSize / 2

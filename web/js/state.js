@@ -189,11 +189,9 @@ export function createGameState() {
         showSettings: false,
         showQuestBoard: false,
         wallpaperMode: false,
-        currentDirective: 'idle',
         tutorialStep: 0,
         lastSaveSlot: null,
         autoSaveEnabled: true,
-        autoplay: false,          // player-controlled only
         showSaveIndicator: false,
         // Quest system (integrated)
         questList: [],            // full quest objects with CRUD
