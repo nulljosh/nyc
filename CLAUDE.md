@@ -22,7 +22,7 @@ xcodegen generate && open NYCSurvive.xcodeproj
 ## Key Files
 
 - Sources/Game/Scenes/GameScene.swift: Main gameplay loop, input → command wiring
-- Sources/Game/Systems/JobSystem.swift: Colonist job assignment (auto-directive + manual commandMove)
+- Sources/Game/Systems/JobSystem.swift: Colonist job assignment (manual commandMove only)
 - Sources/Game/Systems/BuildSystem.swift: Building placement and demolition
 - Sources/Models/GameState.swift: Central state
 - Sources/Models/SaveManager.swift: JSON save/load (3-slot)
@@ -35,6 +35,6 @@ xcodegen generate && open NYCSurvive.xcodeproj
 - [ ] Watch app — net-new watchOS target, not started.
 - [ ] Define concrete next steps to ship the game
 - [x] Manual colonist control fixed 2026-07-01 — `assignJob()` was dead code, colonists were 100% directive-driven. Added `JobSystem.commandMove()` wired to select-then-tap-destination in GameScene.
-- [x] Autoplay REMOVED 2026-07-02 — deleted the directive engine entirely (`autoAssignIdle`, `ColonyDirective`, directive HUD pills, `jobOverride`). Colonists act only on player commands (select + tap to move, job pills in ColonistPanel). Do NOT reintroduce auto-assignment.
+- [x] Autoplay fully resolved 2026-08-02 — 2026-07-02 only removed the directive engine; two other systems were perpetuating autoplay: (1) GameScene.swift hardcoded startup job assignments, (2) JobSystem.swift's tick() self-renewed targets forever. Removed both. Also cleaned web/js/systems.js dead autopilot block (survivalActions, infrastructureActions, autoplayTick, assignIdleColonist, autoGenerateQuests). Colonists act only on player commands (select + tap to move, job pills in ColonistPanel). Do NOT reintroduce auto-assignment.
 - [ ] Improve the tutorial/onboarding polish
 - [ ] Vibe-clone the portfolio UI into the project

@@ -61,7 +61,7 @@ Requires Xcode 16+, macOS 15.0+, iOS 17.0+, xcodegen.
 - [ ] Mobile UI refinements (button sizing, adaptive menus)
 - [ ] Sound design & music
 - [ ] App Store ship pass: tutorial/onboarding polish, accessibility audit (VoiceOver labels, Dynamic Type, contrast), final mobile-friendly pass
-- [x] Autoplay removed 2026-07-02 — the directive engine (`JobSystem.autoAssignIdle` + `ColonyDirective`) was the autoplay; deleted entirely. Colonists act only on player commands.
+- [x] Autoplay fully resolved 2026-08-02 — 2026-07-02 only removed the directive engine entry point; two other systems were perpetuating autoplay: hardcoded startup job assignments and self-renewing job-tick loops. Removed both. Also cleaned dead web autopilot block. Colonists act only on player commands.
 
 ## Remaining Tasks
 
