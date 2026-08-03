@@ -1,5 +1,14 @@
 # NYC Roadmap
 
+## ASC readiness verified 2026-08-03
+`asc review doctor --app 6782618198` reports **0 errors, 0 blocking** on iOS 1.0.0 (`PREPARE_FOR_SUBMISSION`): "No submission blockers detected. Submit the version when ready." Availability is fully set (175/175 territories, `availableInNewTerritories: true`) and pricing is a free schedule (`isFree: true`) — the old "availability is a dashboard-only dead end" belief was a CLI paging bug, now disproven (fetch territories with `--limit 200`).
+
+This contradicts the root `CLAUDE.md` claim that NYC still has "3 ASC-web-UI-only items (App Privacy answers, privacy policy URL, iPad 12.9" screenshot)" — App Privacy is not flagged at all, and the remaining two are **warnings, not blockers**:
+- [ ] privacy policy URL is empty (`en-US`, `appInfoLocalization` 1b2dd20c-83ff-4c4b-a2de-721682dd3e4d) — warning only
+- [ ] subtitle is empty (same localization) — warning only
+
+Not submitted this pass: submitting is a deliberate decision, and the sweep that verified this was availability-only in scope.
+
 ## App Store Connect (2026-07-03)
 - [ ] Then: add iOS screenshots (iPhone 6.5"/6.7", see `feedback_appstore_screenshot_resolutions` memory), iOS description/keywords/supportUrl copied from macOS 2026-07-19 (subtitle still empty — optional). Then: screenshots + `asc review submit` for macOS and iOS separately when ready — deliberately not automated, submitting is a real decision.
 
