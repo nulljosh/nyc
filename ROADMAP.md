@@ -44,7 +44,7 @@ Cloudflare edge cache can serve the old page for a minute or two afterward; the 
 Availability confirmed fine (175/175 territories, free price schedule) — the "dashboard-only dead end" belief was a CLI paging bug (fetch territories with `--limit 200`).
 
 ## App Store Connect (2026-07-03)
-- [ ] Then: add iOS screenshots (iPhone 6.5"/6.7", see `feedback_appstore_screenshot_resolutions` memory), iOS description/keywords/supportUrl copied from macOS 2026-07-19 (subtitle still empty — optional). Then: screenshots + `asc review submit` for macOS and iOS separately when ready — deliberately not automated, submitting is a real decision.
+- [x] iOS screenshots/metadata + submit — done; verified 2026-08-04 that iOS 1.0.0 and macOS 1.0 are both WAITING_FOR_REVIEW.
 
 ## Phase 2: Factorio Game Mechanics (TODO)
 - [ ] ItemType enum (ore, iron_plate, copper_ore, etc.)
@@ -70,7 +70,6 @@ Availability confirmed fine (175/175 territories, free price schedule) — the "
 - [ ] Landing page (value prop, features, screenshots, download links, responsive)
 
 ## From App Store.pdf (imported 2026-07-28)
-- [ ] Redesign the NYC Survive app icon (ASC 6782618198) so it actually matches what the game is (Times Square city sim), not a generic mark.
 
 ## From App Store.pdf (imported 2026-07-29)
 - [ ] NYC Survive icon needs to be more accurate/themed — user now wants this improved (previously marked "fine, no action", that's stale).
