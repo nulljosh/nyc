@@ -19,7 +19,9 @@ final class MenuScene: SKScene {
         backgroundColor = SKColor(red: 0.04, green: 0.04, blue: 0.05, alpha: 1)
 
         let title = SKLabelNode(fontNamed: PlatformFont.systemFont(ofSize: 14, weight: .bold).fontName)
-        title.text = "TIMES SQUARE"
+        // Must match the App Store name — a title screen that says something else
+        // reads as the wrong app to a reviewer (see wiki: app-renaming).
+        title.text = "NYC SURVIVE"
         title.fontSize = 48
         title.fontColor = SKColor(red: 0.39, green: 0.82, blue: 1.0, alpha: 1)
         title.position = CGPoint(x: size.width / 2, y: size.height * 0.65)
