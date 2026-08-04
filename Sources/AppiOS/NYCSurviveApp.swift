@@ -73,8 +73,10 @@ struct GameSceneView: UIViewRepresentable {
 
     func makeUIView(context: Context) -> SKView {
         let view = SKView()
+        #if DEBUG
         view.showsFPS = true
         view.showsNodeCount = true
+        #endif
         view.ignoresSiblingOrder = true
         let scene = GameScene(gameState: gameState)
         if let slot = loadSlot {

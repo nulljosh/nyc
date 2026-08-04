@@ -91,8 +91,10 @@ struct GameSceneView: NSViewRepresentable {
 
     func makeNSView(context: Context) -> FocusableSKView {
         let view = FocusableSKView()
+        #if DEBUG
         view.showsFPS = true
         view.showsNodeCount = true
+        #endif
         view.ignoresSiblingOrder = true
         let scene = GameScene(gameState: gameState)
         if let slot = loadSlot {

@@ -1,22 +1,27 @@
 # NYC Roadmap
 
-## 2026-08-03 — macOS SUBMITTED, iOS one screenshot away
+## 2026-08-04 — BOTH PLATFORMS SUBMITTED
 
-**macOS 1.0 → WAITING_FOR_REVIEW** (submission `55ebe4b1-9748-437d-95f9-f28b9e472d67`, submitted 23:53Z).
-Fixed to get there: build `f7a6525b` had no encryption declaration —
-`asc builds update --build-id f7a6525b-4a85-4718-a4bd-7ee0b4dc9181 --uses-non-exempt-encryption=false`.
+**iOS 1.0.0 → WAITING_FOR_REVIEW** (submission `9338674e-4786-4003-b90a-b66ac0b95381`, build **6** `fcac5768-0102-41bb-9a32-667479f660e7`).
+**macOS 1.0 → WAITING_FOR_REVIEW** (submission `55ebe4b1-9748-437d-95f9-f28b9e472d67`).
 
-**iOS 1.0.0 remains `PREPARE_FOR_SUBMISSION`, blocked on exactly one thing:**
-- [ ] **iPad Pro 12.9" screenshot (`ipadPro129`) required** — the app is `TARGETED_DEVICE_FAMILY: "1,2"`, so Apple demands an iPad screenshot. Only `APP_IPHONE_65` exists today (set `1621cf31-af8d-48f8-86dc-8c44aceb1ad7`, version localization `d639a268-fe50-4209-8737-90698375064d`). Capture on an iPad Pro 12.9" sim, then:
-  `asc screenshots upload --version-localization d639a268-fe50-4209-8737-90698375064d --device-type IPAD_PRO_3GEN_129 --file <png>`
-  then add the version to a submission and submit (see the exact sequence below). Deferred this pass at 81% session usage — a sim run costs ~10%.
+The orphan iOS submission was reused rather than minting a new one — `items add` against it succeeded once the screenshot existed, confirming the submission itself was never bad.
 
-**Sequence that works once the screenshot is up** (iOS version id `f595fe11-22d1-4169-85c4-b82dc7788a36`):
+### Shipped a new build (6), not just a screenshot
+
+Capturing the iPad screenshot surfaced a real defect: **`showsFPS`/`showsNodeCount` were set unconditionally**, so the debug FPS/node counter rendered on top of gameplay for real users in the shipping build (5). Both `Sources/App/NYCSurviveApp.swift` and `Sources/AppiOS/NYCSurviveApp.swift` are now `#if DEBUG` gated. Build 6 was archived from Release and verified clean before capture.
+
+Screenshot is real gameplay (colony grid, resource HUD, 5 colonists, minimap), captured from a **Release** sim build so it matches what ships — asset `e0bc7e8f-432f-4a44-8f08-822dfbac1a8a`, set `63384daa-adb9-4bc1-bae9-3bfb493afa1b`, 2064×2752.
+
+Entitlements verified on the exported IPA — NYC does **not** have the ITMS-90886 defect that affects curvely/wiretext/inkpress:
 ```
-asc review items add --submission <sub-id> --item-type appStoreVersions --item-id f595fe11-22d1-4169-85c4-b82dc7788a36
-asc review submissions-submit --id <sub-id> --confirm
+application-identifier  QMM486NPYC.com.heyitsmejosh.nyc
+beta-reports-active     true      ← TestFlight-eligible
+get-task-allow          false
 ```
-An empty orphan iOS submission `9338674e-4786-4003-b90a-b66ac0b95381` (READY_FOR_REVIEW, 0 items) already exists and can be reused — `items add` against it failed only because of the screenshot, not because the submission is bad.
+
+### Still open
+- [ ] In-app title screen reads **"TIMES SQUARE / SURVIVAL SIMULATOR"** while the App Store name is "NYC Survive". The in-game log does say "Welcome to NYC Survive", so it's only the title screen. Both existing store screenshots (iPhone 6.5" and the new iPad one) are consistent with the store name, and this wasn't flagged in review — but it's the same in-app branding drift that caught four other apps on 2026-08-03. Decide whether the title screen should say NYC Survive.
 
 ### Corrections to the earlier 2026-08-03 note (it was wrong)
 **`asc review doctor` is NOT a reliable submission gate.** It reported `errors: 0, blocking: 0` on iOS while `asc review items add` immediately rejected the version with two hard blockers doctor never mentioned:
