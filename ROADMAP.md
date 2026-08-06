@@ -69,7 +69,5 @@ Availability confirmed fine (175/175 territories, free price schedule) — the "
 - [ ] Investigate slow startup/loading
 - [ ] Landing page (value prop, features, screenshots, download links, responsive)
 
-## From App Store.pdf (imported 2026-07-28)
-
 ## From App Store.pdf (imported 2026-07-29)
 - [ ] NYC Survive icon needs to be more accurate/themed — user now wants this improved (previously marked "fine, no action", that's stale).
