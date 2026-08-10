@@ -75,3 +75,10 @@ Availability confirmed fine (175/175 territories, free price schedule) — the "
 ## App Store submission freeze — until 2026-08-18
 - [ ] **BLOCKED: no App Store submission on any app until 2026-08-18.** Account is under a Guideline 5.6 Developer Code of Conduct review suspension (Curvely, Transcriptly, Wiretext, NYC Survive). Apple warns that continued similar submissions may result in removal from the Apple Developer Program. Full detail: wiki `ship-plan.md` § "Guideline 5.6 suspension (2026-08-10)". TestFlight builds, pushes and web deploys are still fine.
 - [ ] NYC Survive iOS 1.0.0 + macOS 1.0 SUSPENDED under 5.6 (6782618198). Unlike the others this is a real app (35 Swift files / 3,615 lines) and was likely swept up in the account-level action. Keep it. Resubmit LAST, after the thin apps are withdrawn, with detailed App Review notes describing the improvements.
+
+## 2026-08-10 — App Review notes are EMPTY, and 5.6 requires them
+Apple's 5.6 letter lists this as a required action before resubmitting: "Include detailed notes of
+the improvements made to the app in the Notes field of the App Review Information section in App
+Store Connect." NYC Survive's review-details `notes` field is currently empty (verified via
+`asc review details-for-version`). Curvely and Nullfolio have notes; NYC Survive and Wiretext do not.
+- [ ] Before the post-Aug-18 resubmit, write real App Review notes: what this app is (35 Swift files / ~3,600 lines, a real game — not a wrapper), and what changed since the suspended submission. This is the single cheapest thing that separates NYC Survive from the thin apps it got batched with.
