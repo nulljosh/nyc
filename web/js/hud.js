@@ -7,9 +7,10 @@ import { ResourceTypes, BuildingType, BuildingTypes, ColonistJobs,
     currentPhase, GamePhase } from './state.js';
 import { listSlots } from './save.js';
 import { QUEST_WORK_TICKS } from './systems.js';
+import { toggleTheme, resolvedTheme } from './theme.js';
 
-const RES_COLORS = { food:'#30d158', power:'#ffd60a', materials:'#ff9f0a', oxygen:'#64d2ff', cash:'#ff375f' };
-const STATE_COLORS = { healthy:'#30d158', hungry:'#ffd60a', suffocating:'#64d2ff', exhausted:'#ff9f0a', dead:'#666' };
+const RES_COLORS = { food:'var(--green)', power:'var(--yellow)', materials:'var(--orange)', oxygen:'var(--cyan)', cash:'var(--pink)' };
+const STATE_COLORS = { healthy:'var(--green)', hungry:'var(--yellow)', suffocating:'var(--cyan)', exhausted:'var(--orange)', dead:'var(--text-3)' };
 
 const RESOURCE_META = {
     food:      { icon:'⬡', label:'FOOD' },
@@ -175,7 +176,7 @@ function updateQuestBoard(state) {
         row.className = 'qb-quest';
         const rank = document.createElement('span');
         rank.className = 'qb-rank';
-        rank.style.color = cat.color || '#fff';
+        rank.style.color = cat.color || 'var(--text-1)';
         rank.textContent = q.difficulty;
         row.appendChild(rank);
         const name = document.createElement('span');
@@ -237,7 +238,7 @@ function updateResourceBar(state) {
 
         const icon = document.createElement('span');
         icon.className = 'res-icon';
-        icon.style.color = RES_COLORS[t] || '#fff';
+        icon.style.color = RES_COLORS[t] || 'var(--text-1)';
         icon.textContent = meta.icon;
         pill.appendChild(icon);
 
@@ -254,7 +255,7 @@ function updateResourceBar(state) {
         resBar.appendChild(pill);
     }
     const alive = document.createElement('span');
-    alive.style.cssText = 'margin-left:auto;font-size:11px;font-weight:700;color:rgba(255,255,255,0.7)';
+    alive.style.cssText = 'margin-left:auto;font-size:11px;font-weight:700;color:var(--text-2)';
     alive.textContent = `${state.colonists.filter(c => c.state !== 'dead').length} alive`;
     resBar.appendChild(alive);
 }
@@ -346,7 +347,7 @@ function updateColonistPanel(state, callbacks) {
     panel.appendChild(createHR());
 
     const statsTitle = document.createElement('div');
-    statsTitle.style.cssText = 'font-size:10px;color:rgba(255,255,255,0.6);font-weight:bold';
+    statsTitle.style.cssText = 'font-size:10px;color:var(--text-2);font-weight:bold';
     statsTitle.textContent = 'STATS';
     panel.appendChild(statsTitle);
 
@@ -359,7 +360,7 @@ function updateColonistPanel(state, callbacks) {
     panel.appendChild(createHR());
 
     const jobLabel = document.createElement('div');
-    jobLabel.style.cssText = 'font-size:10px;color:rgba(255,255,255,0.6);font-weight:bold';
+    jobLabel.style.cssText = 'font-size:10px;color:var(--text-2);font-weight:bold';
     jobLabel.textContent = `JOB: ${col.job.toUpperCase()}`;
     panel.appendChild(jobLabel);
 
@@ -384,13 +385,13 @@ function updateColonistPanel(state, callbacks) {
     panel.appendChild(weaponEl);
 
     const posEl = document.createElement('div');
-    posEl.style.cssText = 'font-size:10px;color:rgba(255,255,255,0.4)';
+    posEl.style.cssText = 'font-size:10px;color:var(--text-3)';
     posEl.textContent = `Pos: (${col.col}, ${col.row})`;
     panel.appendChild(posEl);
 
     panel.appendChild(createHR());
     const questTitleEl = document.createElement('div');
-    questTitleEl.style.cssText = 'font-size:10px;color:rgba(255,255,255,0.6);font-weight:bold';
+    questTitleEl.style.cssText = 'font-size:10px;color:var(--text-2);font-weight:bold';
     const cls = colonistClass(col);
     questTitleEl.textContent = cls ? `${cls.toUpperCase()} | ${col.questsCompleted || 0} QUESTS` : `${col.questsCompleted || 0} QUESTS DONE`;
     panel.appendChild(questTitleEl);
@@ -401,13 +402,13 @@ function updateColonistPanel(state, callbacks) {
         aq.textContent = `Active: ${col.activeQuest.title}`;
         panel.appendChild(aq);
         const prog = document.createElement('div');
-        prog.style.cssText = 'font-size:9px;color:rgba(255,255,255,0.4)';
+        prog.style.cssText = 'font-size:9px;color:var(--text-3)';
         const pct = Math.max(0, Math.floor((1 - col.activeQuest.ticksRemaining / QUEST_WORK_TICKS) * 100));
         prog.textContent = `Progress: ${pct}% | ${col.activeQuest.difficulty}-rank | ${col.activeQuest.category}`;
         panel.appendChild(prog);
     } else {
         const idle = document.createElement('div');
-        idle.style.cssText = 'font-size:10px;color:rgba(255,255,255,0.3);margin-top:2px';
+        idle.style.cssText = 'font-size:10px;color:var(--text-3);margin-top:2px';
         idle.textContent = 'No active quest';
         panel.appendChild(idle);
     }
@@ -415,12 +416,12 @@ function updateColonistPanel(state, callbacks) {
     const recentQuests = (state.questLog || []).filter(l => l.colonist === col.name).slice(-3);
     if (recentQuests.length) {
         const logTitle = document.createElement('div');
-        logTitle.style.cssText = 'font-size:9px;color:rgba(255,255,255,0.35);margin-top:6px';
+        logTitle.style.cssText = 'font-size:9px;color:var(--text-3);margin-top:6px';
         logTitle.textContent = 'RECENT:';
         panel.appendChild(logTitle);
         for (const l of recentQuests) {
             const entry = document.createElement('div');
-            entry.style.cssText = 'font-size:9px;color:rgba(255,255,255,0.25);padding-left:4px';
+            entry.style.cssText = 'font-size:9px;color:var(--text-3);padding-left:4px';
             entry.textContent = `- ${l.quest}`;
             panel.appendChild(entry);
         }
@@ -514,10 +515,10 @@ function updateGameLog(state) {
 }
 
 const PHASE_COLORS = {
-    [GamePhase.SURVIVAL]: '#ff375f',
-    [GamePhase.GROWTH]:   '#ffd60a',
-    [GamePhase.MASTERY]:  '#0071e3',
-    [GamePhase.VICTORY]:  '#30d158',
+    [GamePhase.SURVIVAL]: 'var(--pink)',
+    [GamePhase.GROWTH]:   'var(--yellow)',
+    [GamePhase.MASTERY]:  'var(--accent)',
+    [GamePhase.VICTORY]:  'var(--green)',
 };
 
 function updateTimeDisplay(state) {
@@ -526,7 +527,7 @@ function updateTimeDisplay(state) {
     el.textContent = '';
     el.appendChild(document.createTextNode(`Day ${Math.floor(state.currentTick / 240) + 1} | ${state.currentHour}:00 | ${state.isNight ? 'NIGHT' : 'DAY'} | `));
     const phaseSpan = document.createElement('span');
-    phaseSpan.style.cssText = `color:${PHASE_COLORS[phase] || '#fff'};font-weight:bold`;
+    phaseSpan.style.cssText = `color:${PHASE_COLORS[phase] || 'var(--text-1)'};font-weight:bold`;
     phaseSpan.textContent = phase;
     el.appendChild(phaseSpan);
 }
@@ -621,7 +622,7 @@ function updateSettings(state, callbacks) {
         const row = document.createElement('div');
         row.className = 'save-row';
         const label = document.createElement('span');
-        label.style.cssText = s ? 'color:#fff;font-size:12px' : 'color:rgba(255,255,255,0.4);font-size:12px';
+        label.style.cssText = s ? 'color:var(--text-1);font-size:12px' : 'color:var(--text-3);font-size:12px';
         label.textContent = s ? `Slot ${i + 1} — Day ${s.dayCount}` : `Slot ${i + 1} — Empty`;
         const btn = document.createElement('button');
         btn.className = 'save-btn';
@@ -635,8 +636,31 @@ function updateSettings(state, callbacks) {
 
     panel.appendChild(createHR());
 
+    const appearTitle = document.createElement('div');
+    appearTitle.className = 'hud-section-title';
+    appearTitle.textContent = 'APPEARANCE';
+    panel.appendChild(appearTitle);
+
+    const themeRow = document.createElement('div');
+    themeRow.className = 'save-row';
+    const themeLabel = document.createElement('span');
+    themeLabel.style.cssText = 'color:var(--text-1);font-size:12px';
+    themeLabel.textContent = 'Theme';
+    const themeBtn = document.createElement('button');
+    themeBtn.className = 'save-btn';
+    themeBtn.textContent = resolvedTheme() === 'dark' ? 'DARK' : 'LIGHT';
+    themeBtn.onclick = e => {
+        e.stopPropagation();
+        themeBtn.textContent = toggleTheme() === 'dark' ? 'DARK' : 'LIGHT';
+    };
+    themeRow.appendChild(themeLabel);
+    themeRow.appendChild(themeBtn);
+    panel.appendChild(themeRow);
+
+    panel.appendChild(createHR());
+
     const hint = document.createElement('div');
-    hint.style.cssText = 'font-size:11px;color:rgba(255,255,255,0.4)';
+    hint.style.cssText = 'font-size:11px;color:var(--text-3)';
     hint.textContent = 'Press ESC to close';
     panel.appendChild(hint);
 
@@ -688,7 +712,7 @@ function updateTutorial(state, callbacks) {
     panel.appendChild(titleEl);
 
     const bodyEl = document.createElement('div');
-    bodyEl.style.cssText = 'font-size:14px;color:#fff;text-align:center';
+    bodyEl.style.cssText = 'font-size:14px;color:var(--text-1);text-align:center';
     bodyEl.textContent = data.body;
     panel.appendChild(bodyEl);
 

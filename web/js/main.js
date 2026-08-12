@@ -14,6 +14,7 @@ import { setupInput } from './input.js';
 import { updateHUD, checkTutorialAdvance } from './hud.js';
 import { saveGame, loadGame, listSlots, rebuildGrid } from './save.js';
 import { tickParticles, spawnBuildDust } from './particles.js';
+import { initTheme, toggleTheme, resolvedTheme } from './theme.js';
 
 let selectedDifficulty = 'medium';
 let state = null;
@@ -28,6 +29,7 @@ let lastTime = 0;
 let running = false;
 
 function init() {
+    initTheme();
     canvas = document.getElementById('game');
     ctx = canvas.getContext('2d');
     minimapCanvas = document.getElementById('minimap');
@@ -76,6 +78,11 @@ function showMenu() {
         setDifficulty(selectedDifficulty);
         startGame(null);
     };
+
+    const themeBtn = document.getElementById('menu-theme');
+    const labelTheme = () => { themeBtn.textContent = resolvedTheme() === 'dark' ? 'Dark' : 'Light'; };
+    labelTheme();
+    themeBtn.onclick = () => { toggleTheme(); labelTheme(); };
 }
 
 function startGame(loadSlot) {
@@ -224,7 +231,7 @@ function gameLoop(timestamp) {
         }
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = '#0a0a0c';
+        ctx.fillStyle = resolvedTheme() === 'light' ? '#ececee' : '#0a0a0c';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         renderWorld(ctx, canvas, camera, grid, state);
 

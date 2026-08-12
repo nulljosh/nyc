@@ -7,6 +7,41 @@ import { renderParticles } from './particles.js';
 const GAP = 1;
 const TILE_R = 4;
 
+// Canvas can't read CSS custom properties. Neutral "ink" (labels, washes, tile
+// detail) has to flip with the theme or it vanishes; saturated status colors don't.
+const INK_DARK = {
+    label:       'rgba(255,255,255,0.85)',
+    labelSoft:   'rgba(255,255,255,0.7)',
+    labelStrong: 'rgba(255,255,255,0.9)',
+    wash:        'rgba(255,255,255,0.3)',
+    washSoft:    'rgba(255,255,255,0.2)',
+    track:       'rgba(255,255,255,0.1)',
+    detail:      'rgba(255,255,255,0.06)',
+    crack:       'rgba(255,255,255,0.05)',
+    tile:        '#0a0a0c',
+};
+const INK_LIGHT = {
+    label:       'rgba(0,0,0,0.80)',
+    labelSoft:   'rgba(0,0,0,0.62)',
+    labelStrong: 'rgba(0,0,0,0.85)',
+    wash:        'rgba(0,0,0,0.22)',
+    washSoft:    'rgba(0,0,0,0.14)',
+    track:       'rgba(0,0,0,0.10)',
+    detail:      'rgba(0,0,0,0.07)',
+    crack:       'rgba(0,0,0,0.08)',
+    tile:        '#ececee',
+};
+let INK = INK_DARK;
+
+export function setRenderTheme(theme) {
+    INK = theme === 'light' ? INK_LIGHT : INK_DARK;
+    clearTileSprites();
+}
+
+export function clearTileSprites() {
+    for (const k in tileSprites) delete tileSprites[k];
+}
+
 const STATE_COLORS = {
     healthy: '#30d158',
     hungry: '#ffd60a',
@@ -20,7 +55,7 @@ const CLASS_COLORS = {
     Mage: '#0071e3',
     Rogue: '#30d158',
     Ranger: '#ff9f0a',
-    Bard: '#bf5af2',
+    Bard: '#c25e00',
     Merchant: '#ac8e68',
 };
 
@@ -83,7 +118,7 @@ function getTileSprite(tileType, col, row) {
     c.width = size;
     c.height = size;
     const cx = c.getContext('2d');
-    const baseColor = TileColors[tileType] || '#0a0a0c';
+    const baseColor = TileColors[tileType] || INK.tile;
 
     // Parse and shift brightness
     const shift = [-6, -3, 0, 4][variant];
@@ -93,10 +128,10 @@ function getTileSprite(tileType, col, row) {
 
     // Sidewalk details (deterministic per position)
     if (tileType === 1 && variant === 0) { // sidewalk + variant 0 = manhole
-        cx.fillStyle = 'rgba(255,255,255,0.06)';
+        cx.fillStyle = INK.detail;
         cx.fillRect(10, 10, 12, 12);
     } else if (tileType === 1 && variant === 3) { // cracks
-        cx.strokeStyle = 'rgba(255,255,255,0.05)';
+        cx.strokeStyle = INK.crack;
         cx.lineWidth = 1;
         cx.beginPath();
         cx.moveTo(8, 16);
@@ -203,7 +238,7 @@ function drawColonist16bit(ctx, c, x, y, state) {
 
     // Class color dot
     if (cls && !isDead) {
-        ctx.fillStyle = CLASS_COLORS[cls] || '#fff';
+        ctx.fillStyle = CLASS_COLORS[cls] || INK.label;
         ctx.beginPath();
         ctx.arc(x, y + 12, 2, 0, Math.PI * 2);
         ctx.fill();
@@ -223,7 +258,7 @@ const BUILDING_ICONS = {
         cx.fill();
         cx.fillRect(x + w/2 - 6, y + h/2 - 2, 12, h/2 - 4);
         // Window
-        cx.fillStyle = 'rgba(255,255,255,0.3)';
+        cx.fillStyle = INK.wash;
         cx.fillRect(x + w/2 - 2, y + h/2, 4, 4);
     },
     foodStall: (cx, x, y, w, h) => {
@@ -268,7 +303,7 @@ const BUILDING_ICONS = {
         // Wooden frame with papers
         cx.fillStyle = 'rgba(201, 168, 76, 0.4)';
         cx.fillRect(x + 6, y + 6, w - 12, h - 12);
-        cx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+        cx.fillStyle = INK.washSoft;
         cx.fillRect(x + 10, y + 10, 8, 6);
         cx.fillRect(x + 10, y + 18, 8, 6);
         if (w > 40) {
@@ -352,7 +387,7 @@ export function renderWorld(ctx, canvas, camera, grid, state) {
         const alpha = rn.remaining <= 0 ? 0.12 : Math.max(0.3, rn.maxAmount > 0 ? rn.remaining / rn.maxAmount : 0);
 
         ctx.globalAlpha = alpha * 0.3;
-        ctx.fillStyle = RESOURCE_COLORS[rn.type] || '#fff';
+        ctx.fillStyle = RESOURCE_COLORS[rn.type] || INK.label;
         ctx.beginPath();
         ctx.arc(x, y, 10, 0, Math.PI * 2);
         ctx.fill();
@@ -363,7 +398,7 @@ export function renderWorld(ctx, canvas, camera, grid, state) {
         ctx.fill();
         ctx.globalAlpha = 1;
 
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+        ctx.fillStyle = INK.labelStrong;
         ctx.font = '7px -apple-system, sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
@@ -382,11 +417,11 @@ export function renderWorld(ctx, canvas, camera, grid, state) {
         if (bx + bw < bounds.minCol * TILE_SIZE || bx > (bounds.maxCol + 1) * TILE_SIZE) continue;
         if (by + bh < bounds.minRow * TILE_SIZE || by > (bounds.maxRow + 1) * TILE_SIZE) continue;
 
-        ctx.fillStyle = BUILDING_COLORS[b.type] || 'rgba(255,255,255,0.1)';
+        ctx.fillStyle = BUILDING_COLORS[b.type] || INK.track;
         roundRect(ctx, bx, by, bw, bh, TILE_R + 2);
         ctx.fill();
 
-        ctx.strokeStyle = BUILDING_BORDER[b.type] || 'rgba(255,255,255,0.2)';
+        ctx.strokeStyle = BUILDING_BORDER[b.type] || INK.washSoft;
         ctx.lineWidth = 1;
         roundRect(ctx, bx, by, bw, bh, TILE_R + 2);
         ctx.stroke();
@@ -398,7 +433,7 @@ export function renderWorld(ctx, canvas, camera, grid, state) {
         }
 
         // Name label
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+        ctx.fillStyle = INK.labelSoft;
         ctx.font = '600 7px -apple-system, sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'bottom';
@@ -434,7 +469,7 @@ export function renderWorld(ctx, canvas, camera, grid, state) {
         const barH = 2;
         const barX = x - barW / 2;
         const barY = y - 18;
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+        ctx.fillStyle = INK.track;
         roundRect(ctx, barX, barY, barW, barH, 1);
         ctx.fill();
         const hpFrac = Math.max(0, c.health / 100);
@@ -445,7 +480,7 @@ export function renderWorld(ctx, canvas, camera, grid, state) {
         }
 
         // Name
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
+        ctx.fillStyle = INK.label;
         ctx.font = '600 7px -apple-system, sans-serif';
         ctx.textAlign = 'center';
         ctx.fillText(c.name, x, barY - 4);
@@ -539,7 +574,7 @@ export function renderMinimap(ctx, canvas, grid, state, camera) {
     }
 
     const bounds = camera.visibleBounds(document.getElementById('game'));
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+    ctx.strokeStyle = INK.wash;
     ctx.lineWidth = 1;
     ctx.strokeRect(
         bounds.minCol * TILE_SIZE * scale,

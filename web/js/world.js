@@ -12,15 +12,35 @@ const STREET_WIDTH = 3;
 
 export const TileType = { road: 0, sidewalk: 1, building: 2, billboard: 3, subway: 4, sewer: 5, empty: 6 };
 
-export const TileColors = {
-    [TileType.road]:      '#1c1c1e',
-    [TileType.sidewalk]:  '#3a3a3c',
-    [TileType.building]:  '#0a0a0c',
-    [TileType.billboard]: '#ff375f',
-    [TileType.subway]:    '#ffd60a',
-    [TileType.sewer]:     '#2c3e2c',
-    [TileType.empty]:     '#0a0a0c',
+// Canvas can't read CSS custom properties, so the world palette is duplicated
+// per theme here. Keep the keys in sync with the --bg/--pink/--yellow tokens.
+const TILE_PALETTES = {
+    dark: {
+        [TileType.road]:      '#1c1c1e',
+        [TileType.sidewalk]:  '#3a3a3c',
+        [TileType.building]:  '#0a0a0c',
+        [TileType.billboard]: '#ff375f',
+        [TileType.subway]:    '#ffd60a',
+        [TileType.sewer]:     '#2c3e2c',
+        [TileType.empty]:     '#0a0a0c',
+    },
+    light: {
+        [TileType.road]:      '#c9c9cd',
+        [TileType.sidewalk]:  '#e4e4e7',
+        [TileType.building]:  '#a8a8ae',
+        [TileType.billboard]: '#c9134a',
+        [TileType.subway]:    '#c99700',
+        [TileType.sewer]:     '#9db29d',
+        [TileType.empty]:     '#ececee',
+    },
 };
+
+// Live binding — importers see reassignment, so setTilePalette() repaints everyone.
+export let TileColors = TILE_PALETTES.dark;
+
+export function setTilePalette(theme) {
+    TileColors = TILE_PALETTES[theme] || TILE_PALETTES.dark;
+}
 
 export const WalkableTiles = new Set([TileType.road, TileType.sidewalk, TileType.subway]);
 

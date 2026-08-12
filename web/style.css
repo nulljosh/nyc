@@ -1,14 +1,82 @@
-/* Times Square Survival -- Apple Liquid Glass UI */
+/* NYC Survive -- Apple Liquid Glass UI */
 
+/* Light is the base palette. Every color token is defined here, so no color's
+   only definition lives inside a media query. Dark redefines only what changes. */
 :root {
+    --bg:           #ececee;
+    --glass:        rgba(255,255,255,0.70);
+    --glass-heavy:  rgba(255,255,255,0.85);
+    --glass-hover:  rgba(0,0,0,0.04);
+    --border:       rgba(0,0,0,0.12);
+    --border-light: rgba(0,0,0,0.08);
+    --chrome:       rgba(0,0,0,0.22);
+    --scrim:        rgba(255,255,255,0.55);
+    --scrim-heavy:  rgba(255,255,255,0.70);
+    --skyline:      rgba(0,0,0,0.07);
+    --dot:          rgba(0,0,0,0.15);
+    --blur:         blur(20px);
+    --blur-heavy:   blur(40px);
+    --accent:       #0071e3;
+    --accent-light: #0058b0;
+    --on-accent:    #ffffff;
+    --text-1:       rgba(0,0,0,0.90);
+    --text-2:       rgba(0,0,0,0.58);
+    --text-3:       rgba(0,0,0,0.38);
+    --green:        #248a3d;
+    --yellow:       #8a6300;
+    --orange:       #c25e00;
+    --red:          #d70015;
+    --pink:         #c9134a;
+    --cyan:         #00699e;
+    --radius:       12px;
+    --radius-sm:    8px;
+    --radius-xs:    6px;
+    --radius-pill:  100px;
+    --font:         -apple-system,BlinkMacSystemFont,'SF Pro Display','SF Pro Text',system-ui,sans-serif;
+    --font-mono:    'SF Mono',ui-monospace,monospace;
+    --spring:       cubic-bezier(0.34,1.56,0.64,1);
+}
+
+/* Dark: system preference, unless the player explicitly chose light. */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        --bg:           #0a0a0c;
+        --glass:        rgba(255,255,255,0.08);
+        --glass-heavy:  rgba(255,255,255,0.12);
+        --glass-hover:  rgba(255,255,255,0.06);
+        --border:       rgba(255,255,255,0.18);
+        --border-light: rgba(255,255,255,0.10);
+        --chrome:       rgba(255,255,255,0.28);
+        --scrim:        rgba(0,0,0,0.40);
+        --scrim-heavy:  rgba(0,0,0,0.55);
+        --skyline:      rgba(255,255,255,0.05);
+        --dot:          rgba(255,255,255,0.15);
+        --accent-light: #2997ff;
+        --text-1:       rgba(255,255,255,0.92);
+        --text-2:       rgba(255,255,255,0.55);
+        --text-3:       rgba(255,255,255,0.35);
+        --green:        #30d158;
+        --yellow:       #ffd60a;
+        --orange:       #ff9f0a;
+        --red:          #ff453a;
+        --pink:         #ff375f;
+        --cyan:         #64d2ff;
+    }
+}
+
+/* Dark: explicit player choice, so the toggle wins in both directions. */
+:root[data-theme="dark"] {
+    --bg:           #0a0a0c;
     --glass:        rgba(255,255,255,0.08);
     --glass-heavy:  rgba(255,255,255,0.12);
     --glass-hover:  rgba(255,255,255,0.06);
     --border:       rgba(255,255,255,0.18);
     --border-light: rgba(255,255,255,0.10);
-    --blur:         blur(20px);
-    --blur-heavy:   blur(40px);
-    --accent:       #0071e3;
+    --chrome:       rgba(255,255,255,0.28);
+    --scrim:        rgba(0,0,0,0.40);
+    --scrim-heavy:  rgba(0,0,0,0.55);
+    --skyline:      rgba(255,255,255,0.05);
+    --dot:          rgba(255,255,255,0.15);
     --accent-light: #2997ff;
     --text-1:       rgba(255,255,255,0.92);
     --text-2:       rgba(255,255,255,0.55);
@@ -19,20 +87,13 @@
     --red:          #ff453a;
     --pink:         #ff375f;
     --cyan:         #64d2ff;
-    --radius:       12px;
-    --radius-sm:    8px;
-    --radius-xs:    6px;
-    --radius-pill:  100px;
-    --font:         -apple-system,BlinkMacSystemFont,'SF Pro Display','SF Pro Text',system-ui,sans-serif;
-    --font-mono:    'SF Mono',ui-monospace,monospace;
-    --spring:       cubic-bezier(0.34,1.56,0.64,1);
 }
 
 * { margin:0; padding:0; box-sizing:border-box; }
 button { font-family:inherit; }
 
 body {
-    background: #0a0a0c;
+    background: var(--bg);
     color: var(--text-1);
     font-family: var(--font);
     overflow: hidden;
@@ -57,8 +118,8 @@ canvas#game {
     position:absolute;
     top:4px; left:4px;
     width:8px; height:8px;
-    border-top:1px solid rgba(255,255,255,0.28);
-    border-left:1px solid rgba(255,255,255,0.28);
+    border-top:1px solid var(--chrome);
+    border-left:1px solid var(--chrome);
     pointer-events:none;
     z-index:1;
 }
@@ -67,8 +128,8 @@ canvas#game {
     position:absolute;
     bottom:4px; right:4px;
     width:8px; height:8px;
-    border-bottom:1px solid rgba(255,255,255,0.28);
-    border-right:1px solid rgba(255,255,255,0.28);
+    border-bottom:1px solid var(--chrome);
+    border-right:1px solid var(--chrome);
     pointer-events:none;
     z-index:1;
 }
@@ -80,7 +141,7 @@ canvas#game {
     top:0; left:0;
     width:100%; height:100%;
     z-index:100;
-    background:#0a0a0c;
+    background:var(--bg);
     display:flex;
     flex-direction:column;
     align-items:center;
@@ -120,10 +181,51 @@ canvas#game {
     position:relative;
 }
 
+.difficulty-picker {
+    margin-bottom:12px;
+    display:flex;
+    gap:8px;
+    justify-content:center;
+    position:relative;
+}
+
+.diff-btn {
+    background:var(--glass);
+    border:1px solid var(--border);
+    color:var(--text-2);
+    padding:5px 14px;
+    font:600 11px/1 var(--font);
+    letter-spacing:0.08em;
+    cursor:pointer;
+    border-radius:var(--radius-xs);
+    transition:background 0.15s,color 0.15s,border-color 0.15s;
+}
+.diff-btn.selected {
+    background:var(--glass-heavy);
+    color:var(--text-1);
+    border-color:var(--chrome);
+}
+
+.theme-toggle {
+    position:absolute;
+    top:16px; right:16px;
+    background:var(--glass);
+    border:1px solid var(--border);
+    color:var(--text-2);
+    font:600 11px/1 var(--font);
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    padding:7px 14px;
+    border-radius:var(--radius-pill);
+    cursor:pointer;
+    transition:background 0.15s,color 0.15s;
+}
+.theme-toggle:hover { background:var(--glass-heavy); color:var(--text-1); }
+
 .menu-btn {
     background:var(--accent);
     border:none;
-    color:#fff;
+    color:var(--on-accent);
     font-size:17px;
     font-weight:600;
     cursor:pointer;
@@ -351,7 +453,7 @@ canvas#game {
     transition:transform 0.2s var(--spring),background 0.15s;
 }
 .job-btn:hover { transform:scale(1.05); background:var(--glass); }
-.job-btn.active { background:var(--accent); color:#fff; }
+.job-btn.active { background:var(--accent); color:var(--on-accent); }
 
 /* Game Log */
 
@@ -422,7 +524,7 @@ canvas#minimap {
     position:fixed;
     top:0; left:0;
     width:100%; height:100%;
-    background:rgba(0,0,0,0.4);
+    background:var(--scrim);
     backdrop-filter:blur(8px);
     -webkit-backdrop-filter:blur(8px);
     display:none;
@@ -469,7 +571,7 @@ canvas#minimap {
     font-family:var(--font);
 }
 .pause-action-btn:hover { transform:translateY(-2px); background:var(--glass-heavy); }
-.pause-action-btn.primary { background:var(--accent); border-color:transparent; color:#fff; }
+.pause-action-btn.primary { background:var(--accent); border-color:transparent; color:var(--on-accent); }
 .pause-action-btn.danger { color:var(--red); border-color:rgba(255,69,58,0.3); }
 
 /* Save Indicator */
@@ -500,7 +602,7 @@ canvas#minimap {
     position:fixed;
     top:0; left:0;
     width:100%; height:100%;
-    background:rgba(0,0,0,0.35);
+    background:var(--scrim);
     display:none;
     align-items:stretch;
     justify-content:flex-end;
@@ -550,7 +652,7 @@ canvas#minimap {
 .save-btn {
     background:var(--accent);
     border:none;
-    color:#fff;
+    color:var(--on-accent);
     font-size:11px;
     font-weight:600;
     padding:5px 14px;
@@ -566,7 +668,7 @@ canvas#minimap {
     position:fixed;
     top:0; left:0;
     width:100%; height:100%;
-    background:rgba(0,0,0,0.5);
+    background:var(--scrim-heavy);
     backdrop-filter:blur(8px);
     -webkit-backdrop-filter:blur(8px);
     display:none;
@@ -620,7 +722,7 @@ canvas#minimap {
 .tut-dot {
     width:6px; height:6px;
     border-radius:50%;
-    background:rgba(255,255,255,0.15);
+    background:var(--dot);
     transition:background 0.2s;
 }
 .tut-dot.active { background:var(--accent); }
@@ -707,17 +809,17 @@ hr { border:none; border-top:1px solid var(--border-light); margin:8px 0; }
     overflow-y:auto;
     z-index:50;
 }
-.qb-header { font-weight:700; font-size:13px; letter-spacing:0.1em; color:#fff; display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+.qb-header { font-weight:700; font-size:13px; letter-spacing:0.1em; color:var(--text-1); display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
 .qb-close { cursor:pointer; color:var(--text-3); font-size:14px; padding:4px; }
 .qb-close:hover { color:var(--red); }
 .qb-add { text-align:center; padding:8px; border:1px dashed var(--border-light); border-radius:8px; color:var(--text-2); font-size:11px; cursor:pointer; margin-bottom:8px; letter-spacing:0.08em; }
 .qb-add:hover { border-color:var(--accent); color:var(--accent); }
 .qb-form { margin-bottom:12px; display:flex; flex-direction:column; gap:6px; }
-.qb-input { background:var(--glass-hover); border:1px solid var(--border-light); border-radius:6px; padding:8px 10px; color:#fff; font-size:12px; outline:none; }
+.qb-input { background:var(--glass-hover); border:1px solid var(--border-light); border-radius:6px; padding:8px 10px; color:var(--text-1); font-size:12px; outline:none; }
 .qb-input:focus { border-color:var(--accent); }
 .qb-row { display:flex; gap:6px; }
-.qb-select { flex:1; background:var(--glass-hover); border:1px solid var(--border-light); border-radius:6px; padding:6px; color:#fff; font-size:11px; }
-.qb-btn { flex:1; padding:8px; background:var(--accent); border:none; border-radius:6px; color:#fff; font-size:11px; font-weight:600; cursor:pointer; letter-spacing:0.06em; }
+.qb-select { flex:1; background:var(--glass-hover); border:1px solid var(--border-light); border-radius:6px; padding:6px; color:var(--text-1); font-size:11px; }
+.qb-btn { flex:1; padding:8px; background:var(--accent); border:none; border-radius:6px; color:var(--on-accent); font-size:11px; font-weight:600; cursor:pointer; letter-spacing:0.06em; }
 .qb-btn.dim { background:var(--glass-hover); color:var(--text-2); }
 .qb-btn:hover { opacity:0.85; }
 .qb-section { font-size:10px; letter-spacing:0.12em; color:var(--text-3); margin:10px 0 4px; }
