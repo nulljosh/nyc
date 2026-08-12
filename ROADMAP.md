@@ -116,3 +116,27 @@ Store Connect." NYC Survive's review-details `notes` field is currently empty (v
 - [ ] Build a landing/marketing page (currently app only, no preview)
 
 > Resume note (2026-08-11): a `wip: partial work from /work notes ingest` commit holds unfinished, unverified changes for the items above. Review `git show HEAD` before building on it — it was committed mid-flight, not reviewed, and is unpushed.
+
+## Guideline 5.6 resubmission checklist — prepared 2026-08-12, DO NOT SUBMIT BEFORE 2026-08-18
+
+Apple's 5.6 notice makes one thing mandatory that is easy to miss: **"Include detailed notes
+of the improvements made to the app in the Notes field of the App Review Information section."**
+A resubmission without those notes is a wasted attempt, and 5.6 warns that repeat submissions
+with the same issues can mean removal from the Developer Program.
+
+The notes must describe improvements that were **actually made**. Nothing has been written into
+ASC yet on purpose — there is nothing truthful to claim until the work below is done.
+
+Before resubmitting:
+
+- [ ] Fix something real, and write down what. No placeholder, unfinished, or unrefined content
+      anywhere in the app.
+- [ ] Walk every screen and interaction once, on device. 5.6 is a quality judgement, not a
+      spec violation — the reviewer decided the app felt unfinished.
+- [ ] Test on **every** device family the app is offered on. If `TARGETED_DEVICE_FAMILY` is
+      `"1,2"` the app must be genuinely good on iPad, not merely launchable. Narrowing to
+      iPhone-only is a legitimate alternative to making iPad good.
+- [ ] Confirm a non-empty "What's New" (`asc metadata push`).
+- [ ] Then write the improvement notes:
+      `asc review details-update --id 9d5b49ba-8c2d-41ef-8bcb-80e59e7dec18 (iOS) / d7fd2481-09c9-4a23-b5e3-83738f9a4199 (macOS) --notes "..."`
+- [ ] Only then submit. Review detail id for this version: `9d5b49ba-8c2d-41ef-8bcb-80e59e7dec18 (iOS) / d7fd2481-09c9-4a23-b5e3-83738f9a4199 (macOS)`.
