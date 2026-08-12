@@ -1,5 +1,33 @@
 # NYC Roadmap
 
+## App Review rejection reason — READ FROM RESOLUTION CENTER 2026-08-12
+
+**Guideline 5.6 — Developer Code of Conduct — Review Suspended.** Not an app-specific
+defect. Verbatim: *"the current submission does not meet the required quality standard for
+distribution on the App Store... this app is not eligible for resubmission before August
+18th, 2026. Replies and resubmissions before this date will not be reviewed."*
+
+Apple's listed next steps before resubmitting: no placeholder/unfinished/unrefined content;
+every screen reviewed and tested; stable across **all** supported devices (iPad included if
+the app is offered there); and **detailed notes of the improvements made** in the App Review
+Information → Notes field. Continued similar submissions are warned as grounds for removal
+from the Developer Program.
+
+This hit 4 apps at once on 2026-08-09: curvely, nyc, transcriptly, wiretext.
+
+Source: `asc web review show --app 6782618198 --apple-id trommatic@icloud.com` (needs `asc-login`;
+the public API only returns a generic "unresolved issues" wrapper). Submissions frozen
+until 2026-08-18 regardless — fix and stage, do not submit.
+
+## ASC state VERIFIED 2026-08-12 (`asc versions list`)
+
+**Both platforms are `REJECTED`** — iOS 1.0.0 and macOS 1.0. The section below records both
+as WAITING_FOR_REVIEW after the 2026-08-04 submission; they were reviewed and rejected.
+Reasons are Resolution-Center-only (needs `asc-login`).
+
+Submissions frozen until 2026-08-18 (Guideline 5.6 review) — build and stage only, no
+`asc review submit`. Anything below this heading predates this check; trust this block.
+
 ## 2026-08-04 — BOTH PLATFORMS SUBMITTED
 
 **iOS 1.0.0 → WAITING_FOR_REVIEW** (submission `9338674e-4786-4003-b90a-b66ac0b95381`, build **6** `fcac5768-0102-41bb-9a32-667479f660e7`).
@@ -86,3 +114,5 @@ Store Connect." NYC Survive's review-details `notes` field is currently empty (v
 ## From Apple Notes (imported 2026-08-11)
 - [ ] Add light mode
 - [ ] Build a landing/marketing page (currently app only, no preview)
+
+> Resume note (2026-08-11): a `wip: partial work from /work notes ingest` commit holds unfinished, unverified changes for the items above. Review `git show HEAD` before building on it — it was committed mid-flight, not reviewed, and is unpushed.
