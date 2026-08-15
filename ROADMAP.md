@@ -59,9 +59,6 @@ get-task-allow          false
 So the original root-`CLAUDE.md` claim of "3 ASC-web-UI-only items" was **right**, and the "stale, warnings only" verdict was wrong. Always try `review items add` to learn the real blockers — doctor's clean bill means nothing.
 
 Two of those three are now fixed **via CLI, no dashboard needed** (also disproving "ASC-web-UI-only"):
-- [x] App Privacy published — `asc web privacy apply --app 6782618198 --file <json> --confirm` then `asc web privacy publish --app 6782618198 --confirm`. Declaration is `DATA_NOT_COLLECTED`. Note `publish` 409s unless `apply --file` runs first.
-- [x] Privacy policy URL set to `https://nyc.heyitsmejosh.com/privacy` — a real policy page was written (`web/privacy.html`) and deployed, because `/privacy` previously returned HTTP 200 serving the *game page* via catch-all. Pointing Apple at that would have been worse than leaving it blank.
-- [x] Subtitle set to "Times Square colony sim" (30-char limit; "Colony sim in besieged Times Square" was rejected as too long).
 
 **Deploy gotcha:** `web/.vercel` is a stale leftover. `nyc.heyitsmejosh.com` is a CNAME to `nyc-bum.pages.dev` — **Cloudflare Pages, not Vercel**. Deploying with `vercel --prod` succeeds and changes nothing live. Correct command:
 ```
@@ -70,9 +67,6 @@ cd web && npx wrangler pages deploy . --project-name nyc --commit-dirty=true
 Cloudflare edge cache can serve the old page for a minute or two afterward; the `CLOUDFLARE_DNS_TOKEN` lacks cache-purge permission, so just wait it out.
 
 Availability confirmed fine (175/175 territories, free price schedule) — the "dashboard-only dead end" belief was a CLI paging bug (fetch territories with `--limit 200`).
-
-## App Store Connect (2026-07-03)
-- [x] iOS screenshots/metadata + submit — done; verified 2026-08-04 that iOS 1.0.0 and macOS 1.0 are both WAITING_FOR_REVIEW.
 
 ## Phase 2: Factorio Game Mechanics (TODO)
 - [ ] ItemType enum (ore, iron_plate, copper_ore, etc.)
