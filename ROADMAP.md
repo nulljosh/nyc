@@ -140,3 +140,9 @@ Before resubmitting:
 - [ ] Then write the improvement notes:
       `asc review details-update --id 9d5b49ba-8c2d-41ef-8bcb-80e59e7dec18 (iOS) / d7fd2481-09c9-4a23-b5e3-83738f9a4199 (macOS) --notes "..."`
 - [ ] Only then submit. Review detail id for this version: `9d5b49ba-8c2d-41ef-8bcb-80e59e7dec18 (iOS) / d7fd2481-09c9-4a23-b5e3-83738f9a4199 (macOS)`.
+
+### From Notes (2026-08-14)
+- [ ] **Automated full-playthrough test.** A script that drives an actual game start to finish, so a
+      regression in the game loop fails loudly. Strictly a test harness — the shipped game must never
+      play itself (see [[project_nyc_no_autoplay]]; the directive engine was deleted 2026-07-02 and
+      does not come back).
