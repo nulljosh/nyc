@@ -103,7 +103,6 @@ Apple's 5.6 letter lists this as a required action before resubmitting: "Include
 the improvements made to the app in the Notes field of the App Review Information section in App
 Store Connect." NYC Survive's review-details `notes` field is currently empty (verified via
 `asc review details-for-version`). Curvely and Nullfolio have notes; NYC Survive and Wiretext do not.
-- [ ] Before the post-Aug-18 resubmit, write real App Review notes: what this app is (35 Swift files / ~3,600 lines, a real game — not a wrapper), and what changed since the suspended submission. This is the single cheapest thing that separates NYC Survive from the thin apps it got batched with.
 
 ## From Apple Notes (imported 2026-08-11)
 - [ ] Add light mode
