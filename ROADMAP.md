@@ -142,3 +142,16 @@ Before resubmitting:
 
 ## Ingested 2026-08-18
 - [ ] App Review notes still empty for 5.6 resubmission
+
+## 5.6 defect verification 2026-08-18
+
+**Verdict: "Play Now does nothing" reproduced-and-already-fixed; app not resubmitted.**
+
+- Commit `d71b944` ("Fix Play Now: serve the game at /app") closed it.
+  `nyc.heyitsmejosh.com` → 200, and the landing page's `Play now` link (`landing/index.html`
+  lines 132/175, `href="/app"`) → 200 after redirect to `/app/`. Claim no longer holds.
+- Not a WKWebView shell: `Sources/` is 3126 lines of native Swift, no WebKit import.
+- ASC state unchanged and correct: iOS 1.0.0 and macOS 1.0 both REJECTED, **neither
+  resubmitted**. Still blocked on an iOS distribution signing cert with a local private key
+  (`ship-plan.md`). Leave it that way until Curvely/Wiretext clear review — one app at a time.
+- `nycsurvive.heyitsmejosh.com` does not resolve, but no ASC record references it. Cosmetic.
