@@ -141,4 +141,4 @@ Before resubmitting:
       does not come back).
 
 ## Ingested 2026-08-18
-- [ ] **Bug: "Play Now" button does nothing** — landing page / splash screen looks okay, but the button doesn't open the game.
+- [ ] App Review notes still empty for 5.6 resubmission
