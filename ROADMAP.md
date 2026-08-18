@@ -139,3 +139,6 @@ Before resubmitting:
       regression in the game loop fails loudly. Strictly a test harness — the shipped game must never
       play itself (see [[project_nyc_no_autoplay]]; the directive engine was deleted 2026-07-02 and
       does not come back).
+
+## Ingested 2026-08-18
+- [ ] **Bug: "Play Now" button does nothing** — landing page / splash screen looks okay, but the button doesn't open the game.
