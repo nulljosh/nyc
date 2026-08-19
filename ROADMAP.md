@@ -17,7 +17,7 @@ This hit 4 apps at once on 2026-08-09: curvely, nyc, transcriptly, wiretext.
 
 Source: `asc web review show --app 6782618198 --apple-id trommatic@icloud.com` (needs `asc-login`;
 the public API only returns a generic "unresolved issues" wrapper). Submissions frozen
-until 2026-08-18 regardless — fix and stage, do not submit.
+The freeze lifted 2026-08-18; submission is now gated only on the four in-flight review verdicts.
 
 ## ASC state VERIFIED 2026-08-12 (`asc versions list`)
 
@@ -25,8 +25,11 @@ until 2026-08-18 regardless — fix and stage, do not submit.
 as WAITING_FOR_REVIEW after the 2026-08-04 submission; they were reviewed and rejected.
 Reasons are Resolution-Center-only (needs `asc-login`).
 
-Submissions frozen until 2026-08-18 (Guideline 5.6 review) — build and stage only, no
-`asc review submit`. Anything below this heading predates this check; trust this block.
+Freeze lifted 2026-08-18 (Guideline 5.6 suspension expired). Submitted that day and now
+WAITING_FOR_REVIEW: Curvely iOS 1.2.0, Wiretext iOS 1.1.0, Wordroot iOS 1.0, Healstack iOS 2.3.4.
+**Held pending those four verdicts — never a batch:** Sparkjar iOS+Mac, BCGD iOS+Mac, Wordroot Mac,
+Lexly Mac. All six are `asc validate` clean (0 errors, 0 blocking) with a VALID build attached, so
+each is one `asc review submit` away. Do not submit until the in-flight verdicts land.
 
 ## 2026-08-04 — BOTH PLATFORMS SUBMITTED
 
@@ -94,8 +97,12 @@ Availability confirmed fine (175/175 territories, free price schedule) — the "
 ## From App Store.pdf (imported 2026-07-29)
 - [ ] NYC Survive icon needs to be more accurate/themed — user now wants this improved (previously marked "fine, no action", that's stale).
 
-## App Store submission freeze — until 2026-08-18
-- [ ] **BLOCKED: no App Store submission on any app until 2026-08-18.** Account is under a Guideline 5.6 Developer Code of Conduct review suspension (Curvely, Transcriptly, Wiretext, NYC Survive). Apple warns that continued similar submissions may result in removal from the Apple Developer Program. Full detail: wiki `ship-plan.md` § "Guideline 5.6 suspension (2026-08-10)". TestFlight builds, pushes and web deploys are still fine.
+## App Store submission freeze — LIFTED 2026-08-18
+Freeze lifted 2026-08-18 (Guideline 5.6 suspension expired). Submitted that day and now
+WAITING_FOR_REVIEW: Curvely iOS 1.2.0, Wiretext iOS 1.1.0, Wordroot iOS 1.0, Healstack iOS 2.3.4.
+**Held pending those four verdicts — never a batch:** Sparkjar iOS+Mac, BCGD iOS+Mac, Wordroot Mac,
+Lexly Mac. All six are `asc validate` clean (0 errors, 0 blocking) with a VALID build attached, so
+each is one `asc review submit` away. Do not submit until the in-flight verdicts land.
 - [ ] NYC Survive iOS 1.0.0 + macOS 1.0 SUSPENDED under 5.6 (6782618198). Unlike the others this is a real app (35 Swift files / 3,615 lines) and was likely swept up in the account-level action. Keep it. Resubmit LAST, after the thin apps are withdrawn, with detailed App Review notes describing the improvements.
 
 ## 2026-08-10 — App Review notes are EMPTY, and 5.6 requires them
