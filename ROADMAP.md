@@ -204,3 +204,18 @@ account-level, not an app-specific defect) is still the best information we have
       The 5.6 improvement notes are already written on both platforms, so once unblocked this is
       a build + `asc review submit` away. The tutorial fix above is a genuine, describable
       improvement to add to the notes at that time.
+
+## Rejection reason, read 2026-08-19
+Read from Resolution Center once Apple's SRP 503 cleared. Submission
+`9338674e`, IOS 1.0.0, thread dated 2026-08-09:
+
+> Guideline 5.6 - Developer Code of Conduct - Review Suspended
+> ... the current submission does not meet the required quality standard for
+> distribution ... this app is not eligible for resubmission before August 18th, 2026.
+
+So it is the known 5.6 suspension, NOT a separate defect — no new work implied.
+That hold date has now passed. Apple's stated next steps are already satisfied:
+the 5.6 improvement notes are written on both platforms, and the app is genuine
+native Swift (3126 lines, no WebKit). Resubmit is therefore build + submit,
+gated only on the one-app-at-a-time rule while Curvely/Wiretext/Wordroot/Healstack
+are still WAITING_FOR_REVIEW.
