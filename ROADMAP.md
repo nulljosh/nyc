@@ -164,8 +164,10 @@ Before resubmitting:
   lines 132/175, `href="/app"`) → 200 after redirect to `/app/`. Claim no longer holds.
 - Not a WKWebView shell: `Sources/` is 3126 lines of native Swift, no WebKit import.
 - ASC state unchanged and correct: iOS 1.0.0 and macOS 1.0 both REJECTED, **neither
-  resubmitted**. Still blocked on an iOS distribution signing cert with a local private key
-  (`ship-plan.md`). Leave it that way until Curvely/Wiretext clear review — one app at a time.
+  resubmitted**. Signing-cert blocker RESOLVED (verified 2026-08-19): `iPhone Distribution:
+  Joshua Trommel (QMM486NPYC)` is a valid codesigning *identity* in the local Keychain (SHA1
+  1E8B7533…, private key present, cert valid to 2027-07-03). Only remaining gate is the
+  one-app-at-a-time rule — hold until Curvely/Wiretext/Wordroot/Healstack clear review.
 - `nycsurvive.heyitsmejosh.com` does not resolve, but no ASC record references it. Cosmetic.
 
 ## From Notes (imported 2026-08-19)
@@ -197,8 +199,8 @@ same issues risk removal from the Developer Program.
 no 2FA prompt was ever reached. The verbatim reason recorded 2026-08-12 (Guideline 5.6,
 account-level, not an app-specific defect) is still the best information we have.
 
-- [ ] Resubmit NYC iOS 1.0.0 + macOS 1.0 once the four in-flight verdicts land. Still also
-      blocked on an iOS distribution signing cert with a local private key (see `ship-plan.md`).
+- [ ] Resubmit NYC iOS 1.0.0 + macOS 1.0 once the four in-flight verdicts land. Signing cert is
+      NO LONGER a blocker (verified 2026-08-19, see note above — valid identity + private key).
       The 5.6 improvement notes are already written on both platforms, so once unblocked this is
       a build + `asc review submit` away. The tutorial fix above is a genuine, describable
       improvement to add to the notes at that time.
