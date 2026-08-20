@@ -51,12 +51,6 @@ beta-reports-active     true      ← TestFlight-eligible
 get-task-allow          false
 ```
 
-### Still open
-- [x] In-app title screen branding — verified resolved 2026-08-19, no change needed. `MenuScene.swift`
-  already renders the title as "NYC SURVIVE" (with a comment pinning it to the App Store name); only
-  the *subtitle* reads "SURVIVAL SIMULATOR", which is a tagline, not a competing app name. `web/index.html`
-  matches: title "NYC Survive", subtitle "Times Square Survival Simulator". No drift left to fix.
-
 ### Corrections to the earlier 2026-08-03 note (it was wrong)
 **`asc review doctor` is NOT a reliable submission gate.** It reported `errors: 0, blocking: 0` on iOS while `asc review items add` immediately rejected the version with two hard blockers doctor never mentioned:
 - `appDataUsages`: "You must have published answers to your app's data usages"
@@ -140,9 +134,6 @@ Before resubmitting:
       `"1,2"` the app must be genuinely good on iPad, not merely launchable. Narrowing to
       iPhone-only is a legitimate alternative to making iPad good.
 - [ ] Confirm a non-empty "What's New" (`asc metadata push`).
-- [x] Then write the improvement notes — **already done**, both platforms (verified 2026-08-19).
-      Read them back with `asc review details-for-version --version-id <VERSION id>`
-      (iOS `f595fe11-22d1-4169-85c4-b82dc7788a36`, macOS `4610ab68-6b42-4ae0-9ba5-0965a83781a5`).
 - [ ] Only then submit. Review detail id for this version: `9d5b49ba-8c2d-41ef-8bcb-80e59e7dec18 (iOS) / d7fd2481-09c9-4a23-b5e3-83738f9a4199 (macOS)`.
 
 ### From Notes (2026-08-14)
@@ -150,13 +141,6 @@ Before resubmitting:
       regression in the game loop fails loudly. Strictly a test harness — the shipped game must never
       play itself (see [[project_nyc_no_autoplay]]; the directive engine was deleted 2026-07-02 and
       does not come back).
-
-## Ingested 2026-08-18
-- [x] App Review notes still empty for 5.6 resubmission — **STALE CLAIM, verified 2026-08-19.**
-      Both platforms already carry the full 5.6 improvement notes (~2,300 chars each), read back
-      via `asc review details-for-version --version-id <id>`. iOS detail `9d5b49ba-8c2d-41ef-8bcb-80e59e7dec18`,
-      macOS detail `d7fd2481-09c9-4a23-b5e3-83738f9a4199`. Note the flag is `--version-id` (the
-      version id), not `--id` (the detail id) — the checklist below had that wrong.
 
 ## 5.6 defect verification 2026-08-18
 
@@ -172,19 +156,6 @@ Before resubmitting:
   1E8B7533…, private key present, cert valid to 2027-07-03). Only remaining gate is the
   one-app-at-a-time rule — hold until Curvely/Wiretext/Wordroot/Healstack clear review.
 - `nycsurvive.heyitsmejosh.com` does not resolve, but no ASC record references it. Cosmetic.
-
-## From Notes (imported 2026-08-19)
-- [x] Tutorial is gone — **root cause found and fixed 2026-08-19.** The *web* game was the
-      regression (native iOS/macOS was always fine — `onNewGame` sets `tutorialStep = 0`).
-      Commit `68e72d5` ("disable autoplay") added `state.tutorialStep = null; // skip tutorial
-      in auto-start` inside `freshWorld()` in `web/js/main.js`. But there is no auto-start any
-      more — `freshWorld()` is only reached from the NEW GAME button and the failed-load
-      fallback, so that line silently killed the tutorial for *every* new game. Deleted the
-      line; `createGameState()` already defaults `tutorialStep: 0`, and the load path still
-      nulls it explicitly. Regression test added at `web/tutorial.test.mjs` (`node
-      web/tutorial.test.mjs`). Rebuilt via `scripts/build-site.sh` and deployed to Cloudflare
-      Pages; verified the shipped `/app/js/main.js` no longer contains the line and
-      `nyc.heyitsmejosh.com/app/` returns 200. No autoplay/directive code reintroduced.
 
 ## 2026-08-19 — hold confirmed, NOT resubmitted
 
