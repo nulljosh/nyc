@@ -119,3 +119,7 @@ Requires Xcode 16+, macOS 15.0+, iOS 17.0+, xcodegen.
 ## License
 
 MIT 2026 Joshua Trommel
+
+## Whitepaper
+
+[Technical whitepaper](WHITEPAPER.md)
