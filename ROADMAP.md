@@ -52,7 +52,10 @@ get-task-allow          false
 ```
 
 ### Still open
-- [ ] In-app title screen reads **"TIMES SQUARE / SURVIVAL SIMULATOR"** while the App Store name is "NYC Survive". The in-game log does say "Welcome to NYC Survive", so it's only the title screen. Both existing store screenshots (iPhone 6.5" and the new iPad one) are consistent with the store name, and this wasn't flagged in review — but it's the same in-app branding drift that caught four other apps on 2026-08-03. Decide whether the title screen should say NYC Survive.
+- [x] In-app title screen branding — verified resolved 2026-08-19, no change needed. `MenuScene.swift`
+  already renders the title as "NYC SURVIVE" (with a comment pinning it to the App Store name); only
+  the *subtitle* reads "SURVIVAL SIMULATOR", which is a tagline, not a competing app name. `web/index.html`
+  matches: title "NYC Survive", subtitle "Times Square Survival Simulator". No drift left to fix.
 
 ### Corrections to the earlier 2026-08-03 note (it was wrong)
 **`asc review doctor` is NOT a reliable submission gate.** It reported `errors: 0, blocking: 0` on iOS while `asc review items add` immediately rejected the version with two hard blockers doctor never mentioned:
