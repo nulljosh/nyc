@@ -193,3 +193,7 @@ the 5.6 improvement notes are written on both platforms, and the app is genuine
 native Swift (3126 lines, no WebKit). Resubmit is therefore build + submit,
 gated only on the one-app-at-a-time rule while Curvely/Wiretext/Wordroot/Healstack
 are still WAITING_FOR_REVIEW.
+
+## Braindump 2026-08-19
+- [ ] Focus the week on the game itself. It's been worked on for months and is still unplayable: buttons don't really work, it's unusable, or controls aren't obvious once you start.
+- [ ] Build a full test suite verifying a game can actually be played end to end — rules, resume, tutorial. The game must NOT play itself (see nyc no-autoplay rule); the suite is for verification only.
