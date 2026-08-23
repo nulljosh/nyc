@@ -197,3 +197,6 @@ are still WAITING_FOR_REVIEW.
 ## Braindump 2026-08-19
 - [ ] Focus the week on the game itself. It's been worked on for months and is still unplayable: buttons don't really work, it's unusable, or controls aren't obvious once you start.
 - [ ] Build a full test suite verifying a game can actually be played end to end — rules, resume, tutorial. The game must NOT play itself (see nyc no-autoplay rule); the suite is for verification only.
+
+## Ingested 2026-08-22
+- [ ] **App Store 5.6 suspension — now eligible to resubmit.** Apple held NYC Survive under Guideline 5.6 Developer Code of Conduct, "not eligible for resubmission before August 18th, 2026" (that date has passed as of 2026-08-22). Both iOS 1.0.0 and macOS 1.0 sit at UNRESOLVED_ISSUES / REJECTED. Before resubmitting Apple requires: every screen/interaction/piece of content thoughtfully designed and tested; no placeholder, unfinished, or unrefined content; stable and consistent across all supported devices; **and detailed notes of the improvements made, in the App Review Information Notes field.** Do a real quality pass first — a bare resubmit will be rejected again and repeat 5.6 violations escalate.
