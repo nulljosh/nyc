@@ -200,3 +200,11 @@ are still WAITING_FOR_REVIEW.
 
 ## Ingested 2026-08-22
 - [ ] **App Store 5.6 suspension — now eligible to resubmit.** Apple held NYC Survive under Guideline 5.6 Developer Code of Conduct, "not eligible for resubmission before August 18th, 2026" (that date has passed as of 2026-08-22). Both iOS 1.0.0 and macOS 1.0 sit at UNRESOLVED_ISSUES / REJECTED. Before resubmitting Apple requires: every screen/interaction/piece of content thoughtfully designed and tested; no placeholder, unfinished, or unrefined content; stable and consistent across all supported devices; **and detailed notes of the improvements made, in the App Review Information Notes field.** Do a real quality pass first — a bare resubmit will be rejected again and repeat 5.6 violations escalate.
+
+## 2026-08-23 — eligible again, but needs a quality pass not a resubmit
+Both iOS 1.0.0 and macOS 1.0 still read Rejected. The 5.6 suspension freeze expired 2026-08-18,
+so resubmission is allowed. Apple asked for: no placeholder/unfinished/unrefined content, every
+screen reviewed and tested, stability across all supported devices (iPad included), and detailed
+improvement notes in App Review Information -> Notes.
+- [ ] Do the actual quality pass before touching the submit button.
+- [ ] Write the improvement notes into App Review Information.
