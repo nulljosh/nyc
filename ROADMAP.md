@@ -235,3 +235,16 @@ improvement notes in App Review Information -> Notes.
 
 - [ ] **Hero animation pass** (Notes 2026-08-24). Reference: bookrank's hero animation. Subject: **a simulation of the game playing itself, animating in the background**. (Note: the "no autoplay" rule is about the *shipped game*, not a marketing hero — confirm with Josh before wiring anything that resembles a directive engine.)
 - [ ] **Listing is thin — only 1 of 10 screenshots.** The Notes screenshot behind this item showed both platforms REJECTED under 5.6.0 Developer Code of Conduct, but that is **stale**: re-probed 2026-08-24, **iOS 1.0.0 is WAITING_FOR_REVIEW and macOS 1.0.0 is IN_REVIEW** (submitted 07:44 that morning). Nothing to resubmit. What is stillreal from the note: only one iPhone 6.5" screenshot (a dark "TIMES SQUARE" menu shot) is uploaded, there are 0 app previews, and Promotional Text is empty. Build the real screenshot set for the next version rather than touching the in-review one.
+- [ ] **Hero: the game simulating itself on the landing page.** Not started — the other six apps
+      got their hero treatment 2026-08-24 but NYC's is a different shape (a canvas running a
+      render loop, not a wall of tiles) and was deferred for budget. Slot into
+      `nyc/landing/index.html` the same way: absolute layer at `z-index:0` behind
+      `.hero .container`, the `.hero::after` scrim above it, and a `prefers-reduced-motion`
+      bail-out. **Guardrail:** this is decoration on the marketing page only — it must not
+      resurrect the deleted directive/autoplay engine, and must not touch `Sources/`.
+- [ ] **Screenshots: the listing still has 1 of 10.** `TARGETED_DEVICE_FAMILY: "1,2"`
+      (`project.yml:48`) means the set needs iPhone 6.5", iPad 12.9", and macOS. Use the
+      `appstore-screenshots` skill with a dedicated `NYCSurvive-Shots` simulator. **Do not upload
+      until the current review clears** — as of 2026-08-24 iOS 1.0.0 is WAITING_FOR_REVIEW and
+      macOS 1.0.0 is IN_REVIEW, and uploading to a version under review can pull it back out of
+      the queue. Capture and commit now, push to ASC after.
