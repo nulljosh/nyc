@@ -230,3 +230,8 @@ improvement notes in App Review Information -> Notes.
       `SKSpriteNode` per tile up front. A reviewer could easily read that as a hang. Worth a loading
       state at minimum, chunked/lazy tile construction as the real fix. Relates to "Investigate slow
       startup/loading" above.
+
+## Ingested 2026-08-24
+
+- [ ] **Hero animation pass** (Notes 2026-08-24). Reference: bookrank's hero animation. Subject: **a simulation of the game playing itself, animating in the background**. (Note: the "no autoplay" rule is about the *shipped game*, not a marketing hero — confirm with Josh before wiring anything that resembles a directive engine.)
+- [ ] **ASC is super stale** (Notes 2026-08-24, screenshot). App 6782618198 — **iOS 1.0.0 REJECTED and macOS 1.0 REJECTED**, both under **5.6.0 Developer Code of Conduct**. Only **1 of 10 screenshots** uploaded (iPhone 6.5", a dark "TIMES SQUARE" menu shot); 0 app previews; Promotional Text empty. Needs: real screenshot set, metadata refresh, then re-submit.
