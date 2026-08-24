@@ -1,25 +1,170 @@
 import SwiftUI
+import SpriteKit
+#if canImport(UIKit)
+import UIKit
+#elseif canImport(AppKit)
+import AppKit
+#endif
+
+/// Theme resolution: an explicit player choice wins, otherwise follow the system.
+/// Mirrors `web/js/theme.js` so both clients behave the same way.
+enum ThemeChoice: String, CaseIterable, Sendable {
+    case system, light, dark
+
+    var label: String {
+        switch self {
+        case .system: "AUTO"
+        case .light: "LIGHT"
+        case .dark: "DARK"
+        }
+    }
+
+    /// What `.preferredColorScheme` should be handed. `nil` means "follow the system".
+    var colorScheme: ColorScheme? {
+        switch self {
+        case .system: nil
+        case .light: .light
+        case .dark: .dark
+        }
+    }
+}
+
+extension Notification.Name {
+    static let themeDidChange = Notification.Name("themeDidChange")
+}
 
 enum Theme {
+    private static let choiceKey = "nyc-theme"
+
+    static var choice: ThemeChoice {
+        get {
+            ThemeChoice(rawValue: UserDefaults.standard.string(forKey: choiceKey) ?? "") ?? .system
+        }
+        set {
+            UserDefaults.standard.set(newValue.rawValue, forKey: choiceKey)
+            NotificationCenter.default.post(name: .themeDidChange, object: nil)
+        }
+    }
+
+    /// SpriteKit resolves colors at assign time and does not re-resolve on a trait
+    /// change, so scenes read this flag and repaint on `.themeDidChange` instead of
+    /// holding dynamic colors.
+    static var isDark: Bool {
+        switch choice {
+        case .light: false
+        case .dark: true
+        case .system: systemIsDark
+        }
+    }
+
+    private static var systemIsDark: Bool {
+        #if canImport(UIKit)
+        UITraitCollection.current.userInterfaceStyle == .dark
+        #elseif canImport(AppKit)
+        NSApp?.effectiveAppearance.bestMatch(from: [.aqua, .darkAqua]) == .darkAqua
+        #else
+        true
+        #endif
+    }
+
+    /// A colour that resolves per appearance, so SwiftUI repaints it on a theme flip.
+    static func adaptive(light: Color, dark: Color) -> Color {
+        #if canImport(UIKit)
+        return Color(UIColor { $0.userInterfaceStyle == .dark ? UIColor(dark) : UIColor(light) })
+        #elseif canImport(AppKit)
+        return Color(NSColor(name: nil) {
+            $0.bestMatch(from: [.aqua, .darkAqua]) == .darkAqua ? NSColor(dark) : NSColor(light)
+        })
+        #else
+        return dark
+        #endif
+    }
+
+    // Accents. Vivid hues stay put; the ones used as *text* get a darker light-mode
+    // variant, because #ffd60a on white is unreadable.
     static let accent   = Color(red: 0.000, green: 0.443, blue: 0.890) // #0071e3
-    static let green    = Color(red: 0.188, green: 0.820, blue: 0.345) // #30d158
-    static let yellow   = Color(red: 1.000, green: 0.839, blue: 0.039) // #ffd60a
-    static let orange   = Color(red: 1.000, green: 0.624, blue: 0.039) // #ff9f0a
-    static let red      = Color(red: 1.000, green: 0.271, blue: 0.227) // #ff453a
-    static let pink     = Color(red: 1.000, green: 0.216, blue: 0.373) // #ff375f
-    static let cyan     = Color(red: 0.392, green: 0.820, blue: 1.000) // #64d2ff
-    static let bg       = Color(red: 0.039, green: 0.039, blue: 0.047) // #0a0a0c
-    static let text1    = Color.white.opacity(0.92)
-    static let text2    = Color.white.opacity(0.55)
-    static let text3    = Color.white.opacity(0.35)
-    static let glass    = Color.white.opacity(0.08)
-    static let border   = Color.white.opacity(0.18)
+    static let green    = adaptive(light: Color(red: 0.10, green: 0.60, blue: 0.24),
+                                   dark:  Color(red: 0.188, green: 0.820, blue: 0.345))
+    static let yellow   = adaptive(light: Color(red: 0.60, green: 0.44, blue: 0.00),
+                                   dark:  Color(red: 1.000, green: 0.839, blue: 0.039))
+    static let orange   = adaptive(light: Color(red: 0.72, green: 0.40, blue: 0.00),
+                                   dark:  Color(red: 1.000, green: 0.624, blue: 0.039))
+    static let red      = adaptive(light: Color(red: 0.80, green: 0.13, blue: 0.10),
+                                   dark:  Color(red: 1.000, green: 0.271, blue: 0.227))
+    static let pink     = adaptive(light: Color(red: 0.82, green: 0.06, blue: 0.24),
+                                   dark:  Color(red: 1.000, green: 0.216, blue: 0.373))
+    static let cyan     = adaptive(light: Color(red: 0.00, green: 0.42, blue: 0.60),
+                                   dark:  Color(red: 0.392, green: 0.820, blue: 1.000))
+
+    // Structure.
+    static let bg       = adaptive(light: Color(red: 0.949, green: 0.949, blue: 0.961),
+                                   dark:  Color(red: 0.039, green: 0.039, blue: 0.047))
+    static let text1    = adaptive(light: .black.opacity(0.90), dark: .white.opacity(0.92))
+    static let text2    = adaptive(light: .black.opacity(0.58), dark: .white.opacity(0.55))
+    static let text3    = adaptive(light: .black.opacity(0.38), dark: .white.opacity(0.35))
+    static let glass    = adaptive(light: .black.opacity(0.05), dark: .white.opacity(0.08))
+    static let border   = adaptive(light: .black.opacity(0.14), dark: .white.opacity(0.18))
+    /// Scrim behind modal panels — black in dark, softer in light so it does not read as a hole.
+    static let scrim    = adaptive(light: .black.opacity(0.18), dark: .black.opacity(0.35))
+
     static let radius: CGFloat = 8
     static let radiusLg: CGFloat = 12
     static let radiusPill: CGFloat = 100
 
     static func vitalColor(_ value: Double) -> Color {
         value > 60 ? green : value > 30 ? yellow : red
+    }
+}
+
+/// The SpriteKit half of the palette. Scenes read these at paint time and repaint on
+/// `.themeDidChange`; the tile artwork itself is night-styled in both themes.
+enum ScenePalette {
+    static var background: SKColor {
+        Theme.isDark
+            ? SKColor(red: 0.04, green: 0.04, blue: 0.05, alpha: 1)
+            : SKColor(red: 0.90, green: 0.91, blue: 0.93, alpha: 1)
+    }
+
+    static var title: SKColor {
+        Theme.isDark
+            ? SKColor(red: 0.39, green: 0.82, blue: 1.00, alpha: 1)
+            : SKColor(red: 0.00, green: 0.42, blue: 0.60, alpha: 1)
+    }
+
+    static var accentWarm: SKColor {
+        Theme.isDark
+            ? SKColor(red: 1.00, green: 0.84, blue: 0.04, alpha: 1)
+            : SKColor(red: 0.60, green: 0.44, blue: 0.00, alpha: 1)
+    }
+
+    static var accentHot: SKColor {
+        Theme.isDark
+            ? SKColor(red: 1.00, green: 0.22, blue: 0.37, alpha: 1)
+            : SKColor(red: 0.82, green: 0.06, blue: 0.24, alpha: 1)
+    }
+
+    static var muted: SKColor {
+        Theme.isDark
+            ? SKColor(red: 0.60, green: 0.60, blue: 0.65, alpha: 1)
+            : SKColor(red: 0.36, green: 0.36, blue: 0.40, alpha: 1)
+    }
+
+    static var disabled: SKColor {
+        Theme.isDark
+            ? SKColor(red: 0.40, green: 0.40, blue: 0.45, alpha: 1)
+            : SKColor(red: 0.58, green: 0.58, blue: 0.62, alpha: 1)
+    }
+
+    static var panelFill: SKColor {
+        Theme.isDark
+            ? SKColor(red: 0.10, green: 0.15, blue: 0.20, alpha: 0.90)
+            : SKColor(red: 1.00, green: 1.00, blue: 1.00, alpha: 0.92)
+    }
+
+    static var overlayScrim: SKColor {
+        Theme.isDark
+            ? SKColor(white: 0.0, alpha: 0.70)
+            : SKColor(white: 0.0, alpha: 0.45)
     }
 }
 

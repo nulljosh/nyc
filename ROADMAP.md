@@ -109,7 +109,10 @@ Store Connect." NYC Survive's review-details `notes` field is currently empty (v
 `asc review details-for-version`). Curvely and Nullfolio have notes; NYC Survive and Wiretext do not.
 
 ## From Apple Notes (imported 2026-08-11)
-- [ ] Add light mode
+- [x] Add light mode — 2026-08-24. `Theme` now resolves an adaptive palette (Settings > Appearance:
+      AUTO/LIGHT/DARK, persisted as `nyc-theme`, mirroring `web/js/theme.js`); `ScenePalette` covers the
+      SpriteKit menu + scene background, which repaint via a per-frame check because SpriteKit resolves
+      colours at assign time. Verified on iPhone 17 Pro sim in both appearances.
 - [ ] Build a landing/marketing page (currently app only, no preview)
 
 > Resume note (2026-08-11): a `wip: partial work from /work notes ingest` commit holds unfinished, unverified changes for the items above. Review `git show HEAD` before building on it — it was committed mid-flight, not reviewed, and is unpushed.
@@ -126,8 +129,11 @@ ASC yet on purpose — there is nothing truthful to claim until the work below i
 
 Before resubmitting:
 
-- [ ] Fix something real, and write down what. No placeholder, unfinished, or unrefined content
-      anywhere in the app.
+- [x] Fix something real, and write down what — 2026-08-24. Two things: (1) light mode, above;
+      (2) the resource bar wrapped mid-word on a compact iPhone width ("FOO / D", "CAS / H", "1 / 0") —
+      five pills plus the colonist count overflowed 402pt. Word labels now drop on compact widths
+      (icon + colour already identify the resource, and the word moves to the accessibility label)
+      and every Text is `.fixedSize()` so nothing can wrap again. Both are in the review notes.
 - [ ] Walk every screen and interaction once, on device. 5.6 is a quality judgement, not a
       spec violation — the reviewer decided the app felt unfinished.
 - [ ] Test on **every** device family the app is offered on. If `TARGETED_DEVICE_FAMILY` is
@@ -208,3 +214,15 @@ screen reviewed and tested, stability across all supported devices (iPad include
 improvement notes in App Review Information -> Notes.
 - [ ] Do the actual quality pass before touching the submit button.
 - [ ] Write the improvement notes into App Review Information.
+
+## From /work start (imported 2026-08-24)
+- [ ] Light mode covers app chrome only — the tile artwork (`tile_*` textures in `Resources/`) is
+      night-styled and is used unchanged in both themes, so the light theme reads as "light UI over a
+      night city". `TileType.baseColor` is now dead in practice for textured tiles (it is only the
+      fallback when a texture is missing). A true light world needs a second tile set, i.e. art, not code.
+- [ ] Slow startup confirmed on device, not just suspected: tapping NEW GAME on an iPhone 17 Pro sim
+      takes ~10-15s to reach the game, with no spinner or progress feedback — the screen simply sits on
+      the menu. `GameScene.didMove` runs `WorldGenerator.generate()` and then `TileMap` builds one
+      `SKSpriteNode` per tile up front. A reviewer could easily read that as a hang. Worth a loading
+      state at minimum, chunked/lazy tile construction as the real fix. Relates to "Investigate slow
+      startup/loading" above.

@@ -16,14 +16,14 @@ final class MenuScene: SKScene {
     private var loadMenuNodes: [SKNode] = []
 
     override func didMove(to view: SKView) {
-        backgroundColor = SKColor(red: 0.04, green: 0.04, blue: 0.05, alpha: 1)
+        backgroundColor = ScenePalette.background
 
         let title = SKLabelNode(fontNamed: PlatformFont.systemFont(ofSize: 14, weight: .bold).fontName)
         // Must match the App Store name — a title screen that says something else
         // reads as the wrong app to a reviewer (see wiki: app-renaming).
         title.text = "NYC SURVIVE"
         title.fontSize = 48
-        title.fontColor = SKColor(red: 0.39, green: 0.82, blue: 1.0, alpha: 1)
+        title.fontColor = ScenePalette.title
         title.position = CGPoint(x: size.width / 2, y: size.height * 0.65)
         title.horizontalAlignmentMode = .center
         addChild(title)
@@ -31,7 +31,7 @@ final class MenuScene: SKScene {
         let subtitle = SKLabelNode(fontNamed: PlatformFont.systemFont(ofSize: 14).fontName)
         subtitle.text = "SURVIVAL SIMULATOR"
         subtitle.fontSize = 20
-        subtitle.fontColor = SKColor(red: 1.0, green: 0.22, blue: 0.37, alpha: 1)
+        subtitle.fontColor = ScenePalette.accentHot
         subtitle.position = CGPoint(x: size.width / 2, y: size.height * 0.55)
         subtitle.horizontalAlignmentMode = .center
         addChild(subtitle)
@@ -39,7 +39,7 @@ final class MenuScene: SKScene {
         let newGame = SKLabelNode(fontNamed: PlatformFont.systemFont(ofSize: 14, weight: .bold).fontName)
         newGame.text = "> NEW GAME"
         newGame.fontSize = 24
-        newGame.fontColor = SKColor(red: 1.0, green: 0.84, blue: 0.04, alpha: 1)
+        newGame.fontColor = ScenePalette.accentWarm
         newGame.position = CGPoint(x: size.width / 2, y: size.height * 0.38)
         newGame.horizontalAlignmentMode = .center
         newGame.name = "newGame"
@@ -48,7 +48,7 @@ final class MenuScene: SKScene {
         let loadGame = SKLabelNode(fontNamed: PlatformFont.systemFont(ofSize: 14, weight: .bold).fontName)
         loadGame.text = "> LOAD GAME"
         loadGame.fontSize = 24
-        loadGame.fontColor = SKColor(red: 0.39, green: 0.82, blue: 1.0, alpha: 1)
+        loadGame.fontColor = ScenePalette.title
         loadGame.position = CGPoint(x: size.width / 2, y: size.height * 0.30)
         loadGame.horizontalAlignmentMode = .center
         loadGame.name = "loadGame"
@@ -57,7 +57,7 @@ final class MenuScene: SKScene {
         let quit = SKLabelNode(fontNamed: PlatformFont.systemFont(ofSize: 14, weight: .bold).fontName)
         quit.text = "> QUIT"
         quit.fontSize = 24
-        quit.fontColor = SKColor(red: 0.6, green: 0.6, blue: 0.65, alpha: 1)
+        quit.fontColor = ScenePalette.muted
         quit.position = CGPoint(x: size.width / 2, y: size.height * 0.22)
         quit.horizontalAlignmentMode = .center
         quit.name = "quit"
@@ -76,7 +76,7 @@ final class MenuScene: SKScene {
 
         // Dim overlay
         let overlay = SKShapeNode(rect: CGRect(origin: .zero, size: size))
-        overlay.fillColor = SKColor(red: 0, green: 0, blue: 0, alpha: 0.7)
+        overlay.fillColor = ScenePalette.overlayScrim
         overlay.strokeColor = .clear
         overlay.name = "loadOverlay"
         overlay.zPosition = 10
@@ -86,7 +86,7 @@ final class MenuScene: SKScene {
         let header = SKLabelNode(fontNamed: PlatformFont.systemFont(ofSize: 14, weight: .bold).fontName)
         header.text = "LOAD GAME"
         header.fontSize = 28
-        header.fontColor = SKColor(red: 0.39, green: 0.82, blue: 1.0, alpha: 1)
+        header.fontColor = ScenePalette.title
         header.position = CGPoint(x: size.width / 2, y: size.height * 0.72)
         header.horizontalAlignmentMode = .center
         header.zPosition = 11
@@ -100,8 +100,8 @@ final class MenuScene: SKScene {
             let slotData = slots[i]
 
             let bg = SKShapeNode(rect: CGRect(x: size.width / 2 - 200, y: slotY - 20, width: 400, height: 50), cornerRadius: 0)
-            bg.fillColor = SKColor(red: 0.1, green: 0.15, blue: 0.2, alpha: 0.9)
-            bg.strokeColor = SKColor(red: 0.39, green: 0.82, blue: 1.0, alpha: 0.3)
+            bg.fillColor = ScenePalette.panelFill
+            bg.strokeColor = ScenePalette.title.withAlphaComponent(0.3)
             bg.lineWidth = 1
             bg.name = "loadSlot\(i + 1)"
             bg.zPosition = 11
@@ -121,10 +121,10 @@ final class MenuScene: SKScene {
                 formatter.dateFormat = "MMM d, HH:mm"
                 let dateStr = formatter.string(from: slot.timestamp)
                 label.text = "SLOT \(i + 1) -- Day \(slot.dayCount) | \(slot.colonistCount) alive | \(dateStr)"
-                label.fontColor = SKColor(red: 1.0, green: 0.84, blue: 0.04, alpha: 1)
+                label.fontColor = ScenePalette.accentWarm
             } else {
                 label.text = "SLOT \(i + 1) -- EMPTY --"
-                label.fontColor = SKColor(red: 0.4, green: 0.4, blue: 0.45, alpha: 1)
+                label.fontColor = ScenePalette.disabled
             }
 
             addChild(label)
@@ -134,7 +134,7 @@ final class MenuScene: SKScene {
         let back = SKLabelNode(fontNamed: PlatformFont.systemFont(ofSize: 14, weight: .bold).fontName)
         back.text = "[ ESC TO GO BACK ]"
         back.fontSize = 14
-        back.fontColor = SKColor(red: 0.5, green: 0.5, blue: 0.55, alpha: 1)
+        back.fontColor = ScenePalette.muted
         back.position = CGPoint(x: size.width / 2, y: size.height * 0.18)
         back.horizontalAlignmentMode = .center
         back.zPosition = 11

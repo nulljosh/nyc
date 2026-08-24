@@ -23,6 +23,7 @@
 		2FFE462F497A5E7AC2767511 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D9BBA495724A89451770D3 /* GameScene.swift */; };
 		3219F3B03FF203FEA6A75202 /* NYCSurvive.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 6917EAE44C0DC835136B5B42 /* NYCSurvive.entitlements */; };
 		33BDF5438AE0765E5D9BA621 /* MiniMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222B6FD5D7525CD8EB9A406E /* MiniMap.swift */; };
+		34AF3DA028D941BFDBF97B73 /* View+Glass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31054374AC2BC83D3D7B8BC /* View+Glass.swift */; };
 		3688634442DCC70157180613 /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A62DD5F691C3480F2FA3607 /* GameState.swift */; };
 		3BA2869689D89410C64D7B02 /* TimeSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C698EA5D829B3189276D26 /* TimeSystem.swift */; };
 		41C57ED1757B8A63A7F95D51 /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB8E59CA64AAC68D9271EFF /* Resource.swift */; };
@@ -73,6 +74,7 @@
 		F13FF7708B9A5BAD5BDCCA7B /* Pathfinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E4A32F1DC7BC7E89470C44 /* Pathfinder.swift */; };
 		F7DE54BD562CAE78DDC8B997 /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A62DD5F691C3480F2FA3607 /* GameState.swift */; };
 		F7E112B33420143AC3A24BF3 /* ColonistModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE4C6EF54870683E05DBBAD /* ColonistModel.swift */; };
+		F8C4900DE5ECFB8B28A9B56F /* View+Glass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31054374AC2BC83D3D7B8BC /* View+Glass.swift */; };
 		FA62B878417B239715A57AE0 /* BuildMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0544F474728B842695609312 /* BuildMenu.swift */; };
 		FB2E35CB352E0CF777B5D3DF /* MiniMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222B6FD5D7525CD8EB9A406E /* MiniMap.swift */; };
 		FC42B363B48C0913038F4412 /* SaveManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064B2AEBC8EAAE1BD24D5090 /* SaveManager.swift */; };
@@ -123,6 +125,7 @@
 		AE0D7149C43BC846540B8E3C /* Building.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Building.swift; sourceTree = "<group>"; };
 		BDEEE672F22D8FEEA9446954 /* JobSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobSystem.swift; sourceTree = "<group>"; };
 		BEA3839862AB73E3B0E324B9 /* NYCSurviveApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NYCSurviveApp.swift; sourceTree = "<group>"; };
+		C31054374AC2BC83D3D7B8BC /* View+Glass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Glass.swift"; sourceTree = "<group>"; };
 		D76C33D384D2910BBCF73190 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		EDE4C6EF54870683E05DBBAD /* ColonistModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColonistModel.swift; sourceTree = "<group>"; };
 		F0D9BBA495724A89451770D3 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
@@ -239,6 +242,7 @@
 				D76C33D384D2910BBCF73190 /* SettingsView.swift */,
 				502457C288C5D0DB8F2216AF /* Theme.swift */,
 				5691499E000399842B3CB30D /* TutorialView.swift */,
+				C31054374AC2BC83D3D7B8BC /* View+Glass.swift */,
 			);
 			path = HUD;
 			sourceTree = "<group>";
@@ -461,6 +465,7 @@
 				5CDF9391D482743E373781EB /* TileType.swift in Sources */,
 				3BA2869689D89410C64D7B02 /* TimeSystem.swift in Sources */,
 				9A27F45B2E54BE052A678994 /* TutorialView.swift in Sources */,
+				F8C4900DE5ECFB8B28A9B56F /* View+Glass.swift in Sources */,
 				B15EE985FE68D1FE40C17708 /* WorldGenerator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -499,6 +504,7 @@
 				D45CA62ABCC9D812C430AF5B /* TileType.swift in Sources */,
 				2DAFE8EB0D7D122AAFA98BED /* TimeSystem.swift in Sources */,
 				6EC0624E3D9689B1973CA7D9 /* TutorialView.swift in Sources */,
+				34AF3DA028D941BFDBF97B73 /* View+Glass.swift in Sources */,
 				2599EFAB00A46E953D8641FC /* WorldGenerator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

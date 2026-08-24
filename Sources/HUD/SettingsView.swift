@@ -2,10 +2,11 @@ import SwiftUI
 
 struct SettingsView: View {
     @Bindable var gameState: GameState
+    @State private var themeChoice = Theme.choice
 
     var body: some View {
         ZStack(alignment: .trailing) {
-            Color.black.opacity(0.35)
+            Theme.scrim
                 .ignoresSafeArea()
                 .onTapGesture { close() }
 
@@ -63,6 +64,22 @@ struct SettingsView: View {
                 }
                 .toggleStyle(.switch)
                 .tint(Theme.accent)
+
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("Appearance")
+                        .font(.system(size: 13))
+                        .foregroundStyle(Theme.text1)
+                    Picker("Appearance", selection: $themeChoice) {
+                        ForEach(ThemeChoice.allCases, id: \.self) { choice in
+                            Text(choice.label).tag(choice)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                    .labelsHidden()
+                    .onChange(of: themeChoice) { _, new in
+                        Theme.choice = new
+                    }
+                }
 
                 Divider().background(Theme.border)
 

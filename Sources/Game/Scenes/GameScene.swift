@@ -30,6 +30,9 @@ final class GameScene: SKScene {
     // For loading from save
     var savedData: SaveData?
 
+    /// Which theme the scene's colours were last painted for; see `update(_:)`.
+    private var paintedDark = Theme.isDark
+
     init(gameState: GameState) {
         self.gameState = gameState
         super.init(size: CGSize(width: 4096, height: 4096))
@@ -40,7 +43,7 @@ final class GameScene: SKScene {
     required init?(coder: NSCoder) { fatalError() }
 
     override func didMove(to view: SKView) {
-        backgroundColor = SKColor(red: 0.04, green: 0.04, blue: 0.05, alpha: 1)
+        backgroundColor = ScenePalette.background
 
         let grid: [[TileType]]
         if let save = savedData {
@@ -159,6 +162,15 @@ final class GameScene: SKScene {
     override func update(_ currentTime: TimeInterval) {
         let dt = lastUpdateTime == 0 ? 0 : currentTime - lastUpdateTime
         lastUpdateTime = currentTime
+
+        // SpriteKit resolves colours at assign time, so the scene has to repaint itself.
+        // Polling one Bool per frame catches every route into a theme change (our own
+        // settings toggle *and* the system flipping appearance) without wiring observers
+        // for each. ponytail: a Bool compare per frame, swap for an observer if it ever shows up in a profile.
+        if paintedDark != Theme.isDark {
+            paintedDark = Theme.isDark
+            backgroundColor = ScenePalette.background
+        }
 
         cameraController.update(deltaTime: dt)
 
@@ -295,8 +307,8 @@ final class GameScene: SKScene {
             height: abs(end.y - start.y)
         )
         let node = SKShapeNode(rect: rect)
-        node.strokeColor = SKColor(red: 0.39, green: 0.82, blue: 1.0, alpha: 0.8)
-        node.fillColor = SKColor(red: 0.39, green: 0.82, blue: 1.0, alpha: 0.15)
+        node.strokeColor = ScenePalette.title.withAlphaComponent(0.8)
+        node.fillColor = ScenePalette.title.withAlphaComponent(0.15)
         node.lineWidth = 2
         node.zPosition = 100
         addChild(node)
@@ -392,7 +404,7 @@ final class GameScene: SKScene {
             // Pulse circles around colonists
             for (_, node) in colonistNodes {
                 let pulse = SKShapeNode(circleOfRadius: 20)
-                pulse.strokeColor = SKColor(red: 1.0, green: 0.84, blue: 0.04, alpha: 0.9)
+                pulse.strokeColor = ScenePalette.accentWarm.withAlphaComponent(0.9)
                 pulse.fillColor = .clear
                 pulse.lineWidth = 2
                 pulse.position = node.position

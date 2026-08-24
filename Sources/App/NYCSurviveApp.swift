@@ -3,6 +3,7 @@ import SpriteKit
 
 @main
 struct NYCSurviveApp: App {
+    @State private var themeChoice = Theme.choice
     @State private var gameState = GameState()
     @State private var showMenu = true
     @State private var loadSlot: Int? = nil
@@ -33,7 +34,10 @@ struct NYCSurviveApp: App {
                 }
             }
             .frame(minWidth: 1280, minHeight: 800)
-            .preferredColorScheme(.dark)
+            .preferredColorScheme(themeChoice.colorScheme)
+            .onReceive(NotificationCenter.default.publisher(for: .themeDidChange)) { _ in
+                themeChoice = Theme.choice
+            }
         }
         .defaultSize(width: 1280, height: 800)
     }
