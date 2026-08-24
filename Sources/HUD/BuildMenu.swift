@@ -63,7 +63,7 @@ struct BuildMenu: View {
         }
         .padding(10)
         .frame(width: 200)
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: Theme.radiusLg))
+        .liquidGlass(in: RoundedRectangle(cornerRadius: Theme.radiusLg), fallback: .ultraThinMaterial)
         .overlay(RoundedRectangle(cornerRadius: Theme.radiusLg).stroke(Theme.border, lineWidth: 1))
     }
 }

@@ -141,7 +141,7 @@ struct HUDView: View {
                 }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 8)
-                .background(.ultraThinMaterial)
+                .liquidGlass(in: Rectangle(), fallback: .ultraThinMaterial)
                 .overlay(alignment: .top) { Theme.border.frame(height: 1) }
                 .allowsHitTesting(true)
             }
