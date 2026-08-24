@@ -100,9 +100,15 @@ WAITING_FOR_REVIEW: Curvely iOS 1.2.0, Wiretext iOS 1.1.0, Wordroot iOS 1.0, Hea
 **Held pending those four verdicts — never a batch:** Sparkjar iOS+Mac, BCGD iOS+Mac, Wordroot Mac,
 Lexly Mac. All six are `asc validate` clean (0 errors, 0 blocking) with a VALID build attached, so
 each is one `asc review submit` away. Do not submit until the in-flight verdicts land.
-- [ ] NYC Survive iOS 1.0.0 + macOS 1.0 SUSPENDED under 5.6 (6782618198). Unlike the others this is a real app (35 Swift files / 3,615 lines) and was likely swept up in the account-level action. Keep it. Resubmit LAST, after the thin apps are withdrawn, with detailed App Review notes describing the improvements.
+- [x] NYC Survive iOS 1.0.0 + macOS 1.0.0 RESUBMITTED 2026-08-24, both WAITING_FOR_REVIEW (build 7).
+      Old rejected submissions cancelled first (they sat in UNRESOLVED_ISSUES and blocked a new one).
+      Original note:
+- [ ] (historical) iOS 1.0.0 + macOS 1.0 SUSPENDED under 5.6 (6782618198). Unlike the others this is a real app (35 Swift files / 3,615 lines) and was likely swept up in the account-level action. Keep it. Resubmit LAST, after the thin apps are withdrawn, with detailed App Review notes describing the improvements.
 
 ## 2026-08-10 — App Review notes are EMPTY, and 5.6 requires them
+> RESOLVED 2026-08-24: this was stale — notes already existed on both platforms. They have now been
+> extended with an "Improvements in this build (build 7)" section naming light mode and the resource
+> bar fix, as 5.6 requires. Detail IDs: iOS 9d5b49ba-…, macOS d7fd2481-….
 Apple's 5.6 letter lists this as a required action before resubmitting: "Include detailed notes of
 the improvements made to the app in the Notes field of the App Review Information section in App
 Store Connect." NYC Survive's review-details `notes` field is currently empty (verified via
@@ -207,6 +213,13 @@ improvement notes in App Review Information -> Notes.
 - [ ] Write the improvement notes into App Review Information.
 
 ## From /work start (imported 2026-08-24)
+- [ ] macOS marketing version drifted from ASC: `project.yml` carries one `MARKETING_VERSION` (1.0.0)
+      for both targets, but the Mac ASC row was still `1.0`, so a 1.0.0 build could not attach. Fixed on
+      2026-08-24 by updating the ASC row to 1.0.0 (`asc versions update`), not by splitting the version
+      per target — keep them aligned when bumping.
+- [ ] `asc xcode export` only writes `.ipa`; the macOS `.pkg` needs raw `xcodebuild -exportArchive`
+      with the root `ExportOptions.plist`. Worth wiring an `.asc/workflow.json` for this repo — nyc is
+      the one app not covered by `asc workflow run ship-ios`.
 - [ ] Light mode covers app chrome only — the tile artwork (`tile_*` textures in `Resources/`) is
       night-styled and is used unchanged in both themes, so the light theme reads as "light UI over a
       night city". `TileType.baseColor` is now dead in practice for textured tiles (it is only the
