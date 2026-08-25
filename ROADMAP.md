@@ -242,3 +242,14 @@ improvement notes in App Review Information -> Notes.
       until the current review clears** — as of 2026-08-24 iOS 1.0.0 is WAITING_FOR_REVIEW and
       macOS 1.0.0 is IN_REVIEW, and uploading to a version under review can pull it back out of
       the queue. Capture and commit now, push to ASC after.
+- [ ] **Original name for the game.** "NYC Survive" is descriptive, not a name. Use the
+      `asc-name-creator` skill to find an available single-word App Store name, same process as
+      the Echo→Voxprint rename.
+- [ ] **Playthrough script.** A script that plays the game start to finish, for verification
+      only. Must live outside `Sources/` and stay opt-in (server-driven or explicitly invoked),
+      never wired into the app — see the no-autoplay rule below.
+- [ ] **Confirm autoplay is gone.** Re-verify the game never plays itself in a normal session;
+      the directive engine was deleted 2026-07-02 and must not have crept back.
+- [ ] **Document the controls** in a markdown file, and surface them to the player when a new
+      game starts (tutorial or first-run card) — right now the controls aren't obvious once you
+      start, which is the top complaint.
