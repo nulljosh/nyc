@@ -100,7 +100,7 @@ WAITING_FOR_REVIEW: Curvely iOS 1.2.0, Wiretext iOS 1.1.0, Wordroot iOS 1.0, Hea
 **Held pending those four verdicts — never a batch:** Sparkjar iOS+Mac, BCGD iOS+Mac, Wordroot Mac,
 Lexly Mac. All six are `asc validate` clean (0 errors, 0 blocking) with a VALID build attached, so
 each is one `asc review submit` away. Do not submit until the in-flight verdicts land.
-- [ ] (historical) iOS 1.0.0 + macOS 1.0 SUSPENDED under 5.6 (6782618198). Unlike the others this is a real app (35 Swift files / 3,615 lines) and was likely swept up in the account-level action. Keep it. Resubmit LAST, after the thin apps are withdrawn, with detailed App Review notes describing the improvements.
+- **CLOSED 2026-08-25** (resolved — the 5.6 hold expired and both platforms were resubmitted; iOS 1.0.0 is WAITING_FOR_REVIEW and macOS 1.0.0 is IN_REVIEW as of 2026-08-25). Was: (historical) iOS 1.0.0 + macOS 1.0 SUSPENDED under 5.6 (6782618198). Unlike the others this is a real app (35 Swift files / 3,615 lines) and was likely swept up in the account-level action. Keep it. Resubmit LAST, after the thin apps are withdrawn, with detailed App Review notes describing the improvements.
 
 ## 2026-08-10 — App Review notes are EMPTY, and 5.6 requires them
 > RESOLVED 2026-08-24: this was stale — notes already existed on both platforms. They have now been
@@ -173,7 +173,7 @@ same issues risk removal from the Developer Program.
 no 2FA prompt was ever reached. The verbatim reason recorded 2026-08-12 (Guideline 5.6,
 account-level, not an app-specific defect) is still the best information we have.
 
-- [ ] Resubmit NYC iOS 1.0.0 + macOS 1.0 once the four in-flight verdicts land. Signing cert is
+- **CLOSED 2026-08-25** (done — both were resubmitted; iOS WAITING_FOR_REVIEW, macOS IN_REVIEW, verified 2026-08-25). Was: Resubmit NYC iOS 1.0.0 + macOS 1.0 once the four in-flight verdicts land. Signing cert is
       NO LONGER a blocker (verified 2026-08-19, see note above — valid identity + private key).
       The 5.6 improvement notes are already written on both platforms, so once unblocked this is
       a build + `asc review submit` away. The tutorial fix above is a genuine, describable
@@ -199,7 +199,7 @@ are still WAITING_FOR_REVIEW.
 - [ ] Build a full test suite verifying a game can actually be played end to end — rules, resume, tutorial. The game must NOT play itself (see nyc no-autoplay rule); the suite is for verification only.
 
 ## Ingested 2026-08-22
-- [ ] **App Store 5.6 suspension — now eligible to resubmit.** Apple held NYC Survive under Guideline 5.6 Developer Code of Conduct, "not eligible for resubmission before August 18th, 2026" (that date has passed as of 2026-08-22). Both iOS 1.0.0 and macOS 1.0 sit at UNRESOLVED_ISSUES / REJECTED. Before resubmitting Apple requires: every screen/interaction/piece of content thoughtfully designed and tested; no placeholder, unfinished, or unrefined content; stable and consistent across all supported devices; **and detailed notes of the improvements made, in the App Review Information Notes field.** Do a real quality pass first — a bare resubmit will be rejected again and repeat 5.6 violations escalate.
+- **CLOSED 2026-08-25** (done — resubmitted after the hold expired; both platforms are in the review queue as of 2026-08-25). Was: **App Store 5.6 suspension — now eligible to resubmit.** Apple held NYC Survive under Guideline 5.6 Developer Code of Conduct, "not eligible for resubmission before August 18th, 2026" (that date has passed as of 2026-08-22). Both iOS 1.0.0 and macOS 1.0 sit at UNRESOLVED_ISSUES / REJECTED. Before resubmitting Apple requires: every screen/interaction/piece of content thoughtfully designed and tested; no placeholder, unfinished, or unrefined content; stable and consistent across all supported devices; **and detailed notes of the improvements made, in the App Review Information Notes field.** Do a real quality pass first — a bare resubmit will be rejected again and repeat 5.6 violations escalate.
 
 ## 2026-08-23 — eligible again, but needs a quality pass not a resubmit
 Both iOS 1.0.0 and macOS 1.0 still read Rejected. The 5.6 suspension freeze expired 2026-08-18,
