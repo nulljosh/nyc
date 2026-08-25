@@ -100,9 +100,6 @@ WAITING_FOR_REVIEW: Curvely iOS 1.2.0, Wiretext iOS 1.1.0, Wordroot iOS 1.0, Hea
 **Held pending those four verdicts — never a batch:** Sparkjar iOS+Mac, BCGD iOS+Mac, Wordroot Mac,
 Lexly Mac. All six are `asc validate` clean (0 errors, 0 blocking) with a VALID build attached, so
 each is one `asc review submit` away. Do not submit until the in-flight verdicts land.
-- [x] NYC Survive iOS 1.0.0 + macOS 1.0.0 RESUBMITTED 2026-08-24, both WAITING_FOR_REVIEW (build 7).
-      Old rejected submissions cancelled first (they sat in UNRESOLVED_ISSUES and blocked a new one).
-      Original note:
 - [ ] (historical) iOS 1.0.0 + macOS 1.0 SUSPENDED under 5.6 (6782618198). Unlike the others this is a real app (35 Swift files / 3,615 lines) and was likely swept up in the account-level action. Keep it. Resubmit LAST, after the thin apps are withdrawn, with detailed App Review notes describing the improvements.
 
 ## 2026-08-10 — App Review notes are EMPTY, and 5.6 requires them
@@ -233,7 +230,10 @@ improvement notes in App Review Information -> Notes.
 
 ## Ingested 2026-08-24
 
-- [x] **Hero animation — city-grid backdrop.** DONE 2026-08-24 (commit c35060e). Cropped a seamless tile from the existing iPad gameplay screenshot into landing/hero-city.png (8KB), added a slow CSS drift animation (90s infinite), layered behind a radial+linear scrim. Deliberate note: drifting-tile wall instead of a full game simulation (the "canvas running a render loop" design was deferred for budget). Deployed live on Cloudflare Pages.
+- [ ] Come up with an original name for the game (currently just "NYC").
+- [ ] Write a script that plays through the whole game end to end (regression walkthrough).
+- [ ] Confirm autoplay is disabled and removed. Autoplay should only run when connected via a server, or when the playthrough script above is run explicitly. (Directive engine was deleted 2026-07 — this is a verification pass, not a rebuild.)
+- [ ] Document the controls in a markdown file, and surface them to the player when they start a new game (tutorial or a controls screen).
 - [ ] **Listing is thin — only 1 of 10 screenshots.** The Notes screenshot behind this item showed both platforms REJECTED under 5.6.0 Developer Code of Conduct, but that is **stale**: re-probed 2026-08-24, **iOS 1.0.0 is WAITING_FOR_REVIEW and macOS 1.0.0 is IN_REVIEW** (submitted 07:44 that morning). Nothing to resubmit. What is stillreal from the note: only one iPhone 6.5" screenshot (a dark "TIMES SQUARE" menu shot) is uploaded, there are 0 app previews, and Promotional Text is empty. Build the real screenshot set for the next version rather than touching the in-review one.
 - [ ] **Hero: game simulation (full version, deferred).** Future iteration: a canvas running a render loop with the game simulating itself, instead of the current static drifting-tile wall. Slot into `nyc/landing/index.html` the same way: absolute layer at `z-index:0` behind `.hero .container`, the `.hero::after` scrim above it, and a `prefers-reduced-motion` bail-out. **Guardrail:** this is decoration on the marketing page only — it must not resurrect the deleted directive/autoplay engine, and must not touch `Sources/`.
 - [ ] **Screenshots: the listing still has 1 of 10.** `TARGETED_DEVICE_FAMILY: "1,2"`
