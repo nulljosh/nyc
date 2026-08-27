@@ -1,6 +1,6 @@
 # NYC Survive Technical Whitepaper
 
-**v1.3.1** | July 2026
+**v1.3.1** | August 2026
 
 NYC Survive is a Factorio-style production game for iOS and macOS: place
 buildings on a grid, chain them into production lines, and keep the city fed.
@@ -43,8 +43,8 @@ target is `Sources/` only.
 | Platform | Status |
 |---|---|
 | macOS | Builds clean (Xcode 16+, macOS 15+) |
-| iOS | Build 5 on ASC, processed clean; submission blocked on 3 ASC-web-only items (App Privacy answers, privacy policy URL, iPad 12.9" screenshot) |
-| Web | Port recovered to `web/`, deploys via Vercel |
+| iOS | Build on ASC, processed clean; submission still gated on the ASC-web-only items (App Privacy answers, privacy policy URL, iPad 12.9" screenshot) |
+| Web | Port recovered to `web/`, deploys to Cloudflare Pages (the Vercel project was deleted 2026-08-17) |
 
 ## Roadmap
 
