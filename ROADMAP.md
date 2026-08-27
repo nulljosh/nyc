@@ -260,10 +260,6 @@ Done. 6 tools: `get_game_state`, `list_saves`, `start_game`, `load_save`, `save_
 
 See `docs/API.md` for the full tool table, linked from the README.
 
-## From Apple Notes (imported 2026-08-27)
-- [x] NYC Survive iOS submission issue — **already resolved before this pass.** Submission `204645a5` is COMPLETE; it was the Guideline 2.3.3 rejection (the 6.5" set was the title/menu screen, which Apple counts as a splash). Fixed in commit 6d76d33 by replacing it with three captured gameplay shots, and iOS 1.0.0 is back in the queue as submission `ee6f14f3` (WAITING_FOR_REVIEW since 2026-08-26). No further action was needed.
-- [x] macOS App Store screenshots replaced 2026-08-27. The live 1.0.0 shot (`mac-1280x800.png`) was a raw full-desktop capture — Claude Code terminal, Chrome tabs, dock and menu bar all visible, with a small NYC Survive window showing only the *title screen*. Screenshots cannot be edited on a `READY_FOR_DISTRIBUTION` version (the API rejects it with "An attribute value is not acceptable for the current resource state"), so this shipped as **macOS 1.0.1, build 8, submitted for review 2026-08-27** (submission `f79f06c2-1b44-405e-9d43-9b1034a39cf0`). Three clean 1280x800 window-only captures now in the set: colony map, colonist status panel, build menu. Note `asc versions create --copy-metadata-from` silently copies the old screenshots into the new set too — the stale desktop shot had to be deleted from 1.0.1 explicitly after the upload.
-
 ## macOS screenshot capture — how to redo it (2026-08-27)
 
 `Sources/App/NYCSurviveApp.swift` has a `-shot N` launch argument that skips the menu into a fresh
