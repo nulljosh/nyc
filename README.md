@@ -123,3 +123,9 @@ MIT 2026 Joshua Trommel
 ## Whitepaper
 
 [Technical whitepaper](WHITEPAPER.md)
+
+## API and agent tools
+
+No HTTP API — client-only game, saves in the browser's `localStorage`. The web
+app registers WebMCP tools so a browser-based AI agent can inspect and drive
+the game. See [docs/API.md](docs/API.md).

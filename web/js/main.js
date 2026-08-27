@@ -347,3 +347,39 @@ document.addEventListener('DOMContentLoaded', () => {
         camera.y = py * GRID_SIZE * TILE_SIZE;
     });
 });
+
+// Accessors for webmcp.js -- keep module state private, expose only what agents need
+export function mcpGetState() {
+    if (!state) return null;
+    return {
+        resources: state.resources,
+        currentTick: state.currentTick,
+        currentHour: state.currentHour,
+        isNight: state.isNight,
+        isPaused: state.isPaused,
+        phase: currentPhase(state),
+        colonistsAlive: state.colonists.filter(c => c.state !== 'dead').length,
+        colonistsTotal: state.colonists.length,
+        buildingCount: state.buildings.length,
+        playerXP: state.playerXP,
+        playerStreak: state.playerStreak,
+        lastSaveSlot: state.lastSaveSlot,
+        difficulty: selectedDifficulty,
+    };
+}
+
+export function mcpStartGame(difficulty) {
+    if (difficulty) {
+        selectedDifficulty = difficulty;
+        setDifficulty(difficulty);
+    }
+    startGame(null);
+}
+
+export function mcpLoadSave(slot) {
+    startGame(slot);
+}
+
+export function mcpSaveGame(slot) {
+    performSave(slot);
+}
