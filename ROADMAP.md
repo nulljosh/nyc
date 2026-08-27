@@ -254,26 +254,12 @@ improvement notes in App Review Information -> Notes.
       game starts (tutorial or first-run card) — right now the controls aren't obvious once you
       start, which is the top complaint.
 
-## WebMCP + REST API rollout (pending, 2026-08-27)
+## WebMCP + REST API rollout -- shipped 2026-08-27
 
-Add `document.modelContext` tool registration so in-browser agents can drive
-this app, and document any HTTP surface it already has.
+Done. 6 tools: `get_game_state`, `list_saves`, `start_game`, `load_save`, `save_game`, and a gated `delete_save`.
 
-Pattern is already shipped in epiphany, healstack, roost, curvely, wiretext,
-litigate, cadence, sparkjar and lexly — copy the closest one:
+See `docs/API.md` for the full tool table, linked from the README.
 
-- React app with hooks → `src/lib/webmcp.js` exporting `useWebMCP(ctx)`, called
-  from `App.jsx` with the hook callbacks it already holds (see epiphany, curvely).
-- React app whose state lives in contexts → a `<WebMCP />` component that reads
-  those contexts (see healstack, roost).
-- Vanilla JS app → a `webmcp.js` IIFE plus `window.*` accessors exported from the
-  existing app script (see litigate, lexly, sparkjar).
-
-Rules the shipped ones follow:
-- Tools call existing functions or existing `/api` routes. Never reimplement logic.
-- Read-only tools first, then reversible writes.
-- `requiresConfirmation: true` only on the genuinely consequential ones —
-  payments, public publishing, deletions. Not on ordinary writes.
-- Bail out quietly when `document.modelContext` is missing.
-- Ship a `docs/API.md` listing REST routes (or stating there are none) plus the
-  tool table split into read-only / reversible / confirmation-gated.
+## From Apple Notes (imported 2026-08-27)
+- [ ] NYC Survive iOS submission has an issue (submitted Aug 24 2026 00:44 PDT, submission 204645a5-da5e-44a4-9c7c-321b619dfcaf, version 1.0.0). Pull the reason and fix.
+- [ ] macOS app was approved but the App Store screenshots are trash — they are literal screenshots of the desktop with macOS chrome visible. Regenerate proper framed screenshots.
