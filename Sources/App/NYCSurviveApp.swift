@@ -3,9 +3,18 @@ import SpriteKit
 
 @main
 struct NYCSurviveApp: App {
+    /// ponytail: App Store screenshot hook. `-shot N` skips the menu straight into a
+    /// fresh game and preselects a panel, so captures show the app in use instead of
+    /// the title screen (Guideline 2.3.3). Nothing else reads it; ignore in normal runs.
+    static let shotVariant: Int? = {
+        let args = ProcessInfo.processInfo.arguments
+        guard let i = args.firstIndex(of: "-shot"), i + 1 < args.count else { return nil }
+        return Int(args[i + 1])
+    }()
+
     @State private var themeChoice = Theme.choice
     @State private var gameState = GameState()
-    @State private var showMenu = true
+    @State private var showMenu = NYCSurviveApp.shotVariant == nil
     @State private var loadSlot: Int? = nil
 
     var body: some Scene {
@@ -68,6 +77,18 @@ struct GameView: View {
         ZStack {
             GameSceneView(gameState: gameState, loadSlot: loadSlot)
             HUDView(gameState: gameState)
+        }
+        .task {
+            // ponytail: colonists are spawned by GameScene, so the shot preset has to
+            // run after the scene has ticked at least once.
+            guard let shot = NYCSurviveApp.shotVariant else { return }
+            gameState.tutorialStep = nil
+            try? await Task.sleep(for: .seconds(2))
+            switch shot {
+            case 2: gameState.selectedColonistId = gameState.colonists.first?.id
+            case 3: gameState.selectedBuildingType = BuildingType.allCases.first
+            default: gameState.selectedBuildingType = nil
+            }
         }
     }
 }

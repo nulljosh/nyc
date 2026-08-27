@@ -261,5 +261,28 @@ Done. 6 tools: `get_game_state`, `list_saves`, `start_game`, `load_save`, `save_
 See `docs/API.md` for the full tool table, linked from the README.
 
 ## From Apple Notes (imported 2026-08-27)
-- [ ] NYC Survive iOS submission has an issue (submitted Aug 24 2026 00:44 PDT, submission 204645a5-da5e-44a4-9c7c-321b619dfcaf, version 1.0.0). Pull the reason and fix.
-- [ ] macOS app was approved but the App Store screenshots are trash — they are literal screenshots of the desktop with macOS chrome visible. Regenerate proper framed screenshots.
+- [x] NYC Survive iOS submission issue — **already resolved before this pass.** Submission `204645a5` is COMPLETE; it was the Guideline 2.3.3 rejection (the 6.5" set was the title/menu screen, which Apple counts as a splash). Fixed in commit 6d76d33 by replacing it with three captured gameplay shots, and iOS 1.0.0 is back in the queue as submission `ee6f14f3` (WAITING_FOR_REVIEW since 2026-08-26). No further action was needed.
+- [x] macOS App Store screenshots replaced 2026-08-27. The live 1.0.0 shot (`mac-1280x800.png`) was a raw full-desktop capture — Claude Code terminal, Chrome tabs, dock and menu bar all visible, with a small NYC Survive window showing only the *title screen*. Screenshots cannot be edited on a `READY_FOR_DISTRIBUTION` version (the API rejects it with "An attribute value is not acceptable for the current resource state"), so this shipped as **macOS 1.0.1, build 8, submitted for review 2026-08-27** (submission `f79f06c2-1b44-405e-9d43-9b1034a39cf0`). Three clean 1280x800 window-only captures now in the set: colony map, colonist status panel, build menu. Note `asc versions create --copy-metadata-from` silently copies the old screenshots into the new set too — the stale desktop shot had to be deleted from 1.0.1 explicitly after the upload.
+
+## macOS screenshot capture — how to redo it (2026-08-27)
+
+`Sources/App/NYCSurviveApp.swift` has a `-shot N` launch argument that skips the menu into a fresh
+game and preselects a panel, so captures show the app in use rather than the title screen. This is
+the fix for Guideline 2.3.3 on macOS, and the same hook makes future refreshes a one-liner.
+
+- `-shot 1` — plain colony map
+- `-shot 2` — colonist status panel open
+- `-shot 3` — build menu open
+
+Capture loop (no AppleScript / System Events involved):
+
+1. Build Release: `xcodebuild -project NYCSurvive.xcodeproj -scheme NYCSurvive -configuration Release -derivedDataPath .asc/artifacts/mac-shots -skipPackagePluginValidation build`
+2. `open -n <app> --args -shot N`, then `open -a <app>` to activate. **The activation step is
+   required** — launched without it the window stays 0x0 and never lays out, and
+   `CGWindowListCopyWindowInfo` reports no usable window.
+3. Find the window id via `CGWindowListCopyWindowInfo` with `.optionAll` (not `.optionOnScreenOnly`
+   — the window is often not "on screen" by that filter). The owner name is **`NYC Survive`** with a
+   space, not `NYCSurvive`.
+4. `screencapture -o -x -l <windowId>` gives a 1280x832 capture (800 content + 32pt titlebar).
+5. Crop the top 32px to land on exactly 1280x800, a valid `APP_DESKTOP` size. `sips -c ... --cropOffset`
+   silently does nothing here; a small CoreGraphics `cropping(to:)` helper works.
