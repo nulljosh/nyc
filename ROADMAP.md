@@ -287,3 +287,18 @@ Capture loop (no AppleScript / System Events involved):
 5. Crop the top 32px to land on exactly 1280x800, a valid `APP_DESKTOP` size. `sips -c ... --cropOffset`
    silently does nothing here; a small CoreGraphics `cropping(to:)` helper works.
 - [ ] iOS rejected 4.3(a) Spam 2026-08-26. Appeal draft: notes/appeal-4-3-spam.md (Resolution Center, web only).
+
+## From Notes (imported 2026-08-27)
+- [ ] App Review flagged **NYC Survive 1.0.0 for iOS** (submitted Aug 26 2026 12:57 AM PDT, submission `ee6f14f3-6fa3-4ba1-86c4-61582749fd48`). Get the reason via `asc web review show`, fix, resubmit.
+nyc/ROADMAP.md
+
+### 4.3(a) status — verified 2026-08-27
+  - NYC Survive iOS 1.0.0 REJECTED under **Guideline 4.3(a) Design: Spam**, same account-level wave.
+  - **NYC Survive has never shipped on iOS** — one iOS version record (1.0.0), never READY_FOR_SALE. macOS 1.0.0 is live and macOS 1.0.1 is IN_REVIEW, unaffected.
+  - The appeal draft says to **hold NYC Survive** rather than reply first.
+  - Repo is at 1.0.1 but the iOS record is still 1.0.0; create a 1.0.1 iOS version whenever the appeal clears.
+  - Note: `asc validate` errors here with "multiple app infos found" because the macOS version is concurrently IN_REVIEW. Harmless and unrelated.
+  - **This is not a per-app content problem — do not fix code and do not resubmit.** Apple's letter is byte-identical boilerplate across all five with no named comparison app. Resubmitting the same build will fail again and adds to the pattern.
+  - **The appeal draft is at `~/Documents/Code/notes/appeal-4-3-spam.md` (repo root, 113 lines) — NOT at `<repo>/notes/appeal-4-3-spam.md`.** Several roadmap lines point at the per-repo path; that file does not exist in any of the five repos. Fix the pointer, do not write a second draft.
+  - **Status: DRAFTED, NOT FILED.** Filing is Resolution Center, which is browser-only (`asc web review` is read-only). Blocked on Joshua. Reply order in the draft is Talli, Curvely, Doorstock; hold Sparkjar and NYC Survive.
+  - Verified via API 2026-08-27: submission is UNRESOLVED_ISSUES with a single appStoreVersion item REJECTED — no phantom-IAP item, so the "mislabeled inAppPurchaseVersion" trap does not apply. `asc validate` and `asc review doctor` are otherwise clean, confirming this is a guideline call and not a readiness gap.
