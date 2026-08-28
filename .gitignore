@@ -48,3 +48,4 @@ fastlane/report.xml
 .asc/artifacts/
 .asc/screenshots/
 .asc/reports/
+.wrangler/
