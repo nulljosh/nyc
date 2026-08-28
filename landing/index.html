@@ -66,16 +66,15 @@ img { max-width: 100%; }
 }
 .hero .container { position: relative; z-index: 2; }
 
-/* a slow flyover of the real game board — one seamless gameplay tile, drifting */
+/* the real game, playing itself in attract mode */
 .hero-city {
   position: absolute; inset: 0; z-index: 0;
-  background: url("hero-city.png") repeat;
+  border: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  background: url("hero-city.png") repeat center; /* fallback while the frame loads */
   background-size: 512px 382px;
   image-rendering: pixelated;
-  animation: city-drift 90s linear infinite;
 }
-@keyframes city-drift { from { background-position: 0 0; } to { background-position: 512px 382px; } }
-@media (prefers-reduced-motion: reduce) { .hero-city { animation: none; } }
 
 /* scrim: keeps the headline readable over the board */
 .hero::after {
@@ -150,7 +149,7 @@ footer p + p { margin-top: 0.35rem; }
 <body>
 
 <section class="hero">
-  <div class="hero-city" aria-hidden="true"></div>
+  <iframe class="hero-city" src="/app/?bg" title="" aria-hidden="true" tabindex="-1" loading="lazy" scrolling="no"></iframe>
   <div class="container">
     <img class="hero-icon" src="icon.svg" alt="NYC Survive icon" width="88" height="88">
     <h1>NYC Survive</h1>

@@ -58,6 +58,12 @@ function showMenu() {
 
     startGame(null, true); // live demo game as the menu background
 
+    // ponytail: /app/?bg embeds just the attract-mode game (landing page hero)
+    if (new URLSearchParams(location.search).has('bg')) {
+        menu.style.visibility = 'hidden';
+        return;
+    }
+
     const slots = listSlots();
     const slotsContainer = document.getElementById('menu-slots');
     slotsContainer.textContent = '';
