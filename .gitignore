@@ -47,3 +47,4 @@ fastlane/report.xml
 # ASC build artifacts
 .asc/artifacts/
 .asc/screenshots/
+.asc/reports/
