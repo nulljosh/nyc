@@ -189,6 +189,7 @@ export function createGameState() {
         showSettings: false,
         showQuestBoard: false,
         wallpaperMode: false,
+        demoMode: false,
         tutorialStep: 0,
         lastSaveSlot: null,
         autoSaveEnabled: true,

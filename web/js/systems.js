@@ -368,7 +368,7 @@ export function questTick(state, grid, pathfinder) {
 // Wallpaper auto-camera -- slow drift
 let cameraDriftAngle = 0;
 export function wallpaperCameraTick(camera, state) {
-    if (!state.wallpaperMode) return;
+    if (!state.wallpaperMode && !state.demoMode) return;
     cameraDriftAngle += 0.002;
     const alive = state.colonists.filter(c => c.state !== 'dead');
     if (!alive.length) return;
@@ -410,5 +410,39 @@ function tickCombat(i, state, pathfinder) {
             attacker.pathRows = path.map(p => p.row);
             attacker.pathIndex = 0;
         }
+    }
+}
+
+
+// DemoSystem -- menu attract mode ONLY. Never runs in a real game: every call site
+// and this guard require state.demoMode, which is set only for the throwaway menu
+// background state. Player-controlled games stay player-controlled (see jobTick).
+export function demoTick(state, grid, pathfinder) {
+    if (!state.demoMode) return;
+
+    for (const c of state.colonists) {
+        if (c.state === 'dead' || c.job !== 'idle') continue;
+        if (Math.random() > 0.05) continue;
+        const nodes = state.resourceNodes.filter(n => n.remaining > 0);
+        if (!nodes.length) continue;
+        const n = nodes[Math.floor(Math.random() * nodes.length)];
+        const path = pathfinder.findPath(c.col, c.row, n.col, n.row);
+        if (!path.length) continue;
+        c.job = 'gather';
+        c.pathCols = path.map(p => p.col);
+        c.pathRows = path.map(p => p.row);
+        c.pathIndex = 0;
+    }
+
+    if (state.currentTick % 40 !== 0) return;
+    const types = Object.keys(BuildingType);
+    const type = types[Math.floor(Math.random() * types.length)];
+    const alive = state.colonists.filter(c => c.state !== 'dead');
+    if (!alive.length) return;
+    const near = alive[Math.floor(Math.random() * alive.length)];
+    for (let i = 0; i < 12; i++) {
+        const col = near.col + Math.floor(Math.random() * 11) - 5;
+        const row = near.row + Math.floor(Math.random() * 11) - 5;
+        if (placeBuilding(type, col, row, grid, state, pathfinder)) return;
     }
 }

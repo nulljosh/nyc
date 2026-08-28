@@ -5,5 +5,5 @@ cd "$(dirname "$0")/.."
 rm -rf dist && mkdir -p dist/app
 cp -R landing/. dist/
 cp -R web/. dist/app/
-rm -rf dist/app/.vercel dist/app/.wrangler dist/app/.env.local dist/app/tutorial.test.mjs
+rm -rf dist/app/.vercel dist/app/.wrangler dist/app/.env.local dist/app/*.test.mjs
 echo "built dist/ (landing at /, app at /app)"

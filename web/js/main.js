@@ -7,7 +7,7 @@ import { initClaudeBridge } from './claude.js';
 import { generateWorld, GRID_SIZE, TILE_SIZE, tileAt, worldToTile } from './world.js';
 import { Pathfinder } from './pathfinder.js';
 import { timeTick, needsTick, resourceTick, jobTick, placeBuilding, demolishBuilding,
-    questTick, wallpaperCameraTick, setDifficulty } from './systems.js';
+    questTick, wallpaperCameraTick, setDifficulty, demoTick } from './systems.js';
 import { Camera } from './camera.js';
 import { renderWorld, renderMinimap } from './renderer.js';
 import { setupInput } from './input.js';
@@ -27,6 +27,7 @@ let minimapCanvas = null;
 let minimapCtx = null;
 let lastTime = 0;
 let running = false;
+let loopId = 0;
 
 function init() {
     initTheme();
@@ -48,12 +49,14 @@ function resizeCanvas() {
 }
 
 function showMenu() {
-    running = false;
     const menu = document.getElementById('menu');
     const hud = document.getElementById('hud');
     menu.style.display = 'flex';
+    menu.style.opacity = '1';
     hud.style.display = 'none';
     canvas.style.cursor = 'default';
+
+    startGame(null, true); // live demo game as the menu background
 
     const slots = listSlots();
     const slotsContainer = document.getElementById('menu-slots');
@@ -66,7 +69,7 @@ function showMenu() {
         if (s) {
             btn.textContent = `SLOT ${i + 1} -- Day ${s.dayCount} | ${s.colonistCount} alive`;
             const slot = i + 1;
-            btn.onclick = () => startGame(slot);
+            btn.onclick = () => zoomIntoGame(slot);
         } else {
             btn.textContent = `SLOT ${i + 1} -- EMPTY --`;
             btn.disabled = true;
@@ -76,7 +79,7 @@ function showMenu() {
 
     document.getElementById('menu-new').onclick = () => {
         setDifficulty(selectedDifficulty);
-        startGame(null);
+        zoomIntoGame(null);
     };
 
     const themeBtn = document.getElementById('menu-theme');
@@ -85,11 +88,28 @@ function showMenu() {
     themeBtn.onclick = () => { toggleTheme(); labelTheme(); };
 }
 
-function startGame(loadSlot) {
-    document.getElementById('menu').style.display = 'none';
-    document.getElementById('hud').style.display = 'block';
+// Zoom the demo camera in, fade the menu out, then hand over a real game.
+function zoomIntoGame(loadSlot) {
+    const menu = document.getElementById('menu');
+    const startZoom = camera ? camera.zoom : 1;
+    const t0 = performance.now();
+    const DURATION = 700;
+    (function step(now) {
+        const t = Math.min(1, (now - t0) / DURATION);
+        const e = t * t * (3 - 2 * t);
+        if (camera) camera.zoom = startZoom + (0.7 - startZoom) * e;
+        menu.style.opacity = String(1 - e);
+        if (t < 1) return requestAnimationFrame(step);
+        startGame(loadSlot);
+    })(t0);
+}
+
+function startGame(loadSlot, demo = false) {
+    document.getElementById('menu').style.display = demo ? 'flex' : 'none';
+    document.getElementById('hud').style.display = demo ? 'none' : 'block';
 
     state = createGameState();
+    state.demoMode = demo;
     pathfinder = new Pathfinder();
     camera = new Camera();
 
@@ -130,6 +150,10 @@ function startGame(loadSlot) {
     const center = GRID_SIZE / 2;
     camera.x = center * TILE_SIZE;
     camera.y = center * TILE_SIZE;
+    if (demo) {
+        camera.zoom = 1.9;
+        Object.keys(state.resources).forEach(k => { state.resources[k] = (state.resources[k] || 0) + 400; });
+    }
 
     // Expose state for quest board HUD
     window._gameState = state;
@@ -144,7 +168,7 @@ function startGame(loadSlot) {
 
     initClaudeBridge(state);
 
-    setupInput(canvas, camera, state, {
+    if (!demo) setupInput(canvas, camera, state, {
         onSelectEntity: (wx, wy) => selectEntity(wx, wy),
         onPlaceBuilding: (col, row) => handlePlace(col, row),
         onDemolish: (wx, wy) => handleDemolish(wx, wy),
@@ -154,11 +178,13 @@ function startGame(loadSlot) {
         onTutorial: (event) => { checkTutorialAdvance(state, event); updateHUD(state, hudCallbacks); },
     });
 
-    updateHUD(state, hudCallbacks);
+    if (!demo) updateHUD(state, hudCallbacks);
 
     running = true;
+    loopId++;
     lastTime = 0;
-    requestAnimationFrame(gameLoop);
+    const myLoop = loopId;
+    requestAnimationFrame(ts => gameLoop(ts, myLoop));
 }
 
 function freshWorld() {
@@ -193,8 +219,8 @@ const hudCallbacks = {
     onSaveSlot: (slot) => performSave(slot),
 };
 
-function gameLoop(timestamp) {
-    if (!running) return;
+function gameLoop(timestamp, id) {
+    if (!running || id !== loopId) return; // ponytail: one loop wins; demo loop dies on handoff
 
     try {
         const dt = lastTime === 0 ? 0 : (timestamp - lastTime) / 1000;
@@ -208,10 +234,11 @@ function gameLoop(timestamp) {
             jobTick(state, pathfinder);
             resourceTick(state);
             questTick(state, grid, pathfinder);
+            demoTick(state, grid, pathfinder);
             tickParticles();
 
             // Victory check
-            if (checkVictory(state) && !state.victoryShown) {
+            if (!state.demoMode && checkVictory(state) && !state.victoryShown) {
                 state.victoryShown = true;
                 state.isPaused = true;
                 gameLog(state, 'TIMES SQUARE RECLAIMED');
@@ -219,14 +246,14 @@ function gameLoop(timestamp) {
                 state.toastMessage = { text: `Victory in ${elapsed} minutes`, ticks: 300 };
             }
 
-            if (state.autoSaveEnabled && state.currentTick > 0 && state.currentTick % 60 === 0 && state.lastSaveSlot) {
+            if (!state.demoMode && state.autoSaveEnabled && state.currentTick > 0 && state.currentTick % 60 === 0 && state.lastSaveSlot) {
                 performSave(state.lastSaveSlot);
             }
 
             // Sync quests to localStorage periodically
-            if (state.currentTick % 120 === 0) syncQuestsToLocalStorage(state);
+            if (!state.demoMode && state.currentTick % 120 === 0) syncQuestsToLocalStorage(state);
 
-            updateHUD(state, hudCallbacks);
+            if (!state.demoMode) updateHUD(state, hudCallbacks);
         }
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -241,7 +268,7 @@ function gameLoop(timestamp) {
         console.error('Game loop error:', e);
     }
 
-    requestAnimationFrame(gameLoop);
+    requestAnimationFrame(ts => gameLoop(ts, id));
 }
 
 function selectEntity(wx, wy) {
