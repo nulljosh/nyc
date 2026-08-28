@@ -1,8 +1,8 @@
 # NYC Roadmap
 
-## Rejected 2026-08-27 — iOS 1.0 rejected (4.3a Spam), appeal filed
+## Rejected 2026-08-27 — iOS 1.0 rejected (4.3a Spam), appeal DRAFTED not yet filed
 
-iOS rejected 2026-08-26 under Guideline 4.3(a) Design: Spam. Apple flagged an account-level pattern — five apps submitted the same day (Sparkjar, NYC Survive, Talli, Curvely, Doorstock) all landed on the same violation. macOS 1.0.1 unaffected and remains WAITING_FOR_REVIEW (approved/in review). Do not attempt resubmit; appeal filed 2026-08-27 via Resolution Center. Monitor appeal verdict only.
+iOS rejected 2026-08-26 under Guideline 4.3(a) Design: Spam. Apple flagged an account-level pattern — five apps submitted the same day (Sparkjar, NYC Survive, Talli, Curvely, Doorstock) all landed on the same violation. macOS 1.0.1 unaffected and remains WAITING_FOR_REVIEW (approved/in review). Do not attempt resubmit; appeal DRAFTED 2026-08-27 at notes/appeal-4-3-spam.md — NOT yet filed (Resolution Center is web-only, paste by hand). Monitor appeal verdict only.
 
 ## App Review rejection reason — READ FROM RESOLUTION CENTER 2026-08-12
 
