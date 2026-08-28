@@ -26,7 +26,6 @@ struct SettingsView: View {
                     controlRow(key: "Pinch",      action: "Zoom in/out")
                     controlRow(key: "Tap",        action: "Select / place")
                     controlRow(key: "Tap, then tile", action: "Move selected colonist")
-                    controlRow(key: "Long press", action: "Inspect tile")
                     #if os(macOS)
                     controlRow(key: "WASD",       action: "Pan camera")
                     controlRow(key: "B",          action: "Build menu")

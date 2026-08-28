@@ -54,6 +54,7 @@ final class MenuScene: SKScene {
         loadGame.name = "loadGame"
         addChild(loadGame)
 
+        #if os(macOS)
         let quit = SKLabelNode(fontNamed: PlatformFont.systemFont(ofSize: 14, weight: .bold).fontName)
         quit.text = "> QUIT"
         quit.fontSize = 24
@@ -62,6 +63,7 @@ final class MenuScene: SKScene {
         quit.horizontalAlignmentMode = .center
         quit.name = "quit"
         addChild(quit)
+        #endif
 
         let blink = SKAction.sequence([
             SKAction.fadeAlpha(to: 0.3, duration: 0.5),
