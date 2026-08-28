@@ -1,5 +1,9 @@
 # NYC Roadmap
 
+## Rejected 2026-08-27 — iOS 1.0 rejected (4.3a Spam), appeal filed
+
+iOS rejected 2026-08-26 under Guideline 4.3(a) Design: Spam. Apple flagged an account-level pattern — five apps submitted the same day (Sparkjar, NYC Survive, Talli, Curvely, Doorstock) all landed on the same violation. macOS 1.0.1 unaffected and remains WAITING_FOR_REVIEW (approved/in review). Do not attempt resubmit; appeal filed 2026-08-27 via Resolution Center. Monitor appeal verdict only.
+
 ## App Review rejection reason — READ FROM RESOLUTION CENTER 2026-08-12
 
 **Guideline 5.6 — Developer Code of Conduct — Review Suspended.** Not an app-specific
@@ -282,3 +286,4 @@ Capture loop (no AppleScript / System Events involved):
 4. `screencapture -o -x -l <windowId>` gives a 1280x832 capture (800 content + 32pt titlebar).
 5. Crop the top 32px to land on exactly 1280x800, a valid `APP_DESKTOP` size. `sips -c ... --cropOffset`
    silently does nothing here; a small CoreGraphics `cropping(to:)` helper works.
+- [ ] iOS rejected 4.3(a) Spam 2026-08-26. Appeal draft: notes/appeal-4-3-spam.md (Resolution Center, web only).
