@@ -264,6 +264,10 @@ Done. 6 tools: `get_game_state`, `list_saves`, `start_game`, `load_save`, `save_
 
 See `docs/API.md` for the full tool table, linked from the README.
 
+## Web menu demo game -- shipped 2026-08-28
+
+Menu now renders a live demo game behind the scrim instead of the static skyline. Demo runs a throwaway colonist-building loop that's hard-gated on state.demoMode so real games stay fully player-controlled. Clicking NEW GAME or a save slot tweens the camera in and fades the menu out, then hands over a fresh game; the demo loop exits cleanly by loopId. Files: demo.test.mjs added, demoTick in systems.js, deployed to Cloudflare Pages.
+
 ## macOS screenshot capture — how to redo it (2026-08-27)
 
 `Sources/App/NYCSurviveApp.swift` has a `-shot N` launch argument that skips the menu into a fresh
