@@ -238,14 +238,23 @@ improvement notes in App Review Information -> Notes.
 - [ ] Write a script that plays through the whole game end to end (regression walkthrough).
 - [ ] Confirm autoplay is disabled and removed. Autoplay should only run when connected via a server, or when the playthrough script above is run explicitly. (Directive engine was deleted 2026-07 — this is a verification pass, not a rebuild.)
 - [ ] Document the controls in a markdown file, and surface them to the player when they start a new game (tutorial or a controls screen).
-- [ ] **Listing is thin — only 1 of 10 screenshots.** The Notes screenshot behind this item showed both platforms REJECTED under 5.6.0 Developer Code of Conduct, but that is **stale**: re-probed 2026-08-24, **iOS 1.0.0 is WAITING_FOR_REVIEW and macOS 1.0.0 is IN_REVIEW** (submitted 07:44 that morning). Nothing to resubmit. What is stillreal from the note: only one iPhone 6.5" screenshot (a dark "TIMES SQUARE" menu shot) is uploaded, there are 0 app previews, and Promotional Text is empty. Build the real screenshot set for the next version rather than touching the in-review one.
+- [x] **Listing filled out 2026-08-29 — iPad 1 -> 5, iPhone 3 -> 5, Promotional Text written.** Two things in the old note were wrong. The live state was never "1 of 10": it was 4 (1 iPad + 3 iPhone), because the 2026-08-26 Guideline 2.3.3 fix already replaced the "TIMES SQUARE" menu shot with three iPhone gameplay frames. And iOS 1.0.0 is **REJECTED**, not WAITING_FOR_REVIEW, so the version was editable and nothing had to wait. Captured fresh iPad 12.9" frames (2064x2752) off a Release build on a dedicated `NYCSurvive-Shots` sim: build menu, colonist panel, and a shelter actually built with materials spent. Added two distinct iPhone frames (tutorial, combined build+colonist view) rather than duplicating the three that already exist. Promotional Text set and re-pulled to confirm. **App previews are still 0** and macOS is still 0 — see below.
 - [ ] **Hero: game simulation (full version, deferred).** Future iteration: a canvas running a render loop with the game simulating itself, instead of the current static drifting-tile wall. Slot into `nyc/landing/index.html` the same way: absolute layer at `z-index:0` behind `.hero .container`, the `.hero::after` scrim above it, and a `prefers-reduced-motion` bail-out. **Guardrail:** this is decoration on the marketing page only — it must not resurrect the deleted directive/autoplay engine, and must not touch `Sources/`.
-- [ ] **Screenshots: the listing still has 1 of 10.** `TARGETED_DEVICE_FAMILY: "1,2"`
-      (`project.yml:48`) means the set needs iPhone 6.5", iPad 12.9", and macOS. Use the
-      `appstore-screenshots` skill with a dedicated `NYCSurvive-Shots` simulator. **Do not upload
-      until the current review clears** — as of 2026-08-24 iOS 1.0.0 is WAITING_FOR_REVIEW and
-      macOS 1.0.0 is IN_REVIEW, and uploading to a version under review can pull it back out of
-      the queue. Capture and commit now, push to ASC after.
+- [x] **iPhone 6.5" and iPad 12.9" sets are done (5 each, 2026-08-29).** Captured with a Release
+      build on dedicated `NYCSurvive-Shots` / `NYCSurvive-Shots-iPhone` sims driven by `axe tap`
+      (SpriteKit exposes no accessibility elements, so taps are coordinate-based; the first tap
+      after boot reliably no-ops, tap twice). Frames live in `.asc/screenshots/ipad129/` and
+      `.asc/screenshots/iphone65/`.
+- [ ] **macOS screenshots still 0, and app previews still 0 on every platform.** macOS could not be
+      touched this pass: MAC_OS 1.0.1 is IN_REVIEW (1.0.0 is READY_FOR_SALE), and uploading to a
+      version under review can pull it out of the queue. `.asc/screenshots/mac_set/` and
+      `mac_upload/` already hold 1280x800 frames — verify them against the current build, then
+      upload once 1.0.1 clears.
+- [ ] **Screenshot frames that must never be uploaded.** Four local iPad frames are disqualified and
+      are kept only as history: `ipad-gameplay.png` and `ipad-raw.png` are the title/menu screen,
+      which is exactly what drew the Guideline 2.3.3 rejection on 2026-08-26; `ipad-final.png` and
+      `ipad-try2.png` carry the `nodes:16481 60.0 fps` debug counter from before the `#if DEBUG`
+      gate. They also show the pre-rename "TIMES SQUARE" title — the app now reads "NYC SURVIVE".
 - [ ] **Original name for the game.** "NYC Survive" is descriptive, not a name. Use the
       `asc-name-creator` skill to find an available single-word App Store name, same process as
       the Echo→Voxprint rename.
