@@ -38,6 +38,26 @@ idle game.
 Note: `Sources-Shared/` on disk is a stale, non-compiled duplicate — the build
 target is `Sources/` only.
 
+## Planned: Spatial Partitioning
+
+Two loops in `web/js/systems.js` scale badly with colony size. The colonist
+interaction pass compares every colonist against every other colonist (O(n²)
+per tick), and the job-assignment pass walks the entire resource-node list for
+each idle colonist to find the nearest one (O(n·m) per tick). Both run every
+frame, so the tick cost grows quadratically with a number the player is
+directly encouraged to increase.
+
+The fix is a uniform spatial hash: one grid of buckets sized to roughly the
+interaction radius, rebuilt from scratch each tick (rebuilding is O(n) and
+cheaper than maintaining incremental membership). Neighbour queries then read
+the 3×3 block of buckets around a position instead of the whole list, which
+turns both passes into O(n) with a small constant for the density the map
+actually supports.
+
+The same grid answers "nearest resource node" by searching outward ring by
+ring from the colonist's bucket and stopping at the first ring that cannot
+contain anything closer than the best candidate found so far.
+
 ## Platforms
 
 | Platform | Status |
