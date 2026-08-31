@@ -17,6 +17,7 @@
     --blur:         blur(20px);
     --blur-heavy:   blur(40px);
     --accent:       #0071e3;
+  --link: #0067cf;
     --accent-light: #0058b0;
     --on-accent:    #ffffff;
     --text-1:       rgba(0,0,0,0.90);
@@ -41,6 +42,7 @@
 @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
         --bg:           #0a0a0c;
+    --link: #0f7ae5;
         --glass:        rgba(255,255,255,0.08);
         --glass-heavy:  rgba(255,255,255,0.12);
         --glass-hover:  rgba(255,255,255,0.06);
@@ -791,7 +793,7 @@ hr { border:none; border-top:1px solid var(--border-light); margin:8px 0; }
 .pp-xp-track { height:4px; background:var(--glass); border-radius:2px; overflow:hidden; margin-bottom:4px; }
 .pp-xp-fill { height:100%; background:var(--yellow); border-radius:2px; transition:width 0.4s ease; }
 .pp-stats { font-size:10px; color:var(--text-2); font-family:var(--font-mono); }
-.pp-quests { font-size:10px; color:var(--accent); margin-top:4px; cursor:pointer; }
+.pp-quests { font-size:10px; color: var(--link, var(--accent)); margin-top:4px; cursor:pointer; }
 .pp-quests:hover { text-decoration:underline; }
 
 /* Quest Board */
@@ -815,10 +817,10 @@ hr { border:none; border-top:1px solid var(--border-light); margin:8px 0; }
 .qb-close { cursor:pointer; color:var(--text-3); font-size:14px; padding:4px; }
 .qb-close:hover { color:var(--red); }
 .qb-add { text-align:center; padding:8px; border:1px dashed var(--border-light); border-radius:8px; color:var(--text-2); font-size:11px; cursor:pointer; margin-bottom:8px; letter-spacing:0.08em; }
-.qb-add:hover { border-color:var(--accent); color:var(--accent); }
+.qb-add:hover { border-color: var(--link, var(--accent)); color: var(--link, var(--accent)); }
 .qb-form { margin-bottom:12px; display:flex; flex-direction:column; gap:6px; }
 .qb-input { background:var(--glass-hover); border:1px solid var(--border-light); border-radius:6px; padding:8px 10px; color:var(--text-1); font-size:12px; outline:none; }
-.qb-input:focus { border-color:var(--accent); }
+.qb-input:focus { border-color: var(--link, var(--accent)); }
 .qb-row { display:flex; gap:6px; }
 .qb-select { flex:1; background:var(--glass-hover); border:1px solid var(--border-light); border-radius:6px; padding:6px; color:var(--text-1); font-size:11px; }
 .qb-btn { flex:1; padding:8px; background:var(--accent); border:none; border-radius:6px; color:var(--on-accent); font-size:11px; font-weight:600; cursor:pointer; letter-spacing:0.06em; }
