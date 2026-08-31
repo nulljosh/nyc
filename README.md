@@ -2,6 +2,8 @@
 
 # NYC Survive
 
+**Live:** https://nyc.heyitsmejosh.com
+
 ### Build the City That Never Sleeps
 
 ![version](https://img.shields.io/badge/version-v1.3.1-blue) ![license](https://img.shields.io/badge/license-MIT-green)
