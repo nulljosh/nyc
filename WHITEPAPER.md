@@ -2,29 +2,31 @@
 
 **v1.3.1** | August 2026
 
-NYC Survive is a Factorio-style production game for iOS and macOS: place
-buildings on a grid, chain them into production lines, and keep the city fed.
-SpriteKit, Swift 6, one shared codebase for both platforms. A web port lives
+Build a factory in the middle of Manhattan.
+
+NYC Survive is a Factorio-style production game for iOS and macOS. Place buildings
+on a grid, chain them into lines, keep the city fed. SpriteKit, Swift 6, one
+codebase. A web port lives
 at nyc.heyitsmejosh.com.
 
 ## Core Mechanic: Auto-Pull Production Chains
 
 The economy is item-based (ore, copper ore, iron plates, gears) and flows
-through four building types — miner, smelter, assembler, storage. The defining
+through four building types, miner, smelter, assembler, storage. The defining
 rule is **adjacency auto-pull**: a building automatically pulls its recipe
 inputs from adjacent buildings, so logistics is spatial. A working factory is
 `miner → smelter → assembler` laid out tile-by-tile, with progress bars
 showing each recipe tick.
 
 Colonists are **fully player-controlled**. The original auto-directive engine
-was deleted (2026-07-02) — colonists act only on explicit commands (select,
+was deleted (2026-07-02), colonists act only on explicit commands (select,
 then tap a destination via `JobSystem.commandMove()`), and auto-assignment
 must not be reintroduced. The game is deliberately a hands-on sim, not an
 idle game.
 
 ## Architecture
 
-- **Rendering**: SpriteKit only — no UIKit/AppKit views inside the game scene.
+- **Rendering**: SpriteKit only, no UIKit/AppKit views inside the game scene.
 - **Layout**: responsive portrait + landscape on iOS, fixed 1280×800 on macOS,
   from one `Sources/` tree with per-platform app entry points (xcodegen,
   `project.yml`).
@@ -35,7 +37,7 @@ idle game.
   `JobSystem.swift` (manual colonist commands), `BuildSystem.swift`
   (placement/demolition with ore costs).
 
-Note: `Sources-Shared/` on disk is a stale, non-compiled duplicate — the build
+Note: `Sources-Shared/` on disk is a stale, non-compiled duplicate, the build
 target is `Sources/` only.
 
 ## Planned: Spatial Partitioning
