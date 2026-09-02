@@ -9,17 +9,19 @@
 ![version](https://img.shields.io/badge/version-v1.3.1-blue) ![license](https://img.shields.io/badge/license-MIT-green)
 [![GitHub](https://img.shields.io/badge/GitHub-nulljosh%2Fnyc-black?logo=github)](https://github.com/nulljosh/nyc)
 
-NYC Survive: Factorio-style production game. SpriteKit, Swift 6, iOS + macOS (portrait/landscape).
+Build a factory in the middle of Manhattan. Mine, smelt, assemble, and watch the chain hum.
+
+A Factorio-style production game in SpriteKit and Swift 6. iOS and macOS, portrait and landscape.
 
 ## Features
 
-- **Unified iOS + macOS codebase** (shared `Sources/`, per-platform app entry points)
-- **Responsive layouts** (portrait + landscape on iOS, fixed 1280×800 on macOS)
-- **Factory production chains** (4 building types: miner, smelter, assembler, storage)
-- **Auto-pull logistics** (adjacent buildings automatically pull required inputs)
-- **Production tracking** (progress bars show recipe completion)
-- **3-slot save system** with auto-save
-- **Item-based inventory** (ore, iron_plate, copper_ore, gear)
+- **One codebase.** Shared `Sources/`, a thin entry point per platform
+- **Fits the screen.** Portrait and landscape on iOS, a fixed 1280×800 on macOS
+- **Production chains.** Four buildings: miner, smelter, assembler, storage
+- **Auto-pull.** Neighbours take what they need from each other
+- **Progress bars** on every recipe
+- **Three save slots**, with auto-save
+- **Items, not resources.** ore, iron_plate, copper_ore, gear
 
 ## Run
 
@@ -39,7 +41,7 @@ Requires Xcode 16+, macOS 15.0+, iOS 17.0+, xcodegen.
 2. Place a **Miner** (costs 5 ore) → produces ore
 3. Place a **Smelter** adjacent (costs 10 ore) → auto-pulls ore, produces plates
 4. Place an **Assembler** adjacent (costs 15 ore) → auto-pulls plates, produces gears
-5. Watch production tick — progress bars fill as recipes complete
+5. Watch it tick. Bars fill as recipes finish
 
 ## Roadmap
 
@@ -63,7 +65,7 @@ Requires Xcode 16+, macOS 15.0+, iOS 17.0+, xcodegen.
 - [ ] Mobile UI refinements (button sizing, adaptive menus)
 - [ ] Sound design & music
 - [ ] App Store ship pass: tutorial/onboarding polish, accessibility audit (VoiceOver labels, Dynamic Type, contrast), final mobile-friendly pass
-- [x] Autoplay fully resolved 2026-08-02 — 2026-07-02 only removed the directive engine entry point; two other systems were perpetuating autoplay: hardcoded startup job assignments and self-renewing job-tick loops. Removed both. Also cleaned dead web autopilot block. Colonists act only on player commands.
+- [x] Autoplay gone for good, 2026-08-02. The 2026-07-02 fix only removed the directive engine entry point. Two other systems kept it alive: hardcoded startup jobs and self-renewing job-tick loops. Both removed, plus a dead web autopilot block. Colonists act only when told
 
 ## Remaining Tasks
 
@@ -128,9 +130,9 @@ MIT 2026 Joshua Trommel
 
 ## API and agent tools
 
-No HTTP API — client-only game, saves in the browser's `localStorage`. The web
-app registers WebMCP tools so a browser-based AI agent can inspect and drive
-the game. See [docs/API.md](docs/API.md).
+No HTTP API. The game runs in the client and saves to `localStorage`. The web
+app registers WebMCP tools so a browser agent can inspect and drive it. See
+[docs/API.md](docs/API.md).
 
 ## Architecture
 
