@@ -35,6 +35,17 @@ cd ../nyc-ios && xcodegen generate && open NYCSurviveIOS.xcodeproj
 
 Requires Xcode 16+, macOS 15.0+, iOS 17.0+, xcodegen.
 
+## Apple Watch companion
+
+`watchos/` is a standalone watchOS app (XcodeGen, watchOS 10.0 deployment target,
+`WKWatchOnly`), a quick-reference guide for the game's building costs, colonist traits, and
+weapon stats, ported directly from `Sources/Models/`. No pairing with the iOS/macOS app, no
+network, no shared save state, just the same static data available on your wrist.
+
+```bash
+cd watchos && xcodegen generate && open NYCSurviveWatch.xcodeproj
+```
+
 ## Gameplay
 
 1. Start with ore, copper ore, iron plates in inventory
