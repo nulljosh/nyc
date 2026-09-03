@@ -309,3 +309,7 @@ nyc/ROADMAP.md
   - **The appeal draft is at `~/Documents/Code/notes/appeal-4-3-spam.md` (repo root, 113 lines), NOT at `<repo>/~/Documents/Code/notes/appeal-4-3-spam.md`.** Several roadmap lines point at the per-repo path; that file does not exist in any of the five repos. Fix the pointer, do not write a second draft.
   - **Status: DRAFTED, NOT FILED.** Filing is Resolution Center, which is browser-only (`asc web review` is read-only). Blocked on Joshua. Reply order in the draft is Talli, Curvely, Doorstock; hold Sparkjar and NYC Survive.
   - Verified via API 2026-08-27: submission is UNRESOLVED_ISSUES with a single appStoreVersion item REJECTED, no phantom-IAP item, so the "mislabeled inAppPurchaseVersion" trap does not apply. `asc validate` and `asc review doctor` are otherwise clean, confirming this is a guideline call and not a readiness gap.
+
+## Open
+
+- [ ] Apple Watch companion app -- standalone watchOS target (XcodeGen), same pattern as talli/watchos, sparkjar/watchos, epiphany/watchos, and the new companions in bookrank/charwork/curvely/fengshui/inkpress/lexly/quotestreak. Deferred 2026-09-02 to keep the sweep scoped; pick network+token-pairing, App-Group share, or a fully local port depending on what the app actually is.
