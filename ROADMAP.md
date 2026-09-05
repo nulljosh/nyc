@@ -310,3 +310,6 @@ nyc/ROADMAP.md
   - **Status: DRAFTED, NOT FILED.** Filing is Resolution Center, which is browser-only (`asc web review` is read-only). Blocked on Joshua. Reply order in the draft is Talli, Curvely, Doorstock; hold Sparkjar and NYC Survive.
   - Verified via API 2026-08-27: submission is UNRESOLVED_ISSUES with a single appStoreVersion item REJECTED, no phantom-IAP item, so the "mislabeled inAppPurchaseVersion" trap does not apply. `asc validate` and `asc review doctor` are otherwise clean, confirming this is a guideline call and not a readiness gap.
 
+
+## TUI pilot (2026-09-05)
+- `nyc-tui` SwiftPM target (SwiftTUI). `swift build && ./.build/debug/nyc-tui` lists building costs/effects from BuildingType, same scope as watchos/ (quick-reference, not a live game — the real sim runs on GameScene's SpriteKit loop). Needs a real TTY.

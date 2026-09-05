@@ -49,3 +49,4 @@ fastlane/report.xml
 .asc/screenshots/
 .asc/reports/
 .wrangler/
+.build/
