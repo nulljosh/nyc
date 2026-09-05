@@ -4,6 +4,8 @@
 
 **Live:** https://nyc.heyitsmejosh.com
 
+**Terminal:** `swift build && ./.build/debug/nyc-tui` — building reference, not the live game. See [tui/](tui/)
+
 ### Build the City That Never Sleeps
 
 ![version](https://img.shields.io/badge/version-v1.3.1-blue) ![license](https://img.shields.io/badge/license-MIT-green)
