@@ -15,6 +15,12 @@ Build a factory in the middle of Manhattan. Mine, smelt, assemble, and watch the
 
 A Factorio-style production game in SpriteKit and Swift 6. iOS and macOS, portrait and landscape.
 
+## Screenshots
+
+<p>
+<img src="screenshots/nyc-1.jpg" alt="NYC Survive">
+</p>
+
 ## Features
 
 - **One codebase.** Shared `Sources/`, a thin entry point per platform
