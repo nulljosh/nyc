@@ -1,8 +1,10 @@
 # NYC Roadmap
 
-## Rejected 2026-08-27, iOS 1.0 rejected (4.3a Spam), appeal DRAFTED not yet filed
+## CLOSED 2026-09-09: 4.3(a) Spam appeal succeeded, iOS 1.0.0 APPROVED
 
-iOS rejected 2026-08-26 under Guideline 4.3(a) Design: Spam. Apple flagged an account-level pattern, five apps submitted the same day (Sparkjar, NYC Survive, Talli, Curvely, Doorstock) all landed on the same violation. macOS 1.0.1 unaffected and remains WAITING_FOR_REVIEW (approved/in review). Do not attempt resubmit; appeal DRAFTED 2026-08-27 at ~/Documents/Code/notes/appeal-4-3-spam.md, NOT yet filed (Resolution Center is web-only, paste by hand). Monitor appeal verdict only.
+Appeal filed by hand in the Resolution Center the morning of 2026-09-09 (per Joshua, not scripted/logged). Apple's approval email for submission `ee6f14f3-6fa3-4ba1-86c4-61582749fd48` confirms: "Review of your submission has been completed. It is now eligible for distribution." App Version 1.0.0 for iOS, live at https://apps.apple.com/app/nyc-survive/id6782618198 within 24h of release. Was: iOS rejected 2026-08-26 under Guideline 4.3(a) Design: Spam (account-level pattern, five apps same day). See "4.3(a) status, verified 2026-08-27" below for the original rejection record.
+
+**Important: the game has never been played through end to end.** No automated full-playthrough test exists (still a TODO below), and known-open issues at time of approval include a 10-15s NEW GAME hang with no loading feedback and "controls aren't obvious" as the top usability complaint. Playtest before announcing broadly.
 
 ## App Review rejection reason, READ FROM RESOLUTION CENTER 2026-08-12
 

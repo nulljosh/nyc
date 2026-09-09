@@ -204,8 +204,7 @@ export function jobTick(state, pathfinder) {
 
         if (c.pathIndex >= c.pathCols.length) {
             if (c.job === 'gather') {
-                awardXP(c, 10, 2, state);
-                c.job = 'idle'; // ponytail: no auto-reassign, player must re-select
+                tickGather(c, state, pathfinder);
             } else if (c.job === 'patrol') {
                 awardXP(c, 5, 1, state);
                 c.job = 'idle';
@@ -221,6 +220,36 @@ export function jobTick(state, pathfinder) {
             c.pathIndex++;
         }
     }
+}
+
+// A `.gather` colonist with an exhausted path either just arrived at a node (stay put,
+// resourceTick harvests this same frame) or has none assigned yet / their node depleted
+// (find the nearest reachable one and walk there). Only goes idle when nothing is left.
+function tickGather(c, state, pathfinder) {
+    const alreadyAdjacent = state.resourceNodes.some(rn =>
+        rn.remaining > 0 && Math.abs(rn.col - c.col) + Math.abs(rn.row - c.row) <= 1
+    );
+    if (alreadyAdjacent) return;
+
+    const nodes = state.resourceNodes
+        .filter(rn => rn.remaining > 0)
+        .sort((a, b) =>
+            (Math.abs(a.col - c.col) + Math.abs(a.row - c.row)) -
+            (Math.abs(b.col - c.col) + Math.abs(b.row - c.row))
+        );
+
+    for (const rn of nodes) {
+        const path = pathfinder.findPath(c.col, c.row, rn.col, rn.row);
+        if (!path.length) continue;
+        c.pathCols = path.map(p => p.col);
+        c.pathRows = path.map(p => p.row);
+        c.pathIndex = 0;
+        return;
+    }
+
+    // Nothing reachable left to gather.
+    awardXP(c, 10, 2, state);
+    c.job = 'idle';
 }
 
 // QuestSystem -- colonists perform real-life quests

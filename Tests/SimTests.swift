@@ -202,6 +202,69 @@ final class SimTests: XCTestCase {
         XCTAssertFalse(gs.colonists[0].hasPath)
     }
 
+    // MARK: - Gather (regression: the GATH pill sets job=.gather with no path; JobSystem must
+    // path the colonist to a node itself, not just cancel back to idle before ResourceSystem
+    // ever gets a chance to harvest)
+
+    func testGatherJobPathsToNodeAndHarvests() {
+        let gs = GameState()
+        gs.colonists = [ColonistModel(id: UUID(), name: "Miner", col: 5, row: 5)]
+        gs.resourceNodes = [ResourceModel(id: UUID(), type: .materials, col: 5, row: 8, remaining: 5, maxAmount: 5, respawnTicks: 60)]
+        gs.resources = [.materials: 0]
+
+        let grid = Array(repeating: Array(repeating: TileType.sidewalk, count: 15), count: 15)
+        let tileMap = TileMap(grid: grid)
+        let pathfinder = Pathfinder(columns: 15, rows: 15)
+        pathfinder.buildGraph(grid: grid)
+
+        let jobSystem = JobSystem()
+        jobSystem.pathfinder = pathfinder
+        let resourceSystem = ResourceSystem()
+
+        // Same as tapping the GATH pill: job set directly, no path.
+        gs.colonists[0].job = .gather
+
+        for _ in 0..<40 {
+            jobSystem.tick(gameState: gs)
+            resourceSystem.tick(gameState: gs, tileMap: tileMap)
+        }
+
+        XCTAssertEqual(gs.colonists[0].col, 5)
+        XCTAssertEqual(gs.colonists[0].row, 8)
+        XCTAssertGreaterThan(gs.resources[.materials] ?? 0, 0, "gather should walk to the node and harvest")
+        XCTAssertTrue(gs.resourceNodes[0].isDepleted, "5 remaining at ~1/tick over 40 ticks should fully deplete")
+    }
+
+    func testGatherRetargetsAfterNodeDepletes() {
+        let gs = GameState()
+        gs.colonists = [ColonistModel(id: UUID(), name: "Miner", col: 0, row: 0)]
+        gs.resourceNodes = [
+            ResourceModel(id: UUID(), type: .materials, col: 0, row: 2, remaining: 1, maxAmount: 1, respawnTicks: 999),
+            ResourceModel(id: UUID(), type: .materials, col: 0, row: 6, remaining: 3, maxAmount: 3, respawnTicks: 999)
+        ]
+        gs.resources = [.materials: 0]
+
+        let grid = Array(repeating: Array(repeating: TileType.sidewalk, count: 10), count: 10)
+        let tileMap = TileMap(grid: grid)
+        let pathfinder = Pathfinder(columns: 10, rows: 10)
+        pathfinder.buildGraph(grid: grid)
+
+        let jobSystem = JobSystem()
+        jobSystem.pathfinder = pathfinder
+        let resourceSystem = ResourceSystem()
+
+        gs.colonists[0].job = .gather
+
+        for _ in 0..<60 {
+            jobSystem.tick(gameState: gs)
+            resourceSystem.tick(gameState: gs, tileMap: tileMap)
+        }
+
+        XCTAssertTrue(gs.resourceNodes[0].isDepleted)
+        XCTAssertTrue(gs.resourceNodes[1].isDepleted, "colonist should retarget the second node once the first is empty")
+        XCTAssertEqual(gs.resources[.materials], 4)
+    }
+
     // MARK: - Save/load
 
     func testSaveLoadRoundTrip() throws {
@@ -277,5 +340,66 @@ final class SimTests: XCTestCase {
         gs.tutorialStep = nil
         TutorialView.checkAdvance(gameState: gs, event: .colonistSelected)
         XCTAssertNil(gs.tutorialStep)
+    }
+
+    // MARK: - Full playthrough (regression net for the whole game loop, not just one system)
+
+    func testFullPlaythroughSmokeTest() throws {
+        let gs = GameState()
+        gs.resources = [.food: 300, .power: 10, .materials: 40, .oxygen: 50, .cash: 25]
+        gs.colonists = [ColonistModel(id: UUID(), name: "Player", col: 10, row: 10)]
+
+        let grid = Array(repeating: Array(repeating: TileType.sidewalk, count: 20), count: 20)
+        let tileMap = TileMap(grid: grid)
+        let pathfinder = Pathfinder(columns: 20, rows: 20)
+        pathfinder.buildGraph(grid: grid)
+
+        let buildSystem = BuildSystem()
+        let jobSystem = JobSystem()
+        jobSystem.pathfinder = pathfinder
+        let needsSystem = NeedsSystem()
+
+        // All three origins land within NeedsSystem's dist<=3 proximity check from the
+        // colonist at (10,10), and none of their footprints overlap.
+        XCTAssertNotNil(buildSystem.place(type: .shelter, col: 10, row: 7, tileMap: tileMap, gameState: gs, pathfinder: pathfinder))
+        XCTAssertNotNil(buildSystem.place(type: .foodStall, col: 12, row: 10, tileMap: tileMap, gameState: gs, pathfinder: pathfinder))
+        XCTAssertNotNil(buildSystem.place(type: .generator, col: 8, row: 10, tileMap: tileMap, gameState: gs, pathfinder: pathfinder))
+        XCTAssertEqual(gs.buildings.count, 3)
+        XCTAssertLessThan(gs.resources[.materials] ?? 0, 40, "building should spend materials")
+
+        jobSystem.assignJob(colonistIndex: 0, job: .gather, destCol: 10, destRow: 10, gameState: gs, pathfinder: pathfinder)
+
+        gs.currentTick = 200 // past NeedsSystem's grace period, so decay/production are live
+        for _ in 0..<400 {
+            jobSystem.tick(gameState: gs)
+            needsSystem.tick(gameState: gs)
+            gs.currentTick += 1
+        }
+
+        XCTAssertFalse(gs.colonists[0].isDead, "colonist should survive 400 ticks near shelter+foodStall+generator")
+        XCTAssertGreaterThan(gs.resources[.power] ?? 0, 10, "generator should raise power over 400 ticks")
+        XCTAssertLessThan(gs.colonists[0].stress, 50, "shelter should hold stress down")
+
+        // Mid-game save/load, buildings included (the existing round-trip test only covers colonists)
+        try SaveManager.shared.save(slot: 4, gameState: gs, grid: tileMap.grid)
+        defer { SaveManager.shared.delete(slot: 4) }
+        let loaded = SaveManager.shared.load(slot: 4)
+        XCTAssertEqual(loaded?.buildings.count, 3)
+        XCTAssertEqual(loaded?.colonists.first?.isDead, false)
+    }
+
+    // MARK: - Startup performance (regression guard for the known "NEW GAME hangs 10-15s, no spinner" issue)
+
+    func testWorldGenAndTileMapConstructionStaysUnderBudget() {
+        // WorldGenerator.generate() + TileMap(grid:) building 128x128 = 16,384 SKSpriteNodes
+        // synchronously on @MainActor is the mechanism behind the roadmap's flagged startup hang.
+        // This doesn't fix it, it just fails loudly if it gets worse.
+        let start = Date()
+        let result = WorldGenerator.generate()
+        let tileMap = TileMap(grid: result.grid)
+        let elapsed = Date().timeIntervalSince(start)
+
+        XCTAssertEqual(tileMap.node.children.count, 128 * 128)
+        XCTAssertLessThan(elapsed, 5.0, "world gen + tile map construction took \(elapsed)s; the shipped hang is already ~10-15s on device with no loading indicator, this must not get worse")
     }
 }

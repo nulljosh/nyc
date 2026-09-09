@@ -55,8 +55,7 @@ final class JobSystem {
 
             guard gameState.colonists[i].hasPath else {
                 if gameState.colonists[i].job == .gather {
-                    gameState.colonists[i].grantXP(5)
-                    gameState.colonists[i].job = .idle
+                    tickGather(colonistIndex: i, gameState: gameState)
                 } else if gameState.colonists[i].job == .patrol {
                     gameState.colonists[i].job = .idle
                 }
@@ -89,6 +88,44 @@ final class JobSystem {
         if xp > 0 {
             gameState.colonists[colonistIndex].grantXP(xp)
         }
+    }
+
+    // MARK: - Gather
+
+    /// A `.gather` colonist with no path either just arrived at a node (stay put, ResourceSystem
+    /// harvests this same frame) or has none assigned yet / their node depleted (find the nearest
+    /// reachable one and walk there). Only goes idle when nothing is left to gather.
+    private func tickGather(colonistIndex: Int, gameState: GameState) {
+        let cc = gameState.colonists[colonistIndex].col
+        let cr = gameState.colonists[colonistIndex].row
+
+        let alreadyAdjacent = gameState.resourceNodes.contains {
+            !$0.isDepleted && abs($0.col - cc) + abs($0.row - cr) <= 1
+        }
+        if alreadyAdjacent { return }
+
+        guard let pathfinder else {
+            gameState.colonists[colonistIndex].grantXP(5)
+            gameState.colonists[colonistIndex].job = .idle
+            return
+        }
+
+        let nearest = gameState.resourceNodes
+            .filter { !$0.isDepleted }
+            .sorted { (abs($0.col - cc) + abs($0.row - cr)) < (abs($1.col - cc) + abs($1.row - cr)) }
+
+        for node in nearest {
+            let path = pathfinder.findPath(fromCol: cc, fromRow: cr, toCol: node.col, toRow: node.row)
+            guard !path.isEmpty else { continue }
+            gameState.colonists[colonistIndex].pathCols = path.map(\.col)
+            gameState.colonists[colonistIndex].pathRows = path.map(\.row)
+            gameState.colonists[colonistIndex].pathIndex = 0
+            return
+        }
+
+        // Nothing reachable left to gather.
+        gameState.colonists[colonistIndex].grantXP(5)
+        gameState.colonists[colonistIndex].job = .idle
     }
 
     // MARK: - Combat
