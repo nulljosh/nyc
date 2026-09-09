@@ -1,5 +1,18 @@
 # NYC Roadmap
 
+## TODO (on the Mac mini): submit the gather-fix build to the App Store
+
+Commit `49b474a` (2026-09-09) fixed a critical bug: colonists could never actually gather
+resources (job flipped back to idle before ResourceSystem could harvest), so materials/cash
+were hard-capped at the starting stock. Fixed in both Swift (`JobSystem.swift`) and web
+(`web/js/systems.js`); web is already deployed live. **The live App Store build (iOS 1.0.0,
+approved 2026-09-09) still has the bug** — this machine has no Apple credentials to ship it.
+
+On the Mac mini: `git pull`, bump `CURRENT_PROJECT_VERSION` in `project.yml` (repo is already
+at MARKETING_VERSION 1.0.1, ASC record is still 1.0.0), then `asc xcode build` / `export` /
+`asc builds upload`, create the 1.0.1 iOS version in ASC, attach the build, write "What's New"
++ App Review notes describing the gather fix, `asc review submit`.
+
 ## CLOSED 2026-09-09: 4.3(a) Spam appeal succeeded, iOS 1.0.0 APPROVED
 
 Appeal filed by hand in the Resolution Center the morning of 2026-09-09 (per Joshua, not scripted/logged). Apple's approval email for submission `ee6f14f3-6fa3-4ba1-86c4-61582749fd48` confirms: "Review of your submission has been completed. It is now eligible for distribution." App Version 1.0.0 for iOS, live at https://apps.apple.com/app/nyc-survive/id6782618198 within 24h of release. Was: iOS rejected 2026-08-26 under Guideline 4.3(a) Design: Spam (account-level pattern, five apps same day). See "4.3(a) status, verified 2026-08-27" below for the original rejection record.
