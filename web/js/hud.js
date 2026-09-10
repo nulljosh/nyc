@@ -730,20 +730,28 @@ function updateTutorial(state, callbacks) {
     }
     panel.appendChild(dots);
 
-    panel.onclick = () => {
-        if (step >= 8) state.tutorialStep = null;
-        else state.tutorialStep = step + 1;
-        callbacks.onHudUpdate();
-    };
-
-    el.appendChild(panel);
-    el.onclick = e => {
-        if (e.target === el) {
+    // ponytail: only "click to continue"/"click to dismiss" steps advance on click.
+    // Steps that require a real action (select a colonist, press B, place a shelter)
+    // only advance via checkTutorialAdvance() below — no clicking past them.
+    const clickAdvances = data.hint === 'Click to continue' || data.hint === 'Click to dismiss';
+    if (clickAdvances) {
+        panel.onclick = () => {
             if (step >= 8) state.tutorialStep = null;
             else state.tutorialStep = step + 1;
             callbacks.onHudUpdate();
-        }
-    };
+        };
+    }
+
+    el.appendChild(panel);
+    if (clickAdvances) {
+        el.onclick = e => {
+            if (e.target === el) {
+                if (step >= 8) state.tutorialStep = null;
+                else state.tutorialStep = step + 1;
+                callbacks.onHudUpdate();
+            }
+        };
+    }
 }
 
 export function checkTutorialAdvance(state, event) {

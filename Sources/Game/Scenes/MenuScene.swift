@@ -1,10 +1,8 @@
 import SpriteKit
 #if os(macOS)
 import AppKit
-typealias PlatformFont = NSFont
 #else
 import UIKit
-typealias PlatformFont = UIFont
 #endif
 
 @MainActor
@@ -18,7 +16,7 @@ final class MenuScene: SKScene {
     override func didMove(to view: SKView) {
         backgroundColor = ScenePalette.background
 
-        let title = SKLabelNode(fontNamed: PlatformFont.systemFont(ofSize: 14, weight: .bold).fontName)
+        let title = SKLabelNode(fontNamed: "HelveticaNeue-Bold")
         // Must match the App Store name — a title screen that says something else
         // reads as the wrong app to a reviewer (see wiki: app-renaming).
         title.text = "NYC SURVIVE"
@@ -28,7 +26,7 @@ final class MenuScene: SKScene {
         title.horizontalAlignmentMode = .center
         addChild(title)
 
-        let subtitle = SKLabelNode(fontNamed: PlatformFont.systemFont(ofSize: 14).fontName)
+        let subtitle = SKLabelNode(fontNamed: "HelveticaNeue")
         subtitle.text = "SURVIVAL SIMULATOR"
         subtitle.fontSize = 20
         subtitle.fontColor = ScenePalette.accentHot
@@ -36,7 +34,7 @@ final class MenuScene: SKScene {
         subtitle.horizontalAlignmentMode = .center
         addChild(subtitle)
 
-        let newGame = SKLabelNode(fontNamed: PlatformFont.systemFont(ofSize: 14, weight: .bold).fontName)
+        let newGame = SKLabelNode(fontNamed: "HelveticaNeue-Bold")
         newGame.text = "> NEW GAME"
         newGame.fontSize = 24
         newGame.fontColor = ScenePalette.accentWarm
@@ -45,7 +43,7 @@ final class MenuScene: SKScene {
         newGame.name = "newGame"
         addChild(newGame)
 
-        let loadGame = SKLabelNode(fontNamed: PlatformFont.systemFont(ofSize: 14, weight: .bold).fontName)
+        let loadGame = SKLabelNode(fontNamed: "HelveticaNeue-Bold")
         loadGame.text = "> LOAD GAME"
         loadGame.fontSize = 24
         loadGame.fontColor = ScenePalette.title
@@ -55,7 +53,7 @@ final class MenuScene: SKScene {
         addChild(loadGame)
 
         #if os(macOS)
-        let quit = SKLabelNode(fontNamed: PlatformFont.systemFont(ofSize: 14, weight: .bold).fontName)
+        let quit = SKLabelNode(fontNamed: "HelveticaNeue-Bold")
         quit.text = "> QUIT"
         quit.fontSize = 24
         quit.fontColor = ScenePalette.muted
@@ -85,7 +83,7 @@ final class MenuScene: SKScene {
         addChild(overlay)
         loadMenuNodes.append(overlay)
 
-        let header = SKLabelNode(fontNamed: PlatformFont.systemFont(ofSize: 14, weight: .bold).fontName)
+        let header = SKLabelNode(fontNamed: "HelveticaNeue-Bold")
         header.text = "LOAD GAME"
         header.fontSize = 28
         header.fontColor = ScenePalette.title
@@ -110,7 +108,7 @@ final class MenuScene: SKScene {
             addChild(bg)
             loadMenuNodes.append(bg)
 
-            let label = SKLabelNode(fontNamed: PlatformFont.systemFont(ofSize: 14, weight: .bold).fontName)
+            let label = SKLabelNode(fontNamed: "HelveticaNeue-Bold")
             label.fontSize = 16
             label.horizontalAlignmentMode = .center
             label.verticalAlignmentMode = .center
@@ -133,7 +131,7 @@ final class MenuScene: SKScene {
             loadMenuNodes.append(label)
         }
 
-        let back = SKLabelNode(fontNamed: PlatformFont.systemFont(ofSize: 14, weight: .bold).fontName)
+        let back = SKLabelNode(fontNamed: "HelveticaNeue-Bold")
         back.text = "[ ESC TO GO BACK ]"
         back.fontSize = 14
         back.fontColor = ScenePalette.muted
