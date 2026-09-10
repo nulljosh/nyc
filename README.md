@@ -3,6 +3,7 @@
 # NYC Survive
 
 **Live:** https://nyc.heyitsmejosh.com
+**App Store:** https://apps.apple.com/app/id6782618198
 
 **Terminal:** `swift build && ./.build/debug/nyc-tui` — building reference, not the live game. See [tui/](tui/)
 
