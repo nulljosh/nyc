@@ -1,17 +1,13 @@
 # NYC Roadmap
 
-## TODO (on the Mac mini): submit the gather-fix build to the App Store
+## CLOSED 2026-09-09: Gather-fix build iOS 1.0.1 approved and live
 
-Commit `49b474a` (2026-09-09) fixed a critical bug: colonists could never actually gather
-resources (job flipped back to idle before ResourceSystem could harvest), so materials/cash
-were hard-capped at the starting stock. Fixed in both Swift (`JobSystem.swift`) and web
-(`web/js/systems.js`); web is already deployed live. **The live App Store build (iOS 1.0.0,
-approved 2026-09-09) still has the bug** — this machine has no Apple credentials to ship it.
-
-On the Mac mini: `git pull`, bump `CURRENT_PROJECT_VERSION` in `project.yml` (repo is already
-at MARKETING_VERSION 1.0.1, ASC record is still 1.0.0), then `asc xcode build` / `export` /
-`asc builds upload`, create the 1.0.1 iOS version in ASC, attach the build, write "What's New"
-+ App Review notes describing the gather fix, `asc review submit`.
+The gather-fix build (commit `49b474a`, 2026-09-09) fixed a critical bug: colonists could never
+actually gather resources (job flipped back to idle before ResourceSystem could harvest), so
+materials/cash were hard-capped at the starting stock. Fixed in both Swift (`JobSystem.swift`)
+and web (`web/js/systems.js`); web is already deployed live at nyc.heyitsmejosh.com. iOS 1.0.1
+with icon alpha removed (ITMS-90717) received App Store approval and is now live at
+https://apps.apple.com/app/id6782618198. App Store link added to README, landing page, and wiki.
 
 ## CLOSED 2026-09-09: 4.3(a) Spam appeal succeeded, iOS 1.0.0 APPROVED
 

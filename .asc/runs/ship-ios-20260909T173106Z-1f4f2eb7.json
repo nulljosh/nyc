@@ -1,0 +1,33 @@
+{
+  "run_id": "ship-ios-20260909T173106Z-1f4f2eb7",
+  "workflow": "ship-ios",
+  "workflow_file": "/Users/joshua/Documents/Code/nyc/.asc/workflow.json",
+  "definition_hash": "6ab6eeb35c44e64b263dbf6a6897795810f9613844bb3fff8be423f6627ee9f1",
+  "params": {
+    "VERSION": "1.0.1"
+  },
+  "status": "error",
+  "failed_step": "publish",
+  "hooks": {
+    "before_all": {
+      "command": "asc auth status",
+      "status": "ok"
+    }
+  },
+  "steps": {
+    "ship-ios[1]": {
+      "name": "bump",
+      "status": "ok"
+    },
+    "ship-ios[2]": {
+      "name": "archive",
+      "status": "ok"
+    },
+    "ship-ios[3]": {
+      "name": "export",
+      "status": "ok"
+    }
+  },
+  "created_at": "2026-09-09T17:31:06Z",
+  "updated_at": "2026-09-09T17:32:11Z"
+}
