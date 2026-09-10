@@ -38,7 +38,7 @@ export function timeTick(dt, state) {
 const GRACE_PERIOD = 120;
 
 export function needsTick(state) {
-    const inGrace = state.currentTick < GRACE_PERIOD;
+    const inGrace = state.currentTick < GRACE_PERIOD; // no decay for the first GRACE_PERIOD ticks after spawn
     const wallpaperMult = state.wallpaperMode ? 0.3 : 1.0; // colonists survive longer in wallpaper
 
     for (let i = 0; i < state.colonists.length; i++) {
@@ -46,6 +46,9 @@ export function needsTick(state) {
         if (c.state === 'dead') continue;
 
         if (!inGrace) {
+            // Trait/stat perks reduce or worsen specific need decay rates; a high
+            // Endurance stat slows hunger loss, but the "insomniac"/"ironlung"/
+            // "anxious" traits override the baseline for their own need regardless of stats.
             const endMult = 1.0 - c.stats.end * 0.05;
             const sleepMult = c.trait === 'insomniac' ? 0.7 : 1.0;
             const o2Mult = c.trait === 'ironlung' ? 0.7 : 1.0;
