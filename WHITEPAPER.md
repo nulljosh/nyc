@@ -4,32 +4,39 @@
 
 Build a factory in the middle of Manhattan.
 
-NYC Survive is a Factorio-style production game for iOS and macOS. Place buildings
-on a grid, chain them into lines, keep the city fed. SpriteKit, Swift 6, one
-codebase. A web port lives
-at nyc.heyitsmejosh.com.
+Factorio-style games reward the player for designing a good layout, but most
+mobile takes on the genre replace that design work with automation, an idle
+game wearing a factory skin. NYC Survive exists to keep the actual game:
+place buildings on a grid, chain them into lines, keep the city fed, and
+make every decision the player's. SpriteKit, Swift 6, one codebase. A web
+port lives at nyc.heyitsmejosh.com.
 
 ## Core Mechanic: Auto-Pull Production Chains
 
 The economy is item-based (ore, copper ore, iron plates, gears) and flows
 through four building types, miner, smelter, assembler, storage. The defining
 rule is **adjacency auto-pull**: a building automatically pulls its recipe
-inputs from adjacent buildings, so logistics is spatial. A working factory is
-`miner → smelter → assembler` laid out tile-by-tile, with progress bars
-showing each recipe tick.
+inputs from adjacent buildings, so logistics is spatial and the puzzle is
+where you place things, not a belt-routing minigame layered on top. A
+working factory is `miner → smelter → assembler` laid out tile-by-tile, with
+progress bars showing each recipe tick.
 
 Colonists are **fully player-controlled**. The original auto-directive engine
-was deleted (2026-07-02), colonists act only on explicit commands (select,
-then tap a destination via `JobSystem.commandMove()`), and auto-assignment
-must not be reintroduced. The game is deliberately a hands-on sim, not an
-idle game.
+was deleted (2026-07-02) because letting colonists act on their own turned
+the game into something that plays itself: colonists act only on explicit
+commands (select, then tap a destination via `JobSystem.commandMove()`), and
+auto-assignment must not be reintroduced. The game is deliberately a
+hands-on sim, not an idle game.
 
 ## Architecture
 
-- **Rendering**: SpriteKit only, no UIKit/AppKit views inside the game scene.
+- **Rendering**: SpriteKit only, no UIKit/AppKit views inside the game scene,
+  because mixing view frameworks into a real-time scene is where frame drops
+  and input-routing bugs come from.
 - **Layout**: responsive portrait + landscape on iOS, fixed 1280×800 on macOS,
   from one `Sources/` tree with per-platform app entry points (xcodegen,
-  `project.yml`).
+  `project.yml`), so the game logic never forks even though the two
+  platforms present differently.
 - **State**: `GameState.swift` is the single source of truth;
   `SaveManager.swift` serializes it to JSON across a 3-slot save system with
   auto-save.
