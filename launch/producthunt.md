@@ -8,7 +8,7 @@ Description (184): A colony sim set in a besieged Times Square. Command survivor
 
 Topics: Games, Mac, Web App
 
-Pricing: Free.
+Pricing: $0.99 on the App Store. Free on web.
 
 Links
 Web: https://nyc.heyitsmejosh.com
@@ -21,4 +21,4 @@ Hi, I'm Josh, I built NYC Survive.
 
 I wanted a survival sim where nothing happens unless I decide it. No idle timers, no autoplay. NYC Survive drops you in Times Square after the lights go out. You place shelters, assign work, ration food and hold the line at night. Every loss is a decision you made.
 
-Free. Happy to answer anything.
+Free on web. $0.99 once on the App Store, no ads, no timers, nothing else to buy.
