@@ -16,6 +16,8 @@ Build a factory in the middle of Manhattan. Mine, smelt, assemble, and watch the
 
 A Factorio-style production game in SpriteKit and Swift 6. iOS and macOS, portrait and landscape.
 
+<img src="progress.svg" width="460">
+
 ## Screenshots
 
 <p>
