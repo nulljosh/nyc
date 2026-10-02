@@ -323,3 +323,6 @@ nyc/ROADMAP.md
 
 ## TUI pilot (2026-09-05)
 - `nyc-tui` SwiftPM target (SwiftTUI). `swift build && ./.build/debug/nyc-tui` lists building costs/effects from BuildingType, same scope as watchos/ (quick-reference, not a live game — the real sim runs on GameScene's SpriteKit loop). Needs a real TTY.
+
+## Ingested 2026-10-02
+- [ ] "NYC survive" (note had only the title). Survival mode for NYC, or making sure NYC survives something? Clarify.
