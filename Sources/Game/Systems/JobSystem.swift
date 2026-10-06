@@ -40,7 +40,7 @@ final class JobSystem {
     func commandGather(colonistId: UUID, node: ResourceModel, gameState: GameState, pathfinder: Pathfinder) {
         guard let i = gameState.colonists.firstIndex(where: { $0.id == colonistId }),
               !gameState.colonists[i].isDead else { return }
-        let path = pathfinder.findPath(fromCol: gameState.colonists[i].col, fromRow: gameState.colonists[i].row, toCol: node.col, toRow: node.row)
+        let path = pathfinder.findPathNear(fromCol: gameState.colonists[i].col, fromRow: gameState.colonists[i].row, toCol: node.col, toRow: node.row)
         gameState.colonists[i].job = .gather
         gameState.colonists[i].pathCols = path.map(\.col)
         gameState.colonists[i].pathRows = path.map(\.row)
@@ -127,7 +127,7 @@ final class JobSystem {
             .sorted { (abs($0.col - cc) + abs($0.row - cr)) < (abs($1.col - cc) + abs($1.row - cr)) }
 
         for node in nearest {
-            let path = pathfinder.findPath(fromCol: cc, fromRow: cr, toCol: node.col, toRow: node.row)
+            let path = pathfinder.findPathNear(fromCol: cc, fromRow: cr, toCol: node.col, toRow: node.row)
             guard !path.isEmpty else { continue }
             gameState.colonists[colonistIndex].pathCols = path.map(\.col)
             gameState.colonists[colonistIndex].pathRows = path.map(\.row)

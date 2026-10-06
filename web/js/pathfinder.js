@@ -81,4 +81,14 @@ export class Pathfinder {
         path.reverse();
         return path;
     }
+
+    /// Path to the tile, or to any of its four neighbours when the tile itself is blocked
+    /// (resource nodes can sit on building tiles; harvesting works from one tile away).
+    findPathNear(fromCol, fromRow, toCol, toRow) {
+        for (const [dc, dr] of [[0,0],[1,0],[-1,0],[0,1],[0,-1]]) {
+            const p = this.findPath(fromCol, fromRow, toCol + dc, toRow + dr);
+            if (p.length) return p;
+        }
+        return [];
+    }
 }

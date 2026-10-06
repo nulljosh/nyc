@@ -309,7 +309,7 @@ function selectEntity(wx, wy) {
     for (const id of pickedIds()) {
         const c = state.colonists.find(k => k.id === id);
         if (!c || c.state === 'dead') continue;
-        const path = pathfinder.findPath(c.col, c.row, node ? node.col : tile.col, node ? node.row : tile.row);
+        const path = node ? pathfinder.findPathNear(c.col, c.row, node.col, node.row) : pathfinder.findPath(c.col, c.row, tile.col, tile.row);
         if (!path.length) continue;
         c.job = node ? 'gather' : 'idle';
         c.pathCols = path.map(p => p.col);

@@ -73,4 +73,14 @@ final class Pathfinder {
             return (Int(gridNode.gridPosition.x), Int(gridNode.gridPosition.y))
         }
     }
+
+    /// Path to the tile, or to a neighbour when the tile itself is blocked (nodes can sit on
+    /// building tiles; harvesting works from one tile away).
+    func findPathNear(fromCol: Int, fromRow: Int, toCol: Int, toRow: Int) -> [(col: Int, row: Int)] {
+        for (dc, dr) in [(0, 0), (1, 0), (-1, 0), (0, 1), (0, -1)] {
+            let p = findPath(fromCol: fromCol, fromRow: fromRow, toCol: toCol + dc, toRow: toRow + dr)
+            if !p.isEmpty { return p }
+        }
+        return []
+    }
 }

@@ -271,7 +271,7 @@ function tickGather(c, state, pathfinder) {
         );
 
     for (const rn of nodes) {
-        const path = pathfinder.findPath(c.col, c.row, rn.col, rn.row);
+        const path = pathfinder.findPathNear(c.col, c.row, rn.col, rn.row);
         if (!path.length) continue;
         c.pathCols = path.map(p => p.col);
         c.pathRows = path.map(p => p.row);
