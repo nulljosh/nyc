@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.0 (2026-10-05)
+
+The game can be won. Survivors join when there is a free bed and food; victory is 15 alive at average level 8. Click a survivor or drag a box, click the ground to move, click a resource to gather. Buildings burn materials and break when the pile is empty. Scavengers raid every third night unless someone is on patrol. New title screen with Settings and how-to-play, bigger sprites, 10-step tutorial. Web: the HUD had been swallowing every mouse click; fixed. Submitted to App Review on iOS and macOS the same night.
+
 ## [v0.0.1] — 2026-05-23
 
 - e0a6e02d chore: snow leopard pass (nimble-web)
