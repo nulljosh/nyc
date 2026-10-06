@@ -402,4 +402,13 @@ final class SimTests: XCTestCase {
         XCTAssertEqual(tileMap.node.children.count, 128 * 128)
         XCTAssertLessThan(elapsed, 5.0, "world gen + tile map construction took \(elapsed)s; the shipped hang is already ~10-15s on device with no loading indicator, this must not get worse")
     }
+
+    func testGeneratorProducesWithNoColonistsNearby() {
+        let gs = GameState()
+        gs.colonists = []
+        gs.buildings = [BuildingModel(id: UUID(), type: .generator, col: 5, row: 5)]
+        let before = gs.resources[.power] ?? 0
+        NeedsSystem().tick(gameState: gs)
+        XCTAssertEqual(gs.resources[.power] ?? 0, before + 1)
+    }
 }

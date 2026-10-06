@@ -4,7 +4,19 @@ import Foundation
 final class NeedsSystem {
     private let gracePeriodTicks = 120
 
+    /// Machines run on their own, once per building per tick, whether or not anyone is standing nearby.
+    func tickBuildings(gameState: GameState) {
+        for building in gameState.buildings where building.isActive {
+            switch building.type {
+            case .generator: gameState.resources[.power, default: 0] += 1
+            case .billboard: gameState.resources[.cash, default: 0] += 1
+            default: break
+            }
+        }
+    }
+
     func tick(gameState: GameState) {
+        tickBuildings(gameState: gameState)
         let inGracePeriod = gameState.currentTick < gracePeriodTicks
 
         for i in gameState.colonists.indices {
@@ -51,10 +63,6 @@ final class NeedsSystem {
                     if (gameState.resources[.power] ?? 0) > 0 {
                         gameState.colonists[i].oxygen = min(100, gameState.colonists[i].oxygen + 1.0)
                     }
-                case .generator:
-                    gameState.resources[.power, default: 0] += 1
-                case .billboard:
-                    gameState.resources[.cash, default: 0] += 1
                 default:
                     break
                 }
