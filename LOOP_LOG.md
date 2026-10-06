@@ -38,3 +38,4 @@ Plan (small slices, one per round)
 - R13: tutorial and the Settings how-to on both platforms now teach upkeep, raids/patrol and the win condition (10 steps). Step counts derived from the list on web.
 - R14: SHIPPED 1.1.0 to App Review on both platforms (iOS submission 1ab8dcd4, Mac 8ead5591, build 202610052145). Added a ship-mac workflow (raw xcodebuild archive + exportArchive, since asc xcode export only writes ipa). Gotcha: publish --submit preflight needs whatsNew on the version first; set it with asc localizations update, then asc review submit --build-id. Review notes updated to describe 1.1.0 truthfully.
 - R15: live mid-game check on nyc.heyitsmejosh.com: dawn raid warning, BROKEN generator and the raid loss all show. Night had no visual, added a dusk tint on the web canvas (deeper 22:00-04:00). Mac scene had none either; added a camera-mounted tint node.
+- R16 (2026-10-06 03:30): iOS 1.1.0 APPROVED, READY_FOR_SALE. Mac 1.1.0 still WAITING_FOR_REVIEW.
