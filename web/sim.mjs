@@ -26,6 +26,8 @@ function tryBuild(type) {
     return false;
 }
 let lastLog = -1, won = null, peakDead = 0;
+const anomalies = {}; const note = k => anomalies[k] = (anomalies[k] || 0) + 1;
+const stuck = new Map();
 for (let t = 1; t <= TPD * 400; t++) {
     state.currentTick = t; state.currentHour = Math.floor((t % TPD) / 10);
     // bot decisions, once per half-day (a human would do this every few minutes)
@@ -39,6 +41,17 @@ for (let t = 1; t <= TPD * 400; t++) {
     }
     needsTick(state); jobTick(state, pf); resourceTick(state); recruitTick(state);
     peakDead = Math.max(peakDead, state.colonists.length - alive().length);
+    // invariants a real player would notice
+    for (const [k, v] of Object.entries(state.resources)) { if (!Number.isFinite(v)) note('nan:' + k); if (v < 0) note('negative:' + k); }
+    for (const c of alive()) {
+        for (const f of ['hunger','oxygen','sleep','stress','health']) if (!Number.isFinite(c[f]) || c[f] < 0 || c[f] > 100) note('need-out-of-range:' + f);
+        if (!(grid[c.row]?.[c.col] === 0 || grid[c.row]?.[c.col] === 1 || grid[c.row]?.[c.col] === 4)) note('colonist-on-blocked-tile');
+        const key = c.id, pos = c.col + ',' + c.row;
+        const prev = stuck.get(key);
+        if (c.job === 'gather' && prev && prev.pos === pos && t - prev.t > 300 && !state.resourceNodes.some(rn => Math.abs(rn.col - c.col) + Math.abs(rn.row - c.row) <= 1)) { note('gatherer-stuck-300-ticks'); stuck.set(key, { pos, t }); }
+        else if (!prev || prev.pos !== pos) stuck.set(key, { pos, t });
+    }
+    if (t % 1000 === 0 && state.buildings.length && state.buildings.every(b => !b.isActive)) note('all-buildings-broken');
     if (t % (TPD * 5) === 0 && t !== lastLog) {
         lastLog = t; const a = alive(); const avg = a.reduce((s, c) => s + c.level, 0) / (a.length || 1);
         console.log(`day ${t / TPD} | ${(t * TICK_S / 60).toFixed(0)} min | alive ${a.length} | avg lvl ${avg.toFixed(1)} | ${currentPhase(state)} | food ${state.resources.food} mat ${state.resources.materials} pwr ${state.resources.power} dead ${state.colonists.length - a.length}`);
@@ -46,6 +59,7 @@ for (let t = 1; t <= TPD * 400; t++) {
     if (checkVictory(state)) { won = t; break; }
     if (!alive().length) { console.log('EVERYONE DIED at day', t / TPD); break; }
 }
+console.log('anomalies', JSON.stringify(anomalies));
 console.log(won ? `VICTORY at day ${(won / TPD).toFixed(0)} = ${(won * TICK_S / 3600).toFixed(2)} hours of play` : 'NO VICTORY in 400 days');
 const d = state.colonists.filter(c => c.state === 'dead').slice(-5).map(c => `h${c.hunger.toFixed(0)} o${c.oxygen.toFixed(0)} s${c.stress.toFixed(0)} z${c.sleep.toFixed(0)} hp${c.health.toFixed(0)}`);
 console.log('last dead needs:', d.join(' | '));

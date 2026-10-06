@@ -9,6 +9,8 @@ final class BuildSystem {
         for r in row..<(row + ts.h) {
             for c in col..<(col + ts.w) {
                 guard let tile = tileMap.tileAt(col: c, row: r), tile.isWalkable else { return false }
+                // never wall a survivor in
+                if gameState.colonists.contains(where: { !$0.isDead && $0.col == c && $0.row == r }) { return false }
             }
         }
         for (resource, amount) in type.cost {
@@ -30,6 +32,16 @@ final class BuildSystem {
                 tileMap.setTile(.building, col: c, row: r)
                 pathfinder.removeNode(col: c, row: r)
             }
+        }
+
+        // Anyone routed through the new footprint re-plans; a stale path would walk them into the wall.
+        for i in gameState.colonists.indices {
+            let c = gameState.colonists[i]
+            guard c.hasPath else { continue }
+            let crosses = (c.pathIndex..<c.pathCols.count).contains { k in
+                c.pathCols[k] >= col && c.pathCols[k] < col + ts.w && c.pathRows[k] >= row && c.pathRows[k] < row + ts.h
+            }
+            if crosses { gameState.colonists[i].pathCols = []; gameState.colonists[i].pathRows = []; gameState.colonists[i].pathIndex = 0 }
         }
 
         let model = BuildingModel(id: UUID(), type: type, col: col, row: row)

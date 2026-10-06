@@ -179,6 +179,8 @@ export function canPlace(type, col, row, grid, state) {
         for (let c = col; c < col + w; c++) {
             const t = tileAt(grid, c, r);
             if (t === null || !isWalkable(t)) return false;
+            // never wall a survivor in
+            if (state.colonists.some(k => k.state !== 'dead' && k.col === c && k.row === r)) return false;
         }
     }
     for (const [res, amt] of Object.entries(bt.cost)) {
@@ -200,6 +202,13 @@ export function placeBuilding(type, col, row, grid, state, pathfinder) {
         for (let c = col; c < col + w; c++) {
             setTile(grid, c, r, TileType.building);
             pathfinder.removeNode(c, r);
+        }
+    }
+    // Anyone routed through the new footprint re-plans; a stale path would walk them into the wall.
+    for (const c of state.colonists) {
+        for (let i = c.pathIndex; i < c.pathCols.length; i++) {
+            const pc = c.pathCols[i], pr = c.pathRows[i];
+            if (pc >= col && pc < col + w && pr >= row && pr < row + h) { c.pathCols = []; c.pathRows = []; c.pathIndex = 0; break; }
         }
     }
     const model = createBuilding(type, col, row);

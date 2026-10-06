@@ -472,4 +472,19 @@ final class SimTests: XCTestCase {
         gs.colonists[0].level = 8
         XCTAssertFalse(NeedsSystem.isVictory(gs))
     }
+
+    func testBuildingNeverTrapsAColonist() {
+        let grid = Array(repeating: Array(repeating: TileType.sidewalk, count: 20), count: 20)
+        let tileMap = TileMap(grid: grid)
+        let pf = Pathfinder(columns: 20, rows: 20); pf.buildGraph(grid: grid)
+        let gs = GameState()
+        gs.resources[.materials] = 100
+        var c = ColonistModel(id: UUID(), name: "Walker", col: 5, row: 5)
+        c.pathCols = [6, 7, 8]; c.pathRows = [5, 5, 5]; c.pathIndex = 0
+        gs.colonists = [c]
+        let bs = BuildSystem()
+        XCTAssertFalse(bs.canPlace(type: .shelter, col: 5, row: 5, tileMap: tileMap, gameState: gs))
+        XCTAssertNotNil(bs.place(type: .shelter, col: 7, row: 4, tileMap: tileMap, gameState: gs, pathfinder: pf))
+        XCTAssertFalse(gs.colonists[0].hasPath)
+    }
 }

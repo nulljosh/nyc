@@ -2,7 +2,9 @@
 import { test } from 'node:test';
 import assert from 'node:assert';
 import { createGameState, createColonist } from './js/state.js';
-import { recruitTick, resourceTick } from './js/systems.js';
+import { recruitTick, resourceTick, placeBuilding, canPlace } from './js/systems.js';
+import { Pathfinder } from './js/pathfinder.js';
+import { GRID_SIZE, TileType } from './js/world.js';
 
 function colony(n) {
     const s = createGameState();
@@ -34,4 +36,15 @@ test('gathering earns XP', () => {
     s.resourceNodes = [{ id: 'r', type: 'materials', col: 5, row: 5, remaining: 50, maxAmount: 50, respawnTicks: 60, ticksSinceDepleted: 0 }];
     for (let t = 4; t <= 2000; t += 20) { s.currentTick = t; resourceTick(s); }
     assert.ok(s.colonists[0].level > 0 || s.colonists[0].xp > 0);
+});
+
+test('building never traps a colonist: cannot place on them, clears paths through it', () => {
+    const grid = Array.from({ length: GRID_SIZE }, () => Array.from({ length: GRID_SIZE }, () => TileType.sidewalk));
+    const pf = new Pathfinder(); pf.buildGraph(grid);
+    const s = colony(1); s.resources.materials = 100;
+    const c = s.colonists[0]; // at 5,5
+    assert.equal(canPlace('shelter', 5, 5, grid, s), false);
+    c.pathCols = [6, 7, 8]; c.pathRows = [5, 5, 5]; c.pathIndex = 0;
+    assert.ok(placeBuilding('shelter', 7, 4, grid, s, pf));
+    assert.equal(c.pathCols.length, 0);
 });
