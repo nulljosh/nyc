@@ -24,6 +24,7 @@ final class GameScene: SKScene {
     private var selectionStart: CGPoint?
     private var selectionRect: SKShapeNode?
     private var dragMoved = false
+    private var nightOverlay = SKSpriteNode()
 
     // Tutorial highlight nodes
     private var tutorialHighlights: [SKNode] = []
@@ -123,6 +124,11 @@ final class GameScene: SKScene {
         let center = WorldGenerator.gridSize / 2
         camera = cameraController.cameraNode
         addChild(cameraController.cameraNode)
+        // Night tint rides on the camera so it covers the view at any pan or zoom (scaled up in update).
+        nightOverlay = SKSpriteNode(color: SKColor(red: 0.04, green: 0.06, blue: 0.19, alpha: 1), size: CGSize(width: 8192, height: 8192))
+        nightOverlay.zPosition = 90
+        nightOverlay.alpha = 0
+        cameraController.cameraNode.addChild(nightOverlay)
         cameraController.centerOn(position: tileMap.worldPosition(col: center, row: center))
 
         inputHandler.gameState = gameState
@@ -174,6 +180,8 @@ final class GameScene: SKScene {
         }
 
         cameraController.update(deltaTime: dt)
+        let deep = gameState.currentHour >= 22 || gameState.currentHour < 4
+        nightOverlay.alpha = gameState.isNight ? (deep ? 0.42 : 0.24) : 0
 
         guard timeSystem.update(deltaTime: dt, gameState: gameState) else { return }
 
