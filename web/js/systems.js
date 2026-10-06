@@ -38,6 +38,12 @@ export function timeTick(dt, state) {
 const GRACE_PERIOD = 120;
 
 export function needsTick(state) {
+    // Machines run on their own, once per building per tick, whether or not anyone is nearby.
+    for (const b of state.buildings) {
+        if (!b.isActive) continue;
+        if (b.type === 'generator') state.resources.power = (state.resources.power || 0) + 1;
+        else if (b.type === 'billboard') state.resources.cash = (state.resources.cash || 0) + 1;
+    }
     const inGrace = state.currentTick < GRACE_PERIOD; // no decay for the first GRACE_PERIOD ticks after spawn
     const wallpaperMult = state.wallpaperMode ? 0.3 : 1.0; // colonists survive longer in wallpaper
 
@@ -60,6 +66,23 @@ export function needsTick(state) {
             c.sleep = Math.max(0, c.sleep - 0.0375 * sleepMult * wallpaperMult);
         }
 
+        // Resting: an idle colonist recovers anywhere (faster near a shelter). Work drains, rest restores.
+        // The food stockpile feeds the hungry on its own, so food is a production problem, not a babysitting one.
+        if (c.job === 'idle' && c.pathIndex >= c.pathCols.length) {
+            c.sleep = Math.min(100, c.sleep + 0.12);
+            c.stress = Math.max(0, c.stress - 0.06);
+            c.oxygen = Math.min(100, c.oxygen + 0.05);
+        }
+        if (c.hunger < 30 && (state.resources.food || 0) >= 3) {
+            c.hunger = Math.min(100, c.hunger + 25);
+            state.resources.food -= 3;
+        }
+
+        if (c.oxygen < 30 && (state.resources.oxygen || 0) >= 5) {
+            c.oxygen = Math.min(100, c.oxygen + 20);
+            state.resources.oxygen -= 5;
+        }
+
         // CHA stress reduction from nearby colonists
         for (let j = 0; j < state.colonists.length; j++) {
             if (j === i || state.colonists[j].state === 'dead') continue;
@@ -79,7 +102,7 @@ export function needsTick(state) {
                     c.sleep = Math.min(100, c.sleep + 0.4);
                     break;
                 case 'foodStall':
-                    if ((state.resources.food || 0) > 0) {
+                    if ((state.resources.food || 0) > 0 && c.hunger <= 98) {
                         c.hunger = Math.min(100, c.hunger + 2.0);
                         state.resources.food--;
                     }
@@ -88,12 +111,6 @@ export function needsTick(state) {
                     if ((state.resources.power || 0) > 0) {
                         c.oxygen = Math.min(100, c.oxygen + 1.0);
                     }
-                    break;
-                case 'generator':
-                    state.resources.power = (state.resources.power || 0) + 1;
-                    break;
-                case 'billboard':
-                    state.resources.cash = (state.resources.cash || 0) + 1;
                     break;
                 // Quest buildings restore needs too
                 case 'gym':
@@ -137,7 +154,7 @@ export function resourceTick(state) {
                 rn.remaining -= taken;
                 if (taken > 0) {
                     state.resources[rn.type] = (state.resources[rn.type] || 0) + taken;
-                    if (state.currentTick % 20 === 0) grantXP(c, 1); // ponytail: 1 XP per 20 working ticks (~1 hr of steady gathering to avg lvl 8), tune with a real playtest
+                    if (state.currentTick % 5 === 0) grantXP(c, 1); // ponytail: tuned with web/sim.mjs so a steady player wins in ~1.5-2h
                 }
                 break;
             }

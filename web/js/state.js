@@ -172,7 +172,7 @@ export function createResource(type, col, row, maxAmount) {
 
 export function createGameState() {
     return {
-        resources: { food: 20, power: 10, materials: 30, oxygen: 50, cash: 25 },
+        resources: { food: 60, power: 10, materials: 30, oxygen: 60, cash: 25 },
         colonists: [],
         buildings: [],
         resourceNodes: [],
