@@ -6,6 +6,18 @@ final class NeedsSystem {
 
     /// Machines run on their own, once per building per tick, whether or not anyone is standing nearby.
     func tickBuildings(gameState: GameState) {
+        // Upkeep: 1 materials per building per 10 ticks. Unpaid, it breaks until materials return.
+        if gameState.currentTick % 10 == 0 {
+            for i in gameState.buildings.indices {
+                if (gameState.resources[.materials] ?? 0) >= 1 {
+                    gameState.resources[.materials, default: 0] -= 1
+                    if !gameState.buildings[i].isActive { gameState.buildings[i].isActive = true; gameState.log("\(gameState.buildings[i].type.displayName) repaired") }
+                } else if gameState.buildings[i].isActive {
+                    gameState.buildings[i].isActive = false
+                    gameState.log("\(gameState.buildings[i].type.displayName) broke down: no materials")
+                }
+            }
+        }
         for building in gameState.buildings where building.isActive {
             switch building.type {
             case .generator: gameState.resources[.power, default: 0] += 1
@@ -76,8 +88,9 @@ final class NeedsSystem {
                         gameState.resources[.food, default: 0] -= 1
                     }
                 case .filterStation:
-                    if (gameState.resources[.power] ?? 0) > 0 {
+                    if (gameState.resources[.power] ?? 0) > 0, gameState.colonists[i].oxygen <= 98 {
                         gameState.colonists[i].oxygen = min(100, gameState.colonists[i].oxygen + 1.0)
+                        gameState.resources[.power, default: 0] -= 1
                     }
                 default:
                     break

@@ -422,6 +422,7 @@ export function renderWorld(ctx, canvas, camera, grid, state) {
         if (bx + bw < bounds.minCol * TILE_SIZE || bx > (bounds.maxCol + 1) * TILE_SIZE) continue;
         if (by + bh < bounds.minRow * TILE_SIZE || by > (bounds.maxRow + 1) * TILE_SIZE) continue;
 
+        if (!b.isActive) ctx.globalAlpha = 0.4;
         ctx.fillStyle = BUILDING_COLORS[b.type] || INK.track;
         roundRect(ctx, bx, by, bw, bh, TILE_R + 2);
         ctx.fill();
@@ -442,7 +443,8 @@ export function renderWorld(ctx, canvas, camera, grid, state) {
         ctx.font = '600 7px -apple-system, sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'bottom';
-        ctx.fillText(bt.name, bx + bw / 2, by + bh - 2);
+        ctx.fillText(b.isActive ? bt.name : 'BROKEN', bx + bw / 2, by + bh - 2);
+        ctx.globalAlpha = 1;
     }
 
     // Colonists -- 16-bit style with smooth interpolation

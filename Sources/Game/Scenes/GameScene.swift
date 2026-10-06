@@ -215,6 +215,10 @@ final class GameScene: SKScene {
             }
         }
 
+        for model in gameState.buildings {
+            buildingNodes[model.id]?.alpha = model.isActive ? 1 : 0.4
+        }
+
         for model in gameState.resourceNodes {
             if let node = resourceNodes[model.id] {
                 node.update(model: model)

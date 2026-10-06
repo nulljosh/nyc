@@ -39,6 +39,14 @@ const GRACE_PERIOD = 120;
 
 export function needsTick(state) {
     // Machines run on their own, once per building per tick, whether or not anyone is nearby.
+    // Upkeep: every building burns 1 materials per 10 ticks. Unpaid, it breaks (isActive=false)
+    // until materials come back. Materials are the sink that keeps gathering worth doing.
+    if (state.currentTick % 10 === 0) {
+        for (const b of state.buildings) {
+            if ((state.resources.materials || 0) >= 1) { state.resources.materials--; if (!b.isActive) { b.isActive = true; gameLog(state, `${BuildingType[b.type].name} repaired`); } }
+            else if (b.isActive) { b.isActive = false; gameLog(state, `${BuildingType[b.type].name} broke down: no materials`); }
+        }
+    }
     for (const b of state.buildings) {
         if (!b.isActive) continue;
         if (b.type === 'generator') state.resources.power = (state.resources.power || 0) + 1;
@@ -108,8 +116,9 @@ export function needsTick(state) {
                     }
                     break;
                 case 'filterStation':
-                    if ((state.resources.power || 0) > 0) {
+                    if ((state.resources.power || 0) > 0 && c.oxygen <= 98) {
                         c.oxygen = Math.min(100, c.oxygen + 1.0);
+                        state.resources.power--;
                     }
                     break;
                 // Quest buildings restore needs too
