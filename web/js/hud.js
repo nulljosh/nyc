@@ -29,7 +29,7 @@ export function updateHUD(state, callbacks) {
         return;
     }
     hud.style.opacity = '1';
-    hud.style.pointerEvents = 'auto';
+    hud.style.pointerEvents = 'none'; // children opt back in via CSS; 'auto' here blocked every canvas click
 
     updateResourceBar(state);
     updatePlayerProfile(state);
@@ -596,7 +596,7 @@ function updateSettings(state, callbacks) {
         ['WASD / Arrows','Pan camera'], ['Scroll / Pinch','Zoom'], ['Right-drag','Pan camera'],
         ['B','Toggle build menu'], ['1-6','Select building'], ['X','Toggle demolish'],
         ['Space','Pause/resume'], ['Ctrl+S','Save game'], ['Esc','Settings / cancel'],
-        ['Shift+drag','Box select'],
+        ['Drag','Box select'], ['Click ground / resource','Move / gather'],
     ];
     controls.forEach(([key, action]) => {
         const row = document.createElement('div');
@@ -681,9 +681,9 @@ function updateTutorial(state, callbacks) {
         { title:'CAMERA',    body:'WASD to pan the camera. Scroll to zoom.',                                            hint:'Click to continue' },
         { title:'BUILD',     body:'Press B to open the BUILD menu. Buildings keep your colony running.',                hint:'Press B' },
         { title:'SHELTER',   body:'Place a SHELTER to reduce stress and let colonists sleep.',                          hint:'Place a shelter' },
-        { title:'DIRECTIVES',body:'Set a DIRECTIVE to auto-assign colonists. Try GATHER to collect resources.',         hint:'Click to continue' },
+        { title:'COMMAND',   body:'Click a survivor, or drag a box around several. Click the ground to move them. Click a resource to gather it.', hint:'Click to continue' },
         { title:'COMBAT',    body:'Colonists carry weapons. Assign ATTACK jobs to fight enemies. STR boosts damage.',   hint:'Click to continue' },
-        { title:'GOOD LUCK', body:'Press SPACE to pause. Ctrl+S to save. Shift+drag to select multiple. Good luck.',   hint:'Click to dismiss' },
+        { title:'GOOD LUCK', body:'Press SPACE to pause. Ctrl+S to save. Esc deselects. Good luck.',   hint:'Click to dismiss' },
     ];
 
     const step = state.tutorialStep;

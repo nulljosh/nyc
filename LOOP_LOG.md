@@ -23,3 +23,6 @@ Plan (small slices, one per round)
 - Rule: colonists stay player-commanded (CLAUDE.md). Automation = machines the player builds + squad orders the player gives. No auto-assign.
 - Next R2: player-ordered haul trips.
 - R2: no serif was found. Removed all monospaced faces (Swift HUD + web --font-mono) so UI is sans only. Controls: selection persists after orders, drag-box selects squads, orders go to the whole squad, click a resource = gather, Esc deselects, selection ring drawn, tutorial copy rewritten. Tests added, green.
+- R3: WEB BUG: #hud had pointer-events:auto set inline and covered the canvas, so no mouse click ever reached the game (fixed, hud.js). Web had no move/gather orders at all; added same squad controls + touch taps. Tutorial still taught removed DIRECTIVES; rewritten. Splash on web+native now New Game / Load Game / Settings (how to play), rounded font. Landing has a real scripted playthrough video.
+- FOUND: VICTORY needs 15 alive and avg level 8, but nothing ever adds colonists past the starting 8. The web game cannot be won. Next: survivors arrive as the colony grows, then a real win condition + progression pacing for a few hours of play.
+- FOUND: sprites are ~12px and resource nodes are tiny dots; unclear what is what. Next: bigger sprites + labels.

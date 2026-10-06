@@ -34,6 +34,7 @@
     --radius-xs:    6px;
     --radius-pill:  100px;
     --font:         -apple-system,BlinkMacSystemFont,'SF Pro Display','SF Pro Text',system-ui,sans-serif;
+    --font-chill:   ui-rounded,'SF Pro Rounded','Nunito','Varela Round',system-ui,sans-serif;
     --font-mono:    var(--font);
     --spring:       cubic-bezier(0.34,1.56,0.64,1);
 }
@@ -854,3 +855,15 @@ hr { border:none; border-top:1px solid var(--border-light); margin:8px 0; }
     transition:opacity 0.3s ease;
     pointer-events:none;
 }
+
+/* Splash: chill rounded type, three plain buttons */
+#menu, #menu button { font-family:var(--font-chill); }
+.menu-title { font-weight:800; letter-spacing:-0.01em; }
+.menu-subtitle { margin-bottom:28px; letter-spacing:0.12em; }
+.menu-btn { min-width:220px; }
+.menu-btn-soft { background:var(--glass); color:var(--text-1); border:1px solid var(--border); }
+.menu-panel { position:relative; text-align:center; max-height:40vh; overflow:auto; }
+.menu-panel[hidden] { display:none; }
+.menu-panel .menu-load-title { margin-top:12px; }
+.howto { display:flex; flex-direction:column; gap:6px; font-size:14px; color:var(--text-2); line-height:1.35; }
+.howto b { color:var(--text-1); }

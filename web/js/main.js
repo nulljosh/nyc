@@ -83,6 +83,10 @@ function showMenu() {
         slotsContainer.appendChild(btn);
     }
 
+    const panels = { load: document.getElementById('menu-panel-load'), settings: document.getElementById('menu-panel-settings') };
+    const toggle = which => { for (const k in panels) panels[k].hidden = k !== which || !panels[k].hidden; };
+    document.getElementById('menu-load').onclick = () => toggle('load');
+    document.getElementById('menu-settings').onclick = () => toggle('settings');
     document.getElementById('menu-new').onclick = () => {
         setDifficulty(selectedDifficulty);
         zoomIntoGame(null);
@@ -163,6 +167,7 @@ function startGame(loadSlot, demo = false) {
 
     // Expose state for quest board HUD
     window._gameState = state;
+    window._camera = camera;
     window._gameCallbacks = {
         addQuest: (data) => { addQuest(state, data); updateHUD(state, hudCallbacks); },
         completeQuest: (id) => { completeQuestInList(state, id); updateHUD(state, hudCallbacks); },
@@ -277,18 +282,38 @@ function gameLoop(timestamp, id) {
     requestAnimationFrame(ts => gameLoop(ts, id));
 }
 
+// One rule: click a colonist to pick them, click a resource to send the picked ones to gather,
+// click the ground to send them there. Selection stays until Esc.
+function pickedIds() {
+    const ids = new Set(state.selectedColonistIds || []);
+    if (state.selectedColonistId) ids.add(state.selectedColonistId);
+    return [...ids];
+}
+
 function selectEntity(wx, wy) {
-    state.selectedColonistId = null;
-    state.selectedColonistIds = new Set();
     for (const c of state.colonists) {
         const cx = c.col * TILE_SIZE + TILE_SIZE / 2;
         const cy = c.row * TILE_SIZE + TILE_SIZE / 2;
         if (Math.abs(wx - cx) < 20 && Math.abs(wy - cy) < 20) {
             state.selectedColonistId = c.id;
+            state.selectedColonistIds = new Set([c.id]);
             gameLog(state, `Selected ${c.name}`);
             updateHUD(state, hudCallbacks);
             return;
         }
+    }
+    const tile = worldToTile(wx, wy);
+    const node = state.resourceNodes.find(rn => rn.remaining > 0 &&
+        Math.abs(rn.col - tile.col) <= 1 && Math.abs(rn.row - tile.row) <= 1);
+    for (const id of pickedIds()) {
+        const c = state.colonists.find(k => k.id === id);
+        if (!c || c.state === 'dead') continue;
+        const path = pathfinder.findPath(c.col, c.row, node ? node.col : tile.col, node ? node.row : tile.row);
+        if (!path.length) continue;
+        c.job = node ? 'gather' : 'idle';
+        c.pathCols = path.map(p => p.col);
+        c.pathRows = path.map(p => p.row);
+        c.pathIndex = 0;
     }
     updateHUD(state, hudCallbacks);
 }

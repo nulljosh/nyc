@@ -65,7 +65,10 @@ export function setupInput(canvas, camera, state, callbacks) {
                 safe(() => callbacks.onHudUpdate());
                 break;
             case 'escape':
-                if (state.inputMode !== 'normal' || state.showBuildMenu) {
+                if (state.selectedColonistId || (state.selectedColonistIds && state.selectedColonistIds.size)) {
+                    state.selectedColonistId = null;
+                    state.selectedColonistIds = new Set();
+                } else if (state.inputMode !== 'normal' || state.showBuildMenu) {
                     state.inputMode = 'normal';
                     state.selectedBuildingType = null;
                     state.showBuildMenu = false;
@@ -93,6 +96,7 @@ export function setupInput(canvas, camera, state, callbacks) {
     let isDragging = false;
     let isSelecting = false;
     let selStart = null;
+    let selClient = null;
 
     canvas.addEventListener('mousedown', e => {
         const rect = canvas.getBoundingClientRect();
@@ -106,9 +110,10 @@ export function setupInput(canvas, camera, state, callbacks) {
             return;
         }
 
-        if (e.shiftKey) {
+        if (e.shiftKey || state.inputMode === 'normal') {
             isSelecting = true;
             selStart = world;
+            selClient = { x: e.clientX, y: e.clientY };
             return;
         }
 
@@ -168,7 +173,9 @@ export function setupInput(canvas, camera, state, callbacks) {
             const sx = (e.clientX - rect.left) * (canvas.width / rect.width);
             const sy = (e.clientY - rect.top) * (canvas.height / rect.height);
             const world = camera.screenToWorld(sx, sy, canvas);
-            safe(() => callbacks.onBoxSelect(selStart, world));
+            const moved = selClient && Math.hypot(e.clientX - selClient.x, e.clientY - selClient.y) > 6;
+            if (moved) safe(() => callbacks.onBoxSelect(selStart, world));
+            else safe(() => callbacks.onSelectEntity(selStart.x, selStart.y));
             isSelecting = false;
             selStart = null;
             state._selRect = null;
@@ -221,6 +228,18 @@ export function setupInput(canvas, camera, state, callbacks) {
     }, { passive: false });
 
     canvas.addEventListener('touchend', e => {
+        const t0 = e.changedTouches[0];
+        if (dragStart && t0 && Object.keys(touches).length === 1 &&
+            Math.hypot(t0.clientX - dragStart.sx, t0.clientY - dragStart.sy) < 8) {
+            const rect = canvas.getBoundingClientRect();
+            const sx = (t0.clientX - rect.left) * (canvas.width / rect.width);
+            const sy = (t0.clientY - rect.top) * (canvas.height / rect.height);
+            const world = camera.screenToWorld(sx, sy, canvas);
+            const tile = worldToTile(world.x, world.y);
+            if (state.inputMode === 'build') safe(() => callbacks.onPlaceBuilding(tile.col, tile.row));
+            else if (state.inputMode === 'demolish') safe(() => callbacks.onDemolish(world.x, world.y));
+            else safe(() => callbacks.onSelectEntity(world.x, world.y));
+        }
         for (const t of e.changedTouches) delete touches[t.identifier];
         if (Object.keys(touches).length < 2) lastPinchDist = null;
         if (Object.keys(touches).length === 0) { isDragging = false; dragStart = null; }
