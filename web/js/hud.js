@@ -682,7 +682,8 @@ function updateTutorial(state, callbacks) {
         { title:'BUILD',     body:'Press B to open the BUILD menu. Buildings keep your colony running.',                hint:'Press B' },
         { title:'SHELTER',   body:'Place a SHELTER to reduce stress and let colonists sleep.',                          hint:'Place a shelter' },
         { title:'COMMAND',   body:'Click a survivor, or drag a box around several. Click the ground to move them. Click a resource to gather it.', hint:'Click to continue' },
-        { title:'COMBAT',    body:'Colonists carry weapons. Assign ATTACK jobs to fight enemies. STR boosts damage.',   hint:'Click to continue' },
+        { title:'UPKEEP',    body:'Every building burns materials. Let the pile hit zero and they break until you gather more.', hint:'Click to continue' },
+        { title:'RAIDS',     body:'Every third night scavengers rob the stockpile. Put a survivor on PATROL near your buildings and they turn back.', hint:'Click to continue' },
         { title:'GOOD LUCK', body:'Press SPACE to pause. Ctrl+S to save. Esc deselects. Good luck.',   hint:'Click to dismiss' },
     ];
 
@@ -696,7 +697,7 @@ function updateTutorial(state, callbacks) {
     header.className = 'tut-header';
     const counter = document.createElement('span');
     counter.className = 'hud-muted-sm';
-    counter.textContent = `TUTORIAL ${step + 1}/9`;
+    counter.textContent = `TUTORIAL ${step + 1}/${steps.length}`;
     const skip = document.createElement('button');
     skip.className = 'tut-skip';
     skip.textContent = 'SKIP';
@@ -723,7 +724,7 @@ function updateTutorial(state, callbacks) {
 
     const dots = document.createElement('div');
     dots.className = 'tut-dots';
-    for (let i = 0; i < 9; i++) {
+    for (let i = 0; i < steps.length; i++) {
         const dot = document.createElement('span');
         dot.className = 'tut-dot' + (i <= step ? ' active' : '');
         dots.appendChild(dot);
@@ -736,7 +737,7 @@ function updateTutorial(state, callbacks) {
     const clickAdvances = data.hint === 'Click to continue' || data.hint === 'Click to dismiss';
     if (clickAdvances) {
         panel.onclick = () => {
-            if (step >= 8) state.tutorialStep = null;
+            if (step >= steps.length - 1) state.tutorialStep = null;
             else state.tutorialStep = step + 1;
             callbacks.onHudUpdate();
         };
@@ -746,7 +747,7 @@ function updateTutorial(state, callbacks) {
     if (clickAdvances) {
         el.onclick = e => {
             if (e.target === el) {
-                if (step >= 8) state.tutorialStep = null;
+                if (step >= steps.length - 1) state.tutorialStep = null;
                 else state.tutorialStep = step + 1;
                 callbacks.onHudUpdate();
             }

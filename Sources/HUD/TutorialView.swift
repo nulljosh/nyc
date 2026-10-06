@@ -14,8 +14,9 @@ struct TutorialView: View {
         case 4: ("BUILD",      "Tap BUILD to open the build menu. Buildings keep your colony running.",               "Tap BUILD")
         case 5: ("SHELTER",    "Place a SHELTER to reduce stress and let colonists sleep.",                            "Place a shelter")
         case 6: ("COMMAND",    "Click a colonist (or drag a box around several). Click the ground to move them. Click a resource to gather it. Esc to deselect.", "Tap a colonist")
-        case 7: ("COMBAT",     "Colonists carry weapons. Assign ATTACK jobs to fight enemies. STR boosts damage.",    "Tap to continue")
-        case 8: ("GOOD LUCK",  "Tap PAUSE to pause. Tap SAVE to save. Good luck.",                                   "Tap to dismiss")
+        case 7: ("UPKEEP",     "Every building burns materials. Let the pile hit zero and they break until you gather more.", "Tap to continue")
+        case 8: ("RAIDS",      "Every third night scavengers rob the stockpile. Put a survivor on PATROL near your buildings and they turn back.", "Tap to continue")
+        case 9: ("GOOD LUCK",  "Tap PAUSE to pause. Tap SAVE to save. Good luck.",                                   "Tap to dismiss")
         default: ("", "", "")
         }
     }
@@ -31,7 +32,7 @@ struct TutorialView: View {
 
             VStack(spacing: 14) {
                 HStack {
-                    Text("TUTORIAL \(step + 1)/9")
+                    Text("TUTORIAL \(step + 1)/10")
                         .font(.system(size: 10))
                         .foregroundStyle(Theme.text3)
                     Spacer()
@@ -61,7 +62,7 @@ struct TutorialView: View {
                     .onChange(of: step) { startTimer() }
 
                 HStack(spacing: 6) {
-                    ForEach(0..<9, id: \.self) { i in
+                    ForEach(0..<10, id: \.self) { i in
                         Circle()
                             .fill(i <= step ? Theme.accent : Theme.glass)
                             .frame(width: 7, height: 7)
@@ -91,7 +92,7 @@ struct TutorialView: View {
     }
 
     private func advance() {
-        gameState.tutorialStep = step >= 8 ? nil : step + 1
+        gameState.tutorialStep = step >= 9 ? nil : step + 1
     }
 
     private func skip() {

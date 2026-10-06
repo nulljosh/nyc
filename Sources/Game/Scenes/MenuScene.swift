@@ -176,7 +176,9 @@ final class MenuScene: SKScene {
             ("Click a resource to gather it", false),
             ("B opens build, 1-6 picks a building", false),
             ("WASD pans, scroll zooms, Esc deselects", false),
-            ("Keep food, air, sleep and stress up. Build before night.", false),
+            ("Buildings burn materials. Empty pile, they break.", false),
+            ("Every third night: scavengers. PATROL near a building stops them.", false),
+            ("Win: 15 survivors, average level 8.", false),
             ("Tap anywhere to go back", false),
         ]
         for (i, line) in lines.enumerated() {
