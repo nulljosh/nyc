@@ -2,6 +2,10 @@
 
 v1.3.1, macOS + iOS colony sim, fully player-controlled (no autoplay)
 
+## The loop
+
+Live /loop on nyc: fix the game, QA until it works. See `docs/LOOP-HANDOFF.md` for resume state and next steps.
+
 ## Rules
 
 - SpriteKit for all rendering, no UIKit/AppKit views in game scene
