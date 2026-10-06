@@ -84,6 +84,21 @@ struct HUDView: View {
                 .padding(.bottom, 110)
             }
 
+            if gameState.victoryShown {
+                VStack(spacing: 8) {
+                    Text("TIMES SQUARE RECLAIMED")
+                        .font(.system(size: 28, weight: .bold))
+                        .foregroundStyle(Theme.accent)
+                    Text("Day \(gameState.currentTick / NeedsSystem.ticksPerDay). \(gameState.colonists.filter { !$0.isDead }.count) survivors. Keep playing or start a new game.")
+                        .font(.system(size: 13))
+                        .foregroundStyle(Theme.text1)
+                    Button("Keep playing") { gameState.victoryShown = false; gameState.isPaused = false }
+                        .buttonStyle(.borderedProminent)
+                }
+                .padding(24)
+                .liquidGlass(in: RoundedRectangle(cornerRadius: Theme.radiusLg), fallback: .ultraThinMaterial)
+            }
+
             // Save indicator
             if gameState.showSaveIndicator {
                 VStack {

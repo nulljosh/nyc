@@ -8,10 +8,10 @@ enum InputMode: String, Sendable {
 @MainActor
 final class GameState {
     var resources: [ResourceType: Int] = [
-        .food: 20,
+        .food: 60,
         .power: 10,
         .materials: 30,
-        .oxygen: 50,
+        .oxygen: 60,
         .cash: 25
     ]
     var colonists: [ColonistModel] = []
@@ -38,6 +38,7 @@ final class GameState {
     var lastSaveSlot: Int? = nil
     var autoSaveEnabled: Bool = true
     var showSaveIndicator: Bool = false
+    var victoryShown: Bool = false
 
     // Audio
     var soundEnabled: Bool {

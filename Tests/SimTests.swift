@@ -56,6 +56,7 @@ final class SimTests: XCTestCase {
         let gs = GameState()
         gs.colonists = [ColonistModel(id: UUID(), name: "Test", col: 0, row: 0)]
         gs.currentTick = 200  // past the 120-tick grace period
+        gs.colonists[0].job = .gather  // working: idle colonists rest and recover instead
         let needs = NeedsSystem()
 
         let initialHunger = gs.colonists[0].hunger
@@ -74,6 +75,7 @@ final class SimTests: XCTestCase {
         let gs = GameState()
         gs.colonists = [ColonistModel(id: UUID(), name: "Doomed", col: 0, row: 0)]
         gs.colonists[0].hunger = 1
+        gs.resources[.food] = 0  // an empty stockpile cannot feed them
         gs.currentTick = 200  // past the 120-tick grace period
         let needs = NeedsSystem()
         for _ in 0..<500 where !gs.colonists[0].isDead {
@@ -431,5 +433,43 @@ final class SimTests: XCTestCase {
         let tm = TileMap(grid: grid)
         for _ in 0..<40 { js.tick(gameState: gs); rs.tick(gameState: gs, tileMap: tm) }
         XCTAssertGreaterThan(gs.resources[.materials] ?? 0, 4, "two gatherers should out-harvest one")
+    }
+
+    func testRecruitNeedsBedAndFood() {
+        let gs = GameState()
+        gs.colonists = (0..<6).map { ColonistModel(id: UUID(), name: "C\($0)", col: 5, row: 5) }
+        gs.resources[.food] = 100
+        gs.currentTick = 240
+        let ns = NeedsSystem()
+        XCTAssertNil(ns.recruitTick(gameState: gs), "no free bed")
+        gs.buildings = [BuildingModel(id: UUID(), type: .shelter, col: 1, row: 1)]
+        XCTAssertNotNil(ns.recruitTick(gameState: gs))
+        XCTAssertEqual(gs.colonists.count, 7)
+        XCTAssertEqual(gs.resources[.food], 90)
+        gs.resources[.food] = 5
+        XCTAssertNil(ns.recruitTick(gameState: gs), "no food")
+    }
+
+    func testIdleColonistRestsAndStockpileFeeds() {
+        let gs = GameState()
+        var c = ColonistModel(id: UUID(), name: "Tired", col: 5, row: 5)
+        c.sleep = 10; c.hunger = 10
+        gs.colonists = [c]
+        gs.currentTick = 500
+        gs.resources[.food] = 30
+        NeedsSystem().tick(gameState: gs)
+        XCTAssertGreaterThan(gs.colonists[0].sleep, 10)
+        XCTAssertGreaterThan(gs.colonists[0].hunger, 10)
+        XCTAssertEqual(gs.resources[.food], 27)
+    }
+
+    func testVictoryRule() {
+        let gs = GameState()
+        gs.colonists = (0..<15).map { i -> ColonistModel in
+            var c = ColonistModel(id: UUID(), name: "V\(i)", col: 1, row: 1); c.level = i == 0 ? 10 : 8; return c
+        }
+        XCTAssertTrue(NeedsSystem.isVictory(gs))
+        gs.colonists[0].level = 8
+        XCTAssertFalse(NeedsSystem.isVictory(gs))
     }
 }

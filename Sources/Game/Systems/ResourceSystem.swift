@@ -19,6 +19,7 @@ final class ResourceSystem {
                     let amount = gameState.resourceNodes[ri].harvest()
                     if amount > 0 {
                         gameState.resources[gameState.resourceNodes[ri].type, default: 0] += amount
+                        if gameState.currentTick % 5 == 0 { gameState.colonists[ci].grantXP(1) } // ponytail: paced like web/sim.mjs
                     }
                     break
                 }

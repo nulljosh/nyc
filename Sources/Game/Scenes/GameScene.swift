@@ -180,6 +180,12 @@ final class GameScene: SKScene {
         needsSystem.tick(gameState: gameState)
         jobSystem.tick(gameState: gameState)
         resourceSystem.tick(gameState: gameState, tileMap: tileMap)
+        needsSystem.recruitTick(gameState: gameState)
+        if !gameState.victoryShown, NeedsSystem.isVictory(gameState) {
+            gameState.victoryShown = true
+            gameState.isPaused = true
+            gameState.log("TIMES SQUARE RECLAIMED. Victory on day \(gameState.currentTick / NeedsSystem.ticksPerDay).")
+        }
 
         // Auto-save every 60 ticks
         if gameState.autoSaveEnabled && gameState.currentTick > 0 && gameState.currentTick % 60 == 0 {

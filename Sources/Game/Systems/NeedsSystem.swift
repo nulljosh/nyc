@@ -34,6 +34,22 @@ final class NeedsSystem {
                 gameState.colonists[i].sleep = max(0, gameState.colonists[i].sleep - 0.15 * traitSleepMult)
             }
 
+            // Resting: an idle colonist recovers anywhere. The stockpile feeds the hungry and
+            // supplies air on its own, so food and O2 are production problems, not babysitting.
+            if gameState.colonists[i].job == .idle && !gameState.colonists[i].hasPath {
+                gameState.colonists[i].sleep = min(100, gameState.colonists[i].sleep + 0.5)
+                gameState.colonists[i].stress = max(0, gameState.colonists[i].stress - 0.25)
+                gameState.colonists[i].oxygen = min(100, gameState.colonists[i].oxygen + 0.2)
+            }
+            if gameState.colonists[i].hunger < 30, (gameState.resources[.food] ?? 0) >= 3 {
+                gameState.colonists[i].hunger = min(100, gameState.colonists[i].hunger + 25)
+                gameState.resources[.food, default: 0] -= 3
+            }
+            if gameState.colonists[i].oxygen < 30, (gameState.resources[.oxygen] ?? 0) >= 5 {
+                gameState.colonists[i].oxygen = min(100, gameState.colonists[i].oxygen + 20)
+                gameState.resources[.oxygen, default: 0] -= 5
+            }
+
             let col = gameState.colonists[i].col
             let row = gameState.colonists[i].row
 
@@ -55,7 +71,7 @@ final class NeedsSystem {
                     gameState.colonists[i].stress = max(0, gameState.colonists[i].stress - 0.5)
                     gameState.colonists[i].sleep = min(100, gameState.colonists[i].sleep + 0.4)
                 case .foodStall:
-                    if (gameState.resources[.food] ?? 0) > 0 {
+                    if (gameState.resources[.food] ?? 0) > 0, gameState.colonists[i].hunger <= 98 {
                         gameState.colonists[i].hunger = min(100, gameState.colonists[i].hunger + 2.0)
                         gameState.resources[.food, default: 0] -= 1
                     }
@@ -75,5 +91,34 @@ final class NeedsSystem {
                 gameState.log("\(gameState.colonists[i].name) has died")
             }
         }
+    }
+
+    // MARK: - Recruits and victory
+
+    static let bedsBase = 6, bedsPerShelter = 4, maxColonists = 20, ticksPerDay = 240
+
+    /// Once a day a survivor walks in if there is a free bed and 10 food. Arrives idle; no auto-assign.
+    @discardableResult
+    func recruitTick(gameState: GameState) -> ColonistModel? {
+        guard gameState.currentTick > 0, gameState.currentTick % Self.ticksPerDay == 0 else { return nil }
+        let alive = gameState.colonists.filter { !$0.isDead }
+        guard let host = alive.first else { return nil }
+        let beds = Self.bedsBase + Self.bedsPerShelter * gameState.buildings.filter { $0.type == .shelter && $0.isActive }.count
+        guard alive.count < min(beds, Self.maxColonists), (gameState.resources[.food] ?? 0) >= 10 else { return nil }
+        gameState.resources[.food, default: 0] -= 10
+        let names = ["Sam", "Drew", "Quinn", "Reese", "Blake", "Harper", "Rowan", "Sage", "Emery", "Kai", "River", "Skyler", "Remy", "Marley", "Avery"]
+        let name = names.first { n in !gameState.colonists.contains { $0.name == n } } ?? "Survivor \(gameState.colonists.count + 1)"
+        let c = ColonistModel(id: UUID(), name: name, col: host.col, row: host.row)
+        gameState.colonists.append(c)
+        gameState.log("\(name) arrives, looking for work")
+        return c
+    }
+
+    /// Victory: 15 alive, average level 8, one at level 10. Same rule as the web game.
+    static func isVictory(_ gameState: GameState) -> Bool {
+        let alive = gameState.colonists.filter { !$0.isDead }
+        guard alive.count >= 15 else { return false }
+        let avg = Double(alive.map(\.level).reduce(0, +)) / Double(alive.count)
+        return avg >= 8 && alive.contains { $0.level >= 10 }
     }
 }
