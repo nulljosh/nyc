@@ -389,20 +389,25 @@ export function renderWorld(ctx, canvas, camera, grid, state) {
         ctx.globalAlpha = alpha * 0.3;
         ctx.fillStyle = RESOURCE_COLORS[rn.type] || INK.label;
         ctx.beginPath();
-        ctx.arc(x, y, 10, 0, Math.PI * 2);
+        ctx.arc(x, y, 18, 0, Math.PI * 2);
         ctx.fill();
 
         ctx.globalAlpha = alpha;
         ctx.beginPath();
-        ctx.arc(x, y, 5, 0, Math.PI * 2);
+        ctx.arc(x, y, 11, 0, Math.PI * 2);
         ctx.fill();
         ctx.globalAlpha = 1;
 
-        ctx.fillStyle = INK.labelStrong;
-        ctx.font = '7px -apple-system, sans-serif';
+        ctx.fillStyle = '#fff';
+        ctx.font = 'bold 11px -apple-system, sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText(ResourceSymbol[rn.type] || '', x, y);
+        if (rn.remaining > 0) {
+            ctx.fillStyle = INK.labelStrong;
+            ctx.font = '600 9px -apple-system, sans-serif';
+            ctx.fillText(`${rn.type} ${rn.remaining}`, x, y + 22);
+        }
     }
 
     // Buildings -- glass style with icons
@@ -458,11 +463,14 @@ export function renderWorld(ctx, canvas, camera, grid, state) {
             ctx.strokeStyle = 'rgba(255, 214, 10, 0.7)';
             ctx.lineWidth = 2;
             ctx.beginPath();
-            ctx.arc(x, y, 14, 0, Math.PI * 2);
+            ctx.arc(x, y, 22, 0, Math.PI * 2);
             ctx.stroke();
         }
 
+        // ponytail: scale the 12px pixel figure up in place rather than redraw it at a new size
+        ctx.save(); ctx.translate(x, y); ctx.scale(1.8, 1.8); ctx.translate(-x, -y);
         drawColonist16bit(ctx, c, x, y, state);
+        ctx.restore();
 
         // Health bar
         const barW = 22;

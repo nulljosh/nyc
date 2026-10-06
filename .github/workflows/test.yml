@@ -17,8 +17,19 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      # No package.json, so nothing to install — node's own runner finds *.test.js itself.
+      # No package.json, so nothing to install. node's own runner finds web/*.test.mjs itself,
+      # including winnable.test.mjs, which plays the game to victory with the bot in web/sim.mjs.
       - run: node --test
+
+  swift:
+    runs-on: macos-15
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - run: brew install xcodegen
+      - run: xcodegen generate
+      - name: SimTests (macOS)
+        run: set -o pipefail && xcodebuild test -project NYCSurvive.xcodeproj -scheme NYCSurvive -destination 'platform=macOS' -only-testing:SimTests CODE_SIGNING_ALLOWED=NO 2>&1 | grep -E 'error:|failed|Executed|TEST'
 
   docs:
     runs-on: ubuntu-latest
