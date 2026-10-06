@@ -6,9 +6,7 @@ The NYC Survive loop is a continuous QA and refinement cycle. The game is winnab
 
 ## Where things stand
 
-Game shipped 1.1.0 to App Review on iOS and macOS (both WAITING_FOR_REVIEW, build 202610052145, ~21:55 PT Oct 5). Made winnable with recruits (daily spawns tied to beds and food), squad controls (click/drag-select survivors, click ground to move, click resources to gather, Esc deselects), auto-feed from stockpile, building upkeep (burn materials when empty), night raids every third night unless someone is on PATROL, 10-step tutorial, bigger sprites with labels, new splash with Settings and how-to-play. Web click-blocking bug fixed (nobody could select/move/build before). Headless bot (node web/sim.mjs) plays to victory in ~2 hours; CI now runs it (winnable.test.mjs) plus Swift SimTests on macos-26. Landing page has a real playthrough video.
-
-Web HUD is functional. Game plays from start to finish. Mid-game QA pending on nyc.heyitsmejosh.com (live recruits, breakdown view, first raid).
+iOS 1.1.0 approved and live as of 2026-10-06 03:30 PT. macOS 1.1.0 still WAITING_FOR_REVIEW. Game is fully winnable with recruits, squad controls, auto-feed, building upkeep, night raids unless PATROL, tutorial, bigger sprites with labels, new splash with Settings, night tint for day timer visibility. Headless bot plays to victory in ~2 hours; CI runs it (winnable.test.mjs) plus Swift SimTests on macos-26. Landing page has real playthrough video. Web HUD functional, no blocking issues. Loop is quiet: hourly App Review checks on macOS. Mid-game QA on web pending (test live recruits, first raid scenarios).
 
 ## Next in order
 
@@ -20,5 +18,5 @@ Web HUD is functional. Game plays from start to finish. Mid-game QA pending on n
 ## Restart prompt
 
 ```
-NYC Survive loop restarts. Shipped 1.1.0 to App Review on iOS and macOS (WAITING_FOR_REVIEW). Game is winnable with recruits, squad controls, auto-feed, building upkeep, night raids, tutorial, bigger sprites, new splash. Web HUD fixed. Bot plays to victory ~2 hours; CI tests it. Landing has real video. Web QA pending: play mid-game (recruits arriving, first raid), fix issues, then add tension/content for hour two. Watch App Review.
+NYC Survive loop restarts. iOS 1.1.0 live as of 2026-10-06 03:30 PT; macOS 1.1.0 in review. Game fully winnable with recruits, squad controls, auto-feed, upkeep, raids, tutorial, night tint for timer. Bot plays to victory ~2 hours; CI tests it. Landing has real video. Loop quiet: hourly App Review checks on macOS. Web QA pending: live mid-game (recruits arriving, first raid), fix issues, add tension/content for hour two if macOS approved. Watch App Review.
 ```
