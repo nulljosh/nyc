@@ -127,6 +127,31 @@ final class NeedsSystem {
         return c
     }
 
+    static let raidEveryDays = 3, raidHour = 22, raidGuardRange = 8, raidTake = 0.2
+
+    /// Every third night scavengers hit the stockpile unless someone is on patrol within
+    /// raidGuardRange of the colony centre. The log warns at dawn. Player-set, never automatic.
+    @discardableResult
+    func raidTick(gameState: GameState) -> Bool? {
+        let day = gameState.currentTick / Self.ticksPerDay, hourTick = gameState.currentTick % Self.ticksPerDay
+        guard day > 0, day % Self.raidEveryDays == 0 else { return nil }
+        if hourTick == 60 { gameState.log("Scavengers spotted nearby. Put someone on PATROL before 22:00."); return nil }
+        guard hourTick == Self.raidHour * 10 else { return nil }
+        let alive = gameState.colonists.filter { !$0.isDead }
+        guard !alive.isEmpty else { return nil }
+        // The stockpile lives in the buildings: a patrol near any building guards it. No buildings yet, any patrol will do.
+        let guarded = alive.contains { c in c.job == .patrol && (gameState.buildings.isEmpty ||
+            gameState.buildings.contains { abs(c.col - $0.col) + abs(c.row - $0.row) <= Self.raidGuardRange }) }
+        if guarded { gameState.log("Scavengers turned back by the patrol."); return true }
+        var lost: [ResourceType: Int] = [:]
+        for k in [ResourceType.food, .materials, .cash] {
+            lost[k] = Int(Double(gameState.resources[k] ?? 0) * Self.raidTake)
+            gameState.resources[k, default: 0] -= lost[k]!
+        }
+        gameState.log("Scavengers raided the stockpile: -\(lost[.food]!) food, -\(lost[.materials]!) materials, -\(lost[.cash]!) cash.")
+        return false
+    }
+
     /// Victory: 15 alive, average level 8, one at level 10. Same rule as the web game.
     static func isVictory(_ gameState: GameState) -> Bool {
         let alive = gameState.colonists.filter { !$0.isDead }

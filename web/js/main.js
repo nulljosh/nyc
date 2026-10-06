@@ -6,7 +6,7 @@ import { createGameState, createColonist, gameLog, grantXP, BuildingType, migrat
 import { initClaudeBridge } from './claude.js';
 import { generateWorld, GRID_SIZE, TILE_SIZE, tileAt, worldToTile } from './world.js';
 import { Pathfinder } from './pathfinder.js';
-import { recruitTick, timeTick, needsTick, resourceTick, jobTick, placeBuilding, demolishBuilding,
+import { raidTick, recruitTick, timeTick, needsTick, resourceTick, jobTick, placeBuilding, demolishBuilding,
     questTick, wallpaperCameraTick, setDifficulty, demoTick } from './systems.js';
 import { Camera } from './camera.js';
 import { renderWorld, renderMinimap } from './renderer.js';
@@ -246,6 +246,7 @@ function gameLoop(timestamp, id) {
             resourceTick(state);
             questTick(state, grid, pathfinder);
             recruitTick(state);
+            raidTick(state);
             demoTick(state, grid, pathfinder);
             tickParticles();
 

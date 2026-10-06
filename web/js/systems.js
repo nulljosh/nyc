@@ -247,8 +247,8 @@ export function jobTick(state, pathfinder) {
             if (c.job === 'gather') {
                 tickGather(c, state, pathfinder);
             } else if (c.job === 'patrol') {
-                awardXP(c, 5, 1, state);
-                c.job = 'idle';
+                // On guard: stays put, earns a little XP, and keeps raiders off the stockpile (raidTick).
+                if (state.currentTick % 20 === 0) awardXP(c, 1, 0, state);
             }
             continue;
         }
@@ -309,6 +309,28 @@ export function recruitTick(state) {
     state.colonists.push(c);
     gameLog(state, `${c.name} arrives, looking for work`);
     return c;
+}
+
+// Raids: every third night scavengers hit the stockpile unless someone is on PATROL within
+// RAID_GUARD_RANGE of the colony centre. The log warns at dawn of a raid day. Player-set, never automatic.
+export const RAID_EVERY_DAYS = 3, RAID_HOUR = 22, RAID_GUARD_RANGE = 8, RAID_TAKE = 0.2;
+export function raidTick(state) {
+    if (state.demoMode) return null;
+    const day = Math.floor(state.currentTick / TICKS_PER_DAY), hourTick = state.currentTick % TICKS_PER_DAY;
+    const raidDay = day > 0 && day % RAID_EVERY_DAYS === 0;
+    if (!raidDay) return null;
+    if (hourTick === 60) { gameLog(state, 'Scavengers spotted nearby. Put someone on PATROL before 22:00.'); return null; }
+    if (hourTick !== RAID_HOUR * 10) return null;
+    const alive = state.colonists.filter(c => c.state !== 'dead');
+    if (!alive.length) return null;
+    // The stockpile lives in the buildings: a patrol near any building guards it. No buildings yet, any patrol will do.
+    const guarded = alive.some(c => c.job === 'patrol' && (!state.buildings.length ||
+        state.buildings.some(b => Math.abs(c.col - b.col) + Math.abs(c.row - b.row) <= RAID_GUARD_RANGE)));
+    if (guarded) { gameLog(state, 'Scavengers turned back by the patrol.'); return { guarded: true }; }
+    const lost = {};
+    for (const k of ['food', 'materials', 'cash']) { lost[k] = Math.floor((state.resources[k] || 0) * RAID_TAKE); state.resources[k] -= lost[k]; }
+    gameLog(state, `Scavengers raided the stockpile: -${lost.food} food, -${lost.materials} materials, -${lost.cash} cash.`);
+    return { guarded: false, lost };
 }
 
 // QuestSystem -- colonists perform real-life quests

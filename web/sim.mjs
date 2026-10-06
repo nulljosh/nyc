@@ -2,7 +2,7 @@
 import { createGameState, createColonist, checkVictory, currentPhase, randomColonistName } from './js/state.js';
 import { generateWorld, GRID_SIZE, TileType } from './js/world.js';
 import { Pathfinder } from './js/pathfinder.js';
-import { needsTick, jobTick, resourceTick, recruitTick, placeBuilding, canPlace } from './js/systems.js';
+import { needsTick, jobTick, resourceTick, recruitTick, raidTick, placeBuilding, canPlace } from './js/systems.js';
 
 const TPD = 240, TICK_S = 0.25; // medium difficulty
 const w = generateWorld(); const grid = w.grid;
@@ -33,13 +33,17 @@ for (let t = 1; t <= TPD * 400; t++) {
     // bot decisions, once per half-day (a human would do this every few minutes)
     if (t % 60 === 0) {
         for (const c of alive()) { if (c.job === 'gather' && c.sleep < 35) c.job = 'idle'; else if (c.job === 'idle' && c.sleep > 85) c.job = 'gather'; }
+        // a human reads the dawn warning and posts a guard; the bot does it on raid days too
+        const day = Math.floor(t / TPD); const a = alive();
+        if (day % 3 === 0 && a.length >= 4 && !a.some(c => c.job === 'patrol')) { const g = a.find(c => c.job === 'idle') || a[0]; g.job = 'patrol'; g.pathCols = []; g.pathRows = []; g.pathIndex = 0; }
+        if (day % 3 === 1) for (const c of a) if (c.job === 'patrol') c.job = 'idle';
         const n = alive().length, shelters = state.buildings.filter(b => b.type === 'shelter').length;
         if (n >= 8 + 4 * shelters) tryBuild('shelter');
         if (state.buildings.filter(b => b.type === 'foodStall').length < Math.ceil(n / 3)) tryBuild('foodStall');
         if (state.buildings.filter(b => b.type === 'filterStation').length < Math.ceil(n / 5)) tryBuild('filterStation');
         if (state.buildings.filter(b => b.type === 'generator').length < 2) tryBuild('generator');
     }
-    needsTick(state); jobTick(state, pf); resourceTick(state); recruitTick(state);
+    needsTick(state); jobTick(state, pf); resourceTick(state); recruitTick(state); const raid = raidTick(state); if (raid) note(raid.guarded ? 'raid-guarded' : 'raid-lost');
     peakDead = Math.max(peakDead, state.colonists.length - alive().length);
     // invariants a real player would notice
     for (const [k, v] of Object.entries(state.resources)) { if (!Number.isFinite(v)) note('nan:' + k); if (v < 0) note('negative:' + k); }

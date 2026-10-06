@@ -181,6 +181,7 @@ final class GameScene: SKScene {
         jobSystem.tick(gameState: gameState)
         resourceSystem.tick(gameState: gameState, tileMap: tileMap)
         needsSystem.recruitTick(gameState: gameState)
+        needsSystem.raidTick(gameState: gameState)
         if !gameState.victoryShown, NeedsSystem.isVictory(gameState) {
             gameState.victoryShown = true
             gameState.isPaused = true

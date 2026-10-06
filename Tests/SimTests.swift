@@ -487,4 +487,19 @@ final class SimTests: XCTestCase {
         XCTAssertNotNil(bs.place(type: .shelter, col: 7, row: 4, tileMap: tileMap, gameState: gs, pathfinder: pf))
         XCTAssertFalse(gs.colonists[0].hasPath)
     }
+
+    func testRaidTakesUnlessPatrolled() {
+        let gs = GameState()
+        gs.colonists = (0..<4).map { ColonistModel(id: UUID(), name: "G\($0)", col: 5, row: 5) }
+        gs.resources = [.food: 100, .materials: 50, .cash: 10]
+        gs.currentTick = 3 * 240 + 220
+        let ns = NeedsSystem()
+        XCTAssertEqual(ns.raidTick(gameState: gs), false)
+        XCTAssertEqual(gs.resources[.food], 80)
+        gs.colonists[0].job = .patrol
+        XCTAssertEqual(ns.raidTick(gameState: gs), true)
+        XCTAssertEqual(gs.resources[.food], 80)
+        gs.currentTick = 4 * 240 + 220
+        XCTAssertNil(ns.raidTick(gameState: gs))
+    }
 }

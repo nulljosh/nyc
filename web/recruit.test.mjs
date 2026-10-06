@@ -2,7 +2,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert';
 import { createGameState, createColonist } from './js/state.js';
-import { recruitTick, resourceTick, placeBuilding, canPlace } from './js/systems.js';
+import { recruitTick, resourceTick, placeBuilding, canPlace, raidTick } from './js/systems.js';
 import { Pathfinder } from './js/pathfinder.js';
 import { GRID_SIZE, TileType } from './js/world.js';
 
@@ -47,4 +47,15 @@ test('building never traps a colonist: cannot place on them, clears paths throug
     c.pathCols = [6, 7, 8]; c.pathRows = [5, 5, 5]; c.pathIndex = 0;
     assert.ok(placeBuilding('shelter', 7, 4, grid, s, pf));
     assert.equal(c.pathCols.length, 0);
+});
+
+test('a raid takes 20% unless a patrol stands near the colony', () => {
+    const s = colony(4); s.resources = { food: 100, materials: 50, cash: 10, power: 0, oxygen: 0 };
+    s.currentTick = 3 * 240 + 220;
+    const r = raidTick(s);
+    assert.equal(r.guarded, false); assert.equal(s.resources.food, 80); assert.equal(s.resources.materials, 40);
+    s.colonists[0].job = 'patrol';
+    assert.equal(raidTick(s).guarded, true); assert.equal(s.resources.food, 80);
+    s.currentTick = 4 * 240 + 220;
+    assert.equal(raidTick(s), null, 'not a raid day');
 });

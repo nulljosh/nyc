@@ -69,7 +69,8 @@ final class JobSystem {
                 if gameState.colonists[i].job == .gather {
                     tickGather(colonistIndex: i, gameState: gameState)
                 } else if gameState.colonists[i].job == .patrol {
-                    gameState.colonists[i].job = .idle
+                    // On guard: stays put, earns a little XP, keeps raiders off the stockpile (NeedsSystem.raidTick).
+                    if gameState.currentTick % 20 == 0 { gameState.colonists[i].grantXP(1) }
                 }
                 continue
             }
