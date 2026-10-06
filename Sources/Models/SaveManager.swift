@@ -42,7 +42,7 @@ final class SaveManager {
             slot: slot,
             saveName: "Slot \(slot)",
             timestamp: Date(),
-            dayCount: gameState.currentTick / 24,
+            dayCount: gameState.currentTick / NeedsSystem.ticksPerDay,
             colonistCount: gameState.colonists.filter { !$0.isDead }.count
         )
 

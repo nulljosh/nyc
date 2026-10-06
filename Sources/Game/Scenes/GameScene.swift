@@ -54,7 +54,7 @@ final class GameScene: SKScene {
             gameState.resourceNodes = save.resourceNodes
             gameState.resources = save.resources
             gameState.currentTick = save.currentTick
-            gameState.currentHour = save.currentTick % 24
+            gameState.currentHour = (save.currentTick % NeedsSystem.ticksPerDay) / 10
         } else {
             let result = WorldGenerator.generate()
             grid = result.grid

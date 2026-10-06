@@ -72,7 +72,7 @@ struct HUDView: View {
                 Spacer()
                 HStack {
                     Spacer()
-                    Text("Tick \(gameState.currentTick) | \(gameState.currentHour):00 | \(gameState.isNight ? "NIGHT" : "DAY")")
+                    Text("Day \(gameState.currentTick / NeedsSystem.ticksPerDay + 1) | \(gameState.currentHour):00 | \(gameState.isNight ? "NIGHT" : "DAY")")
                         .font(.system(size: 10))
                         .foregroundStyle(Theme.text3)
                         .padding(.horizontal, 8)
