@@ -22,3 +22,4 @@ Plan (small slices, one per round)
 - R1: analysis done. Fixed: generator and billboard now produce once per building per tick, no colonist needed (NeedsSystem.tickBuildings). Test added, SimTests all green.
 - Rule: colonists stay player-commanded (CLAUDE.md). Automation = machines the player builds + squad orders the player gives. No auto-assign.
 - Next R2: player-ordered haul trips.
+- R2: no serif was found. Removed all monospaced faces (Swift HUD + web --font-mono) so UI is sans only. Controls: selection persists after orders, drag-box selects squads, orders go to the whole squad, click a resource = gather, Esc deselects, selection ring drawn, tutorial copy rewritten. Tests added, green.

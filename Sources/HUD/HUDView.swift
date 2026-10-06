@@ -73,7 +73,7 @@ struct HUDView: View {
                 HStack {
                     Spacer()
                     Text("Tick \(gameState.currentTick) | \(gameState.currentHour):00 | \(gameState.isNight ? "NIGHT" : "DAY")")
-                        .font(.system(size: 10, design: .monospaced))
+                        .font(.system(size: 10))
                         .foregroundStyle(Theme.text3)
                         .padding(.horizontal, 8)
                         .padding(.vertical, 5)
@@ -90,7 +90,7 @@ struct HUDView: View {
                     HStack {
                         Spacer()
                         Text("SAVED")
-                            .font(.system(size: 12, weight: .bold, design: .monospaced))
+                            .font(.system(size: 12, weight: .bold))
                             .foregroundStyle(Theme.green)
                             .padding(.horizontal, 12)
                             .padding(.vertical, 6)
@@ -162,7 +162,7 @@ struct HUDView: View {
         VStack(alignment: .leading, spacing: 2) {
             ForEach(Array(gameState.gameLog.suffix(3).enumerated()), id: \.offset) { _, msg in
                 Text(msg)
-                    .font(.system(size: 10, design: .monospaced))
+                    .font(.system(size: 10))
                     .foregroundStyle(Theme.text2)
             }
         }
@@ -175,7 +175,7 @@ struct HUDView: View {
     private func toolbarPill(label: String, isActive: Bool = false, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Text(label)
-                .font(.system(size: 11, weight: .bold, design: .monospaced))
+                .font(.system(size: 11, weight: .bold))
                 .foregroundStyle(isActive ? .white : Theme.text2)
                 .padding(.horizontal, 12)
                 .padding(.vertical, 8)

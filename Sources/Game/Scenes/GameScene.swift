@@ -23,6 +23,7 @@ final class GameScene: SKScene {
     // Drag selection
     private var selectionStart: CGPoint?
     private var selectionRect: SKShapeNode?
+    private var dragMoved = false
 
     // Tutorial highlight nodes
     private var tutorialHighlights: [SKNode] = []
@@ -192,6 +193,19 @@ final class GameScene: SKScene {
                 let target = tileMap.worldPosition(col: model.col, row: model.row)
                 node.moveToward(target: target, speed: 4)
                 node.update(model: model)
+                let ringName = "selectionRing"
+                let isPicked = selection.contains(model.id)
+                if isPicked, node.childNode(withName: ringName) == nil {
+                    let ring = SKShapeNode(circleOfRadius: 14)
+                    ring.name = ringName
+                    ring.strokeColor = ScenePalette.accentWarm
+                    ring.fillColor = .clear
+                    ring.lineWidth = 2
+                    ring.zPosition = -1
+                    node.addChild(ring)
+                } else if !isPicked {
+                    node.childNode(withName: ringName)?.removeFromParent()
+                }
             }
         }
 
@@ -234,7 +248,8 @@ final class GameScene: SKScene {
 
     override func mouseDown(with event: NSEvent) {
         let location = event.location(in: self)
-        if gameState.inputMode == .normal && event.modifierFlags.contains(.shift) {
+        if gameState.inputMode == .normal {
+            dragMoved = false
             selectionStart = location
             return
         }
@@ -244,13 +259,18 @@ final class GameScene: SKScene {
     override func mouseDragged(with event: NSEvent) {
         guard let start = selectionStart else { return }
         let current = event.location(in: self)
+        dragMoved = true
         updateSelectionRect(from: start, to: current)
     }
 
     override func mouseUp(with event: NSEvent) {
         if let start = selectionStart {
             let end = event.location(in: self)
-            finalizeSelection(from: start, to: end)
+            if dragMoved {
+                finalizeSelection(from: start, to: end)
+            } else {
+                inputHandler.handleMouseDown(location: start, tileMap: tileMap)
+            }
             selectionStart = nil
             selectionRect?.removeFromParent()
             selectionRect = nil
@@ -337,22 +357,38 @@ final class GameScene: SKScene {
         }
     }
 
+    /// Everyone the player has picked, whether by click or by drag-box.
+    private var selection: [UUID] {
+        var ids = gameState.selectedColonistIds
+        if let id = gameState.selectedColonistId { ids.insert(id) }
+        return Array(ids)
+    }
+
+    /// One rule for everything: click a colonist to pick them, click a resource to send the
+    /// picked ones to gather it, click the ground to send them there. Selection stays until Esc.
     private func selectEntity(at location: CGPoint) {
         for (id, node) in colonistNodes {
             let expandedFrame = node.frame.insetBy(dx: -10, dy: -10)
             if expandedFrame.contains(location) {
+                gameState.selectedColonistIds = [id]
                 gameState.selectedColonistId = id
                 gameState.log("Selected \(gameState.colonists.first { $0.id == id }?.name ?? "colonist")")
                 TutorialView.checkAdvance(gameState: gameState, event: .colonistSelected)
                 return
             }
         }
-        // No colonist hit -- if one was already selected, this is a manual move order.
-        if let selectedId = gameState.selectedColonistId {
-            let tilePos = tileMap.tilePosition(worldX: location.x, worldY: location.y)
-            jobSystem.commandMove(colonistId: selectedId, destCol: tilePos.col, destRow: tilePos.row, gameState: gameState, pathfinder: pathfinder)
+        let picked = selection
+        guard !picked.isEmpty else { return }
+        let tilePos = tileMap.tilePosition(worldX: location.x, worldY: location.y)
+        if let node = gameState.resourceNodes.first(where: { !$0.isDepleted && abs($0.col - tilePos.col) <= 1 && abs($0.row - tilePos.row) <= 1 }) {
+            for id in picked {
+                jobSystem.commandGather(colonistId: id, node: node, gameState: gameState, pathfinder: pathfinder)
+            }
+            return
         }
-        gameState.selectedColonistId = nil
+        for id in picked {
+            jobSystem.commandMove(colonistId: id, destCol: tilePos.col, destRow: tilePos.row, gameState: gameState, pathfinder: pathfinder)
+        }
     }
 
     private func placeBuilding(col: Int, row: Int) {

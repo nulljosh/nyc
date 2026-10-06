@@ -42,12 +42,12 @@ struct ResourceBar: View {
                 .foregroundStyle(color)
                 .accessibilityLabel(label)
             Text("\(gameState.resources[type, default: 0])")
-                .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                .font(.system(size: 12, weight: .semibold))
                 .foregroundStyle(Theme.text1)
                 .fixedSize()
             if showsWordLabels {
                 Text(label)
-                    .font(.system(size: 9, weight: .medium, design: .monospaced))
+                    .font(.system(size: 9, weight: .medium))
                     .foregroundStyle(Theme.text3)
                     .fixedSize()
             }

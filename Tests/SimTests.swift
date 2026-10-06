@@ -411,4 +411,25 @@ final class SimTests: XCTestCase {
         NeedsSystem().tick(gameState: gs)
         XCTAssertEqual(gs.resources[.power] ?? 0, before + 1)
     }
+
+    func testCommandGatherSendsWholeSquadAndKeepsThemWorking() {
+        let gs = GameState()
+        let a = ColonistModel(id: UUID(), name: "A", col: 2, row: 2)
+        let b = ColonistModel(id: UUID(), name: "B", col: 3, row: 2)
+        gs.colonists = [a, b]
+        let node = ResourceModel(id: UUID(), type: .materials, col: 8, row: 8, remaining: 10, maxAmount: 10, respawnTicks: 60)
+        gs.resourceNodes = [node]
+        gs.resources = [.materials: 0]
+        let grid = Array(repeating: Array(repeating: TileType.sidewalk, count: 15), count: 15)
+        let pf = Pathfinder(columns: 15, rows: 15)
+        pf.buildGraph(grid: grid)
+        let js = JobSystem()
+        js.pathfinder = pf
+        for c in gs.colonists { js.commandGather(colonistId: c.id, node: node, gameState: gs, pathfinder: pf) }
+        XCTAssertTrue(gs.colonists.allSatisfy { $0.job == .gather && $0.hasPath })
+        let rs = ResourceSystem()
+        let tm = TileMap(grid: grid)
+        for _ in 0..<40 { js.tick(gameState: gs); rs.tick(gameState: gs, tileMap: tm) }
+        XCTAssertGreaterThan(gs.resources[.materials] ?? 0, 4, "two gatherers should out-harvest one")
+    }
 }

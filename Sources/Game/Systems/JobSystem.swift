@@ -36,6 +36,18 @@ final class JobSystem {
         gameState.log("\(gameState.colonists[i].name) moving to (\(destCol), \(destRow))")
     }
 
+    /// Player-issued gather order: walk to the node, then ResourceSystem harvests on arrival.
+    func commandGather(colonistId: UUID, node: ResourceModel, gameState: GameState, pathfinder: Pathfinder) {
+        guard let i = gameState.colonists.firstIndex(where: { $0.id == colonistId }),
+              !gameState.colonists[i].isDead else { return }
+        let path = pathfinder.findPath(fromCol: gameState.colonists[i].col, fromRow: gameState.colonists[i].row, toCol: node.col, toRow: node.row)
+        gameState.colonists[i].job = .gather
+        gameState.colonists[i].pathCols = path.map(\.col)
+        gameState.colonists[i].pathRows = path.map(\.row)
+        gameState.colonists[i].pathIndex = 0
+        gameState.log("\(gameState.colonists[i].name) gathering \(node.type.rawValue)")
+    }
+
     func clearJob(colonistIndex: Int, gameState: GameState) {
         guard colonistIndex < gameState.colonists.count else { return }
         gameState.colonists[colonistIndex].job = .idle

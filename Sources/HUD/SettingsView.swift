@@ -18,7 +18,7 @@ struct SettingsView: View {
                 Divider().background(Theme.border)
 
                 Text("CONTROLS")
-                    .font(.system(size: 11, weight: .bold, design: .monospaced))
+                    .font(.system(size: 11, weight: .bold))
                     .foregroundStyle(Theme.yellow)
 
                 VStack(alignment: .leading, spacing: 8) {
@@ -39,7 +39,7 @@ struct SettingsView: View {
                 Divider().background(Theme.border)
 
                 Text("OPTIONS")
-                    .font(.system(size: 11, weight: .bold, design: .monospaced))
+                    .font(.system(size: 11, weight: .bold))
                     .foregroundStyle(Theme.yellow)
 
                 Toggle(isOn: Binding(
@@ -83,7 +83,7 @@ struct SettingsView: View {
                 Divider().background(Theme.border)
 
                 Text("SAVE / LOAD")
-                    .font(.system(size: 11, weight: .bold, design: .monospaced))
+                    .font(.system(size: 11, weight: .bold))
                     .foregroundStyle(Theme.yellow)
 
                 let slots = SaveManager.shared.listSlots()
@@ -106,7 +106,7 @@ struct SettingsView: View {
                                 userInfo: ["slot": i + 1]
                             )
                         }
-                        .font(.system(size: 10, weight: .bold, design: .monospaced))
+                        .font(.system(size: 10, weight: .bold))
                         .foregroundStyle(Theme.accent)
                         .buttonStyle(.plain)
                     }
@@ -137,7 +137,7 @@ struct SettingsView: View {
     private func controlRow(key: String, action: String) -> some View {
         HStack(spacing: 0) {
             Text(key)
-                .font(.system(size: 11, weight: .bold, design: .monospaced))
+                .font(.system(size: 11, weight: .bold))
                 .foregroundStyle(Theme.accent)
                 .frame(width: 110, alignment: .leading)
             Text(action)

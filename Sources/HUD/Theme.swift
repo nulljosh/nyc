@@ -209,7 +209,7 @@ struct GlassButton: View {
     var body: some View {
         Button(action: action) {
             Text(label)
-                .font(.system(size: 11, weight: .bold, design: .monospaced))
+                .font(.system(size: 11, weight: .bold))
                 .foregroundStyle(foreColor)
                 .padding(.horizontal, 14)
                 .padding(.vertical, 8)

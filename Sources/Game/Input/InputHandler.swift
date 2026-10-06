@@ -56,7 +56,10 @@ final class InputHandler {
         }
 
         if event.keyCode == 53 {
-            if gameState.inputMode != .normal || gameState.showBuildMenu {
+            if !gameState.selectedColonistIds.isEmpty || gameState.selectedColonistId != nil {
+                gameState.selectedColonistIds = []
+                gameState.selectedColonistId = nil
+            } else if gameState.inputMode != .normal || gameState.showBuildMenu {
                 gameState.inputMode = .normal
                 gameState.selectedBuildingType = nil
                 gameState.showBuildMenu = false

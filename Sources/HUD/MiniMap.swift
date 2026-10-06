@@ -8,7 +8,7 @@ struct MiniMap: View {
                 .frame(width: 150, height: 150)
 
             Text("MINIMAP")
-                .font(.system(size: 8, weight: .medium, design: .monospaced))
+                .font(.system(size: 8, weight: .medium))
                 .foregroundStyle(Theme.text3)
                 .padding(6)
         }

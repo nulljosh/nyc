@@ -6,7 +6,7 @@ struct BuildMenu: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text("BUILD")
-                .font(.system(size: 11, weight: .bold, design: .monospaced))
+                .font(.system(size: 11, weight: .bold))
                 .foregroundStyle(Theme.yellow)
                 .padding(.bottom, 4)
 
@@ -23,7 +23,7 @@ struct BuildMenu: View {
                         HStack(spacing: 4) {
                             ForEach(Array(type.cost.sorted(by: { $0.key.rawValue < $1.key.rawValue })), id: \.key) { resource, amount in
                                 Text("\(resource.symbol)\(amount)")
-                                    .font(.system(size: 9, design: .monospaced))
+                                    .font(.system(size: 9))
                                     .foregroundStyle(Theme.text3)
                             }
                         }
@@ -49,7 +49,7 @@ struct BuildMenu: View {
                 gameState.inputMode = .demolish
             } label: {
                 Text("DEMOLISH")
-                    .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                    .font(.system(size: 12, weight: .semibold))
                     .foregroundStyle(Theme.red)
                     .padding(8)
                     .frame(maxWidth: .infinity, alignment: .leading)

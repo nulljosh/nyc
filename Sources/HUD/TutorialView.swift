@@ -10,10 +10,10 @@ struct TutorialView: View {
         case 0: ("WELCOME",    "Welcome to NYC Survive. You control a group of survivors.",                           "Tap to continue")
         case 1: ("NEEDS",      "Colonists have NEEDS — hunger, oxygen, stress, sleep, health. Keep them alive.",      "Tap to continue")
         case 2: ("STATS",      "Each colonist has RPG STATS — STR, INT, AGI, END, CHA. Tap a figure.",               "Tap a colonist")
-        case 3: ("CAMERA",     "Drag to pan the camera. Pinch to zoom.",                                               "Tap to continue")
+        case 3: ("CAMERA",     "WASD or arrows to pan, scroll to zoom. On touch, drag to pan, pinch to zoom.",                                               "Tap to continue")
         case 4: ("BUILD",      "Tap BUILD to open the build menu. Buildings keep your colony running.",               "Tap BUILD")
         case 5: ("SHELTER",    "Place a SHELTER to reduce stress and let colonists sleep.",                            "Place a shelter")
-        case 6: ("COMMAND",    "You are in control. Select a colonist, then tap a tile to move them. Assign jobs from the colonist panel.", "Tap a colonist")
+        case 6: ("COMMAND",    "Click a colonist (or drag a box around several). Click the ground to move them. Click a resource to gather it. Esc to deselect.", "Tap a colonist")
         case 7: ("COMBAT",     "Colonists carry weapons. Assign ATTACK jobs to fight enemies. STR boosts damage.",    "Tap to continue")
         case 8: ("GOOD LUCK",  "Tap PAUSE to pause. Tap SAVE to save. Good luck.",                                   "Tap to dismiss")
         default: ("", "", "")
@@ -32,12 +32,12 @@ struct TutorialView: View {
             VStack(spacing: 14) {
                 HStack {
                     Text("TUTORIAL \(step + 1)/9")
-                        .font(.system(size: 10, design: .monospaced))
+                        .font(.system(size: 10))
                         .foregroundStyle(Theme.text3)
                     Spacer()
                     Button(action: skip) {
                         Text("SKIP")
-                            .font(.system(size: 11, weight: .bold, design: .monospaced))
+                            .font(.system(size: 11, weight: .bold))
                             .foregroundStyle(Theme.red)
                     }
                     .buttonStyle(.plain)
@@ -53,7 +53,7 @@ struct TutorialView: View {
                     .multilineTextAlignment(.center)
 
                 Text(stepData.hint)
-                    .font(.system(size: 11, design: .monospaced))
+                    .font(.system(size: 11))
                     .foregroundStyle(Theme.yellow)
                     .opacity(hintPulse ? 1.0 : 0.4)
                     .animation(.easeInOut(duration: 0.9).repeatForever(autoreverses: true), value: hintPulse)

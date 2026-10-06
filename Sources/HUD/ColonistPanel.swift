@@ -12,12 +12,12 @@ struct ColonistPanel: View {
                         .foregroundStyle(Theme.yellow)
                     Spacer()
                     Text("Lv.\(colonist.level)")
-                        .font(.system(size: 11, weight: .bold, design: .monospaced))
+                        .font(.system(size: 11, weight: .bold))
                         .foregroundStyle(Theme.cyan)
                 }
 
                 Text(colonist.state.rawValue.uppercased())
-                    .font(.system(size: 10, weight: .semibold, design: .monospaced))
+                    .font(.system(size: 10, weight: .semibold))
                     .foregroundStyle(stateColor(colonist.state))
 
                 Divider().background(Theme.border)
@@ -31,7 +31,7 @@ struct ColonistPanel: View {
                 Divider().background(Theme.border)
 
                 Text("JOB: \(colonist.job.rawValue.uppercased())")
-                    .font(.system(size: 9, weight: .bold, design: .monospaced))
+                    .font(.system(size: 9, weight: .bold))
                     .foregroundStyle(Theme.text2)
 
                 HStack(spacing: 4) {
@@ -51,7 +51,7 @@ struct ColonistPanel: View {
         let v = max(0, min(100, value))
         return HStack(spacing: 6) {
             Text(label)
-                .font(.system(size: 9, design: .monospaced))
+                .font(.system(size: 9))
                 .foregroundStyle(Theme.text2)
                 .frame(width: 28, alignment: .leading)
             GeometryReader { geo in
@@ -64,7 +64,7 @@ struct ColonistPanel: View {
             }
             .frame(height: 4)
             Text("\(Int(value))")
-                .font(.system(size: 9, design: .monospaced))
+                .font(.system(size: 9))
                 .foregroundStyle(Theme.text3)
                 .frame(width: 22, alignment: .trailing)
         }
@@ -77,7 +77,7 @@ struct ColonistPanel: View {
             gameState.colonists[idx].job = job
         }) {
             Text(job.rawValue.prefix(4).uppercased())
-                .font(.system(size: 9, weight: .bold, design: .monospaced))
+                .font(.system(size: 9, weight: .bold))
                 .foregroundStyle(isActive ? .white : Theme.text2)
                 .padding(.horizontal, 8)
                 .padding(.vertical, 4)
