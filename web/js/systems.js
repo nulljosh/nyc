@@ -135,7 +135,10 @@ export function resourceTick(state) {
             if (dist <= 1) {
                 const taken = Math.min(1, rn.remaining);
                 rn.remaining -= taken;
-                if (taken > 0) state.resources[rn.type] = (state.resources[rn.type] || 0) + taken;
+                if (taken > 0) {
+                    state.resources[rn.type] = (state.resources[rn.type] || 0) + taken;
+                    if (state.currentTick % 20 === 0) grantXP(c, 1); // ponytail: 1 XP per 20 working ticks (~1 hr of steady gathering to avg lvl 8), tune with a real playtest
+                }
                 break;
             }
         }
@@ -253,6 +256,24 @@ function tickGather(c, state, pathfinder) {
     // Nothing reachable left to gather.
     awardXP(c, 10, 2, state);
     c.job = 'idle';
+}
+
+// Recruits: once a day, a survivor walks in if there is a free bed and food to feed them.
+// Beds = 4 per shelter on top of a starting 8. Cap 20. No auto-assign: they arrive idle.
+export const BEDS_PER_SHELTER = 4;
+export const MAX_COLONISTS = 20;
+export function recruitTick(state) {
+    if (state.demoMode || state.currentTick === 0 || state.currentTick % TICKS_PER_DAY !== 0) return null;
+    const alive = state.colonists.filter(c => c.state !== 'dead');
+    if (!alive.length) return null;
+    const beds = 8 + BEDS_PER_SHELTER * state.buildings.filter(b => b.type === 'shelter' && b.isActive).length;
+    if (alive.length >= Math.min(beds, MAX_COLONISTS) || (state.resources.food || 0) < 10) return null;
+    state.resources.food -= 10;
+    const host = alive[0];
+    const c = createColonist(randomColonistName(state.colonists), host.col, host.row);
+    state.colonists.push(c);
+    gameLog(state, `${c.name} arrives, looking for work`);
+    return c;
 }
 
 // QuestSystem -- colonists perform real-life quests
