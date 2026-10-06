@@ -550,6 +550,15 @@ export function renderWorld(ctx, canvas, camera, grid, state) {
     }
 
     ctx.restore();
+
+    // Night: a soft blue dusk over the whole view, deepest from 22:00 to 04:00. Pikmin-style day pressure you can see.
+    if (state.isNight) {
+        const h = state.currentHour, deep = h >= 22 || h < 4;
+        ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.fillStyle = deep ? 'rgba(10, 16, 48, 0.42)' : 'rgba(10, 16, 48, 0.24)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.restore();
+    }
 }
 
 // Minimap
